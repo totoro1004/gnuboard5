@@ -13,9 +13,9 @@ add_stylesheet('<link rel="stylesheet" href="'.$member_skin_url.'/style.css">', 
 
     <div id="login_frm">
         <label for="login_id" class="sound_only">아이디<strong class="sound_only"> 필수</strong></label>
-        <input type="text" name="mb_id" id="login_id" placeholder="아이디(필수)" required class="frm_input required" maxLength="20">
+        <input type="text" name="mb_id" id="login_id" placeholder="아이디(필수)" required class="frm_input required" maxLength="20" value="youngcart5">
         <label for="login_pw" class="sound_only">비밀번호<strong class="sound_only"> 필수</strong></label>
-        <input type="password" name="mb_password" id="login_pw" placeholder="비밀번호(필수)" required class="frm_input required" maxLength="20">
+        <input type="password" name="mb_password" id="login_pw" placeholder="비밀번호(필수)" required class="frm_input required" maxLength="20" value="1234">
         <input type="submit" value="로그인" class="btn_submit">
         <div>
             <input type="checkbox" name="auto_login" id="login_auto_login">

@@ -18,6 +18,9 @@ $g5['title'] = '상품문의';
 include_once (G5_ADMIN_PATH.'/admin.head.php');
 
 $qstr = 'page='.$page.'&amp;sort1='.$sort1.'&amp;sort2='.$sort2;
+
+// 정보 *로 변환
+$iq = conv_field_info($iq, 'iq_email,iq_hp');
 ?>
 
 <form name="fitemqaform" method="post" action="./itemqaformupdate.php" onsubmit="return fitemqaform_submit(this);">

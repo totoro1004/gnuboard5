@@ -208,6 +208,31 @@ function order_select($fld, $sel='')
     return $s;
 }
 
+// 데모에서 정보 *로 변환
+function conv_field_info($data, $field, $exclude='')
+{
+    global $is_admin;
+
+    if($is_admin != 'super') {
+        foreach($data as $key=>$val) {
+            if($field == '*') {
+                if($exclude != '' && strpos($exclude, $key) !== false)
+                    continue;
+            } else {
+                if(strpos($field, $key) === false)
+                    continue;
+
+                if(strpos($exclude, $key) !== false)
+                    continue;
+            }
+
+            $data[$key] = preg_replace('/[a-z0-9가-힣]/i', '*', $val);
+        }
+    }
+
+    return $data;
+}
+
 // 접근 권한 검사
 if (!$member['mb_id'])
 {

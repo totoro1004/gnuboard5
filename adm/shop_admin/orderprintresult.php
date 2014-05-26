@@ -80,6 +80,9 @@ if ($csv == 'csv')
         }
         $ct_send_cost = iconv_euckr($ct_send_cost);
 
+        // 정보 *로 변환
+        $row = conv_field_info($row, 'od_b_name,od_b_zip1,od_b_zip2,od_b_addr1,od_b_addr2,od_b_addr3,od_b_tel,od_b_hp');
+
         echo '"'.$row['od_b_zip1'].'-'.$row['od_b_zip2'].'"'.',';
         echo '"'.print_address($row['od_b_addr1'], $row['od_b_addr2'], $row['od_b_addr3']).'"'.',';
         echo '"'.$row['od_b_name'].'"'.',';
@@ -160,6 +163,9 @@ if ($csv == 'xls')
         }
         $ct_send_cost = iconv_euckr($ct_send_cost);
         $row = array_map('iconv_euckr', $row);
+
+        // 정보 *로 변환
+        $row = conv_field_info($row, 'od_b_name,od_b_zip1,od_b_zip2,od_b_addr1,od_b_addr2,od_b_addr3,od_b_tel,od_b_hp');
 
         $worksheet->write($i, 0, $row['od_b_zip1'].'-'.$row['od_b_zip2']);
         $worksheet->write($i, 1, print_address($row['od_b_addr1'], $row['od_b_addr2'], $row['od_b_addr3']));
@@ -259,6 +265,9 @@ if (mysql_num_rows($result) == 0)
 
         $od_memo = ($row1['od_memo']) ? stripslashes($row1['od_memo']) : '';
         $od_shop_memo = ($row1['od_shop_memo']) ? stripslashes($row1['od_shop_memo']) : '';
+
+        // 정보 *로 변환
+        $row1 = conv_field_info($row1, 'od_name,od_zip1,od_zip2,od_addr1,od_addr2,od_addr3,od_tel,od_hp,od_b_name,od_b_zip1,od_b_zip2,od_b_addr1,od_b_addr2,od_b_addr3,od_b_tel,od_b_hp');
     ?>
     <!-- 반복시작 - 지운아빠 2013-04-18 -->
     <div class="sodr_print_pop_list">

@@ -38,6 +38,9 @@ foreach($data as $cell) {
 for($i=1; $row=sql_fetch_array($result); $i++) {
     $row = array_map('iconv_euckr', $row);
 
+    // 정보 *로 변환
+    $row = conv_field_info($row, 'od_name,od_tel,od_hp,od_b_name,od_b_zip1,od_b_zip2,od_b_addr1,od_b_addr2,od_b_addr3,od_b_tel,od_b_hp');
+
     $worksheet->write($i, 0, ' '.$row['od_id']);
     $worksheet->write($i, 1, $row['od_name']);
     $worksheet->write($i, 2, $row['od_tel']);

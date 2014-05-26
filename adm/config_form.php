@@ -6,8 +6,10 @@ auth_check($auth[$sub_menu], 'r');
 
 $token = get_token();
 
-if ($is_admin != 'super')
-    alert('최고관리자만 접근 가능합니다.');
+if ($is_admin != 'super') {
+//    alert('최고관리자만 접근 가능합니다.');
+    $config = conv_field_info($config, 'cf_admin_email,cf_cert_kcb_cd,cf_cert_kcp_cd,cf_icode_id,cf_icode_pw,cf_facebook_appid,cf_facebook_secret,cf_twitter_key,cf_twitter_secret,cf_googl_shorturl_apikey');
+}
 
 if (!isset($config['cf_include_index'])) {
     sql_query(" ALTER TABLE `{$g5['config_table']}`
