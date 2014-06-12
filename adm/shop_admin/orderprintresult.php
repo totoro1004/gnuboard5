@@ -263,36 +263,37 @@ if (mysql_num_rows($result) == 0)
         if ($row1['od_name'] == $row1['od_b_name'] && $row1['od_addr'] == $row1['od_b_addr'] && $row1['od_tel'] == $row1['od_b_tel'] &&  $row1['od_hp'] == $row1['od_b_hp'] && $row1['od_hp'] != "&nbsp;") $samesamesame = 1;
         else $samesamesame = '';
 
-        $od_memo = ($row1['od_memo']) ? stripslashes($row1['od_memo']) : '';
-        $od_shop_memo = ($row1['od_shop_memo']) ? stripslashes($row1['od_shop_memo']) : '';
-
         // 정보 *로 변환
         $row1 = conv_field_info($row1, 'od_name,od_zip1,od_zip2,od_addr1,od_addr2,od_addr3,od_tel,od_hp,od_b_name,od_b_zip1,od_b_zip2,od_b_addr1,od_b_addr2,od_b_addr3,od_b_tel,od_b_hp');
+
+        $od_memo = ($row1['od_memo']) ? get_text(stripslashes($row1['od_memo'])) : '';
+        $od_shop_memo = ($row1['od_shop_memo']) ? get_text(stripslashes($row1['od_shop_memo'])) : '';
+
     ?>
     <!-- 반복시작 - 지운아빠 2013-04-18 -->
     <div class="sodr_print_pop_list">
         <h2>주문번호 <?php echo $row1['od_id']; ?></h2>
-        <h3>보내는 사람 : <?php echo $row1['od_name']; ?></h3>
+        <h3>보내는 사람 : <?php echo get_text($row1['od_name']); ?></h3>
 
         <dl>
             <dt>주소</dt>
-            <dd><?php echo $row1['od_addr']; ?></dd>
+            <dd><?php echo get_text($row1['od_addr']); ?></dd>
             <dt>휴대폰</dt>
-            <dd><?php echo $row1['od_hp']; ?></dd>
+            <dd><?php echo get_text($row1['od_hp']); ?></dd>
             <dt>전화번호</dt>
-            <dd><?php echo $row1['od_tel']; ?></dd>
+            <dd><?php echo get_text($row1['od_tel']); ?></dd>
         </dl>
         <?php if ($samesamesame) { ?>
         <p class="sodr_print_pop_same">보내는 사람과 받는 사람이 동일합니다.</p>
         <?php } else { ?>
-        <h3>받는 사람 : <?php echo $row1['od_b_name']; ?></h3>
+        <h3>받는 사람 : <?php echo get_text($row1['od_b_name']); ?></h3>
         <dl>
             <dt>주소</dt>
-            <dd><?php echo $row1['od_b_addr']; ?></dd>
+            <dd><?php echo get_text($row1['od_b_addr']); ?></dd>
             <dt>휴대폰</dt>
-            <dd><?php echo $row1['od_b_hp']; ?></dd>
+            <dd><?php echo get_text($row1['od_b_hp']); ?></dd>
             <dt>전화번호</dt>
-            <dd><?php echo $row1['od_b_tel']; ?></dd>
+            <dd><?php echo get_text($row1['od_b_tel']); ?></dd>
         </dl>
         <?php } ?>
 
