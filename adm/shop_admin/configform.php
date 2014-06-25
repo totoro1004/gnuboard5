@@ -5,6 +5,11 @@ include_once(G5_EDITOR_LIB);
 
 auth_check($auth[$sub_menu], "r");
 
+if ($is_admin != 'super') {
+    $config = conv_field_info($config, 'cf_icode_id,cf_icode_pw,cf_lg_mid,cf_lg_mert_key');
+    $default = conv_field_info($default, 'de_kcp_mid,de_kcp_site_key');
+}
+
 if (!$config['cf_icode_server_ip'])   $config['cf_icode_server_ip'] = '211.172.232.124';
 if (!$config['cf_icode_server_port']) $config['cf_icode_server_port'] = '7295';
 
@@ -1064,6 +1069,7 @@ if(!isset($default['de_pg_service'])) {
             <th scope="row">비회원에 대한<br/>개인정보수집 내용</th>
             <td><?php echo editor_html('de_guest_privacy', $default['de_guest_privacy']); ?></td>
         </tr>
+        <?php if($is_admin == 'super') { ?>
         <tr>
             <th scope="row">MYSQL USER</th>
             <td><?php echo G5_MYSQL_USER; ?></td>
@@ -1076,6 +1082,7 @@ if(!isset($default['de_pg_service'])) {
             <th scope="row">서버 IP</th>
             <td><?php echo ($_SERVER['SERVER_ADDR']?$_SERVER['SERVER_ADDR']:$_SERVER['LOCAL_ADDR']); ?></td>
         </tr>
+        <?php } ?>
         </tbody>
         </table>
     </div>
