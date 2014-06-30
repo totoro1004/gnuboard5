@@ -2,8 +2,10 @@
 $sub_menu = "100290";
 include_once('./_common.php');
 
-if ($is_admin != 'super')
-    alert('최고관리자만 접근 가능합니다.');
+//if ($is_admin != 'super')
+//    alert('최고관리자만 접근 가능합니다.');
+
+auth_check($auth[$sub_menu], 'w');
 
 $token = get_token();
 
