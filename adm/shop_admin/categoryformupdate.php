@@ -14,7 +14,7 @@ if ($file = $_POST['ca_include_tail']) {
     }
 }
 
-if ($w == "u" || $w == "d")
+//if ($w == "u" || $w == "d")
     check_demo();
 
 auth_check($auth[$sub_menu], "d");
