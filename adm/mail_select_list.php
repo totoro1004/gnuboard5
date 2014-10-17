@@ -96,7 +96,7 @@ include_once('./admin.head.php');
         $row = conv_field_info($row, '*');
 
         $i++;
-        $ma_list .= $cr . $row['mb_email'] . "||" . $row['mb_id'] . "||" . $row['mb_name'] . "||" . $row['mb_nick'] . "||" . $row['mb_datetime'];
+        $ma_list .= $cr . $row['mb_email'] . "||" . $row['mb_id'] . "||" . get_text($row['mb_name']) . "||" . $row['mb_nick'] . "||" . $row['mb_datetime'];
         $cr = "\n";
 
         $bg = 'bg'.($i%2);
@@ -104,7 +104,7 @@ include_once('./admin.head.php');
     <tr class="<?php echo $bg; ?>">
         <td class="td_num"><?php echo $i ?></td>
         <td class="td_mbid"><?php echo $row['mb_id'] ?></td>
-        <td class="td_mbname"><?php echo $row['mb_name'] ?></td>
+        <td class="td_mbname"><?php echo get_text($row['mb_name']); ?></td>
         <td class="td_mbname"><?php echo $row['mb_nick'] ?></td>
         <td><?php echo $row['mb_email'] ?></td>
     </tr>
