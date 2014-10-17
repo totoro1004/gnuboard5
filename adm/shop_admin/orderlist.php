@@ -292,7 +292,7 @@ if(!sql_query(" select mb_id from {$g5['g5_shop_order_delete_table']} limit 1 ",
         if($row['mb_id'] != 'youngcart5')
             $row = conv_field_info($row, 'mb_id,od_name,od_email,od_b_name,od_tel');
 
-        $mb_nick = get_sideview($row['mb_id'], $row['od_name'], $row['od_email'], '');
+        $mb_nick = get_sideview($row['mb_id'], get_text($row['od_name']), $row['od_email'], '');
 
         $od_cnt = 0;
         if ($row['mb_id'])
