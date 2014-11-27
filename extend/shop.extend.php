@@ -138,4 +138,32 @@ define('G5_CART_STOCK_LIMIT', 3);
 // 아이코드 코인 최소금액 설정
 // 코인 잔액이 설정 금액보다 작을 때는 주문시 SMS 발송 안함
 define('G5_ICODE_COIN', 100);
+
+// PG 강제 설정
+if(isset($_GET['pg'])) {
+    switch($_GET['pg']) {
+        case 'lg':
+            set_session('ss_default_pg', 'lg');
+            break;
+        case 'kcp':
+            set_session('ss_default_pg', 'kcp');
+            break;
+        default:
+            set_session('ss_default_pg', $default['de_pg_service']);
+            break;
+    }
+}
+
+if(isset($_SESSION['ss_default_pg'])) {
+    switch($_SESSION['ss_default_pg']) {
+        case 'lg':
+            $default['de_pg_service'] = 'lg';
+            break;
+        case 'kcp':
+            $default['de_pg_service'] = 'kcp';
+            break;
+        default:
+            break;
+    }
+}
 ?>
