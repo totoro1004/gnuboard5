@@ -2839,4 +2839,46 @@ function insert_popular($field, $str)
         sql_query($sql, FALSE);
     }
 }
+
+// 문자열 암호화
+function get_encrypt_string($str)
+{
+    if(defined('G5_STRING_ENCRYPT_FUNCTION') && G5_STRING_ENCRYPT_FUNCTION) {
+        $encrypt = call_user_func(G5_STRING_ENCRYPT_FUNCTION, $str);
+    } else {
+        $encrypt = sql_password($str);
+    }
+
+    return $encrypt;
+}
+
+// 비밀번호 비교
+function check_password($pass, $hash)
+{
+    $password = get_encrypt_string($pass);
+
+    return ($password === $hash);
+}
+
+// 동일한 host url 인지
+function check_url_host($url, $msg='', $return_url=G5_URL)
+{
+    if(!$msg)
+        $msg = 'url에 타 도메인을 지정할 수 없습니다.';
+
+    $p = parse_url($url);
+    if ((isset($p['scheme']) && $p['scheme']) || (isset($p['host']) && $p['host'])) {
+        if ($p['host'].(isset($p['port']) ? ':'.$p['port'] : '') != $_SERVER['HTTP_HOST']) {
+            echo '<script>'.PHP_EOL;
+            echo 'alert("url에 타 도메인을 지정할 수 없습니다.");'.PHP_EOL;
+            echo 'document.location.href = "'.$return_url.'";'.PHP_EOL;
+            echo '</script>'.PHP_EOL;
+            echo '<noscript>'.PHP_EOL;
+            echo '<p>'.$msg.'</p>'.PHP_EOL;
+            echo '<p><a href="'.$return_url.'">돌아가기</a></p>'.PHP_EOL;
+            echo '</noscript>'.PHP_EOL;
+            exit;
+        }
+    }
+}
 ?>
