@@ -155,6 +155,9 @@ if(isset($_GET['pg'])) {
         case 'kcp':
             set_session('ss_default_pg', 'kcp');
             break;
+        case 'inicis':
+            set_session('ss_default_pg', 'inicis');
+            break;
         default:
             set_session('ss_default_pg', $default['de_pg_service']);
             break;
@@ -168,6 +171,9 @@ if(isset($_SESSION['ss_default_pg'])) {
             break;
         case 'kcp':
             $default['de_pg_service'] = 'kcp';
+            break;
+        case 'inicis':
+            $default['de_pg_service'] = 'inicis';
             break;
         default:
             break;
