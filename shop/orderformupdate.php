@@ -758,6 +758,9 @@ if($is_member) {
     sql_query($sql);
 }
 
+// 이니시스 테스트 결제 자동취소
+include_once(G5_SHOP_PATH.'/inicis/testpay_cancel.php');
+
 goto_url(G5_SHOP_URL.'/orderinquiryview.php?od_id='.$od_id.'&amp;uid='.$uid);
 ?>
 
