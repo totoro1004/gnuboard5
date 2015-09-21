@@ -105,10 +105,11 @@ if ($csv == 'csv')
         }
 
 
+
         // 정보 *로 변환
         $row = conv_field_info($row, 'od_b_name,od_b_zip1,od_b_zip2,od_b_addr1,od_b_addr2,od_b_addr3,od_b_tel,od_b_hp');
 
-        echo '"'.$row['od_b_zip1'].$row['od_b_zip2'].'"'.',';
+        echo '"\''.$row['od_b_zip1'].$row['od_b_zip2'].'"\''.',';
 
         echo '"'.print_address($row['od_b_addr1'], $row['od_b_addr2'], $row['od_b_addr3'], $row['od_b_addr_jibeon']).'"'.',';
         echo '"'.$row['od_b_name'].'"'.',';
@@ -215,10 +216,11 @@ if ($csv == 'xls')
         $row = array_map('iconv_euckr', $row);
 
 
+
         // 정보 *로 변환
         $row = conv_field_info($row, 'od_b_name,od_b_zip1,od_b_zip2,od_b_addr1,od_b_addr2,od_b_addr3,od_b_tel,od_b_hp');
 
-        $worksheet->write($i, 0, $row['od_b_zip1'].$row['od_b_zip2']);
+        $worksheet->write($i, 0, ' '.$row['od_b_zip1'].$row['od_b_zip2']);
 
         $worksheet->write($i, 1, print_address($row['od_b_addr1'], $row['od_b_addr2'], $row['od_b_addr3'], $row['od_b_addr_jibeon']));
         $worksheet->write($i, 2, $row['od_b_name']);
