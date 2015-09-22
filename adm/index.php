@@ -94,7 +94,7 @@ $colspan = 12;
             // 정보 *로 변환
             $row = conv_field_info($row, 'mb_id,mb_name,mb_nick,mb_email');
 
-            $mb_nick = get_sideview($row['mb_id'], $row['mb_nick'], $row['mb_email'], $row['mb_homepage']);
+            $mb_nick = get_sideview($row['mb_id'], get_text($row['mb_nick']), $row['mb_email'], $row['mb_homepage']);
 
             $mb_id = $row['mb_id'];
             if ($row['mb_leave_date'])
