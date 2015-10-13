@@ -113,7 +113,7 @@ $listall = '<a href="'.$_SERVER['SCRIPT_NAME'].'" class="ov_listall">전체목�
     </thead>
     <tbody>
     <?php
-    for ($i=0; $row=mysql_fetch_array($result); $i++)
+    for ($i=0; $row=sql_fetch_array($result); $i++)
     {
         // 정보 *로 변환
         $row = conv_field_info($row, 'ss_hp');
