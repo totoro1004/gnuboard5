@@ -1,5 +1,8 @@
 <?php
-ini_set('memory_limit', '-1');
+ini_set('memory_limit', '1024M');
+set_time_limit(300);
+
+define('G5_USE_SHOP', false);
 
 $sub_menu = "100510";
 include_once('./_common.php');
