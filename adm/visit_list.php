@@ -7,7 +7,7 @@ auth_check($auth[$sub_menu], 'r');
 $g5['title'] = '접속자집계';
 include_once('./visit.sub.php');
 
-$colspan = 5;
+$colspan = 6;
 
 $sql_common = " from {$g5['visit_table']} ";
 $sql_search = " where vi_date between '{$fr_date}' and '{$to_date}' ";
