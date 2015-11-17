@@ -29,7 +29,7 @@ $browscap->cacheFilename = 'browscap_cache.php';
 
 // 데이터 변환
 $rows = preg_replace('#[^0-9]#', '', $_GET['rows']);
-if(!$rows)
+if(!$rows || $is_admin != 'super')
     $rows = 10;
 
 $sql_common = " from {$g5['visit_table']} where vi_agent <> '' and ( vi_browser = '' or vi_os = '' or vi_device = '' ) ";
