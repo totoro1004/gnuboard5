@@ -7,8 +7,6 @@ include_once('./_common.php');
 
 auth_check($auth[$sub_menu], 'w');
 
-$token = get_token();
-
 // 메뉴테이블 생성
 if( !isset($g5['menu_table']) ){
     die('<meta charset="utf-8">dbconfig.php 파일에 <strong>$g5[\'menu_table\'] = G5_TABLE_PREFIX.\'menu\';</strong> 를 추가해 주세요.');
@@ -42,7 +40,7 @@ $colspan = 7;
 </div>
 
 <form name="fmenulist" id="fmenulist" method="post" action="./menu_list_update.php" onsubmit="return fmenulist_submit(this);">
-<input type="hidden" name="token" value="<?php echo $token ?>">
+<input type="hidden" name="token" value="">
 
 <div class="btn_add01 btn_add">
     <button type="button" onclick="return add_menu();">메뉴추가<span class="sound_only"> 새창</span></button>
