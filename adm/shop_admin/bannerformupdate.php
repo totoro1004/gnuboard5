@@ -17,6 +17,8 @@ check_admin_token();
 $bn_bimg      = $_FILES['bn_bimg']['tmp_name'];
 $bn_bimg_name = $_FILES['bn_bimg']['name'];
 
+$bn_id = (int) $bn_id;
+
 if ($bn_bimg_del)  @unlink(G5_DATA_PATH."/banner/$bn_id");
 
 //파일이 이미지인지 체크합니다.
@@ -31,6 +33,8 @@ if( $bn_bimg || $bn_bimg_name ){
         alert("이미지 파일만 업로드 할수 있습니다.");
     }
 }
+
+$bn_url = clean_xss_tags($bn_url);
 
 if ($w=="")
 {
