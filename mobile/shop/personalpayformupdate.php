@@ -240,5 +240,12 @@ set_session('ss_personalpay_uid', $uid);
 // 이니시스 테스트 결제 자동취소
 include_once(G5_SHOP_PATH.'/inicis/testpay_cancel.php');
 
+$is_noti_pay = isset($is_noti_pay) ? $is_noti_pay : false;
+
+if( $is_noti_pay ){
+    $order_id = $pp['pp_id'];
+    return;
+}
+
 goto_url(G5_SHOP_URL.'/personalpayresult.php?pp_id='.$pp['pp_id'].'&amp;uid='.$uid);
 ?>
