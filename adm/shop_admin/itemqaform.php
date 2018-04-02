@@ -66,20 +66,20 @@ $qstr .= ($qstr ? '&amp;' : '').'sca='.$sca;
     </tr>
     <tr>
         <th scope="row"><label for="iq_question">질문</label></th>
-        <td><?php echo editor_html('iq_question', get_text($iq['iq_question'], 0)); ?></td>
+        <td><?php echo editor_html('iq_question', get_text(html_purifier($iq['iq_question']), 0)); ?></td>
     </tr>
     <tr>
         <th scope="row"><label for="iq_answer">답변</label></th>
-        <td><?php echo editor_html('iq_answer', get_text($iq['iq_answer'], 0)); ?></td>
+        <td><?php echo editor_html('iq_answer', get_text(html_purifier($iq['iq_answer']), 0)); ?></td>
         <!-- <td><textarea name="iq_answer" id="iq_answer" rows="7"><?php echo get_text($iq['iq_answer']); ?></textarea></td> -->
     </tr>
     </tbody>
     </table>
 </div>
 
-<div class="btn_confirm01 btn_confirm">
-    <input type="submit" accesskey='s' value="확인" class="btn_submit">
-    <a href="./itemqalist.php?<?php echo $qstr; ?>">목록</a>
+<div class="btn_fixed_top">
+    <a href="./itemqalist.php?<?php echo $qstr; ?>" class="btn btn_02">목록</a>
+    <input type="submit" accesskey='s' value="확인" class="btn_submit btn">
 </div>
 </form>
 

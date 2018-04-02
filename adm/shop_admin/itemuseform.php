@@ -66,7 +66,7 @@ $qstr .= ($qstr ? '&amp;' : '').'sca='.$sca;
     </tr>
     <tr>
         <th scope="row">평점</th>
-        <td><img src="<?php echo G5_URL; ?>/shop/img/s_star<?php echo $is['is_score']; ?>.png"> (<?php echo $is['is_score']; ?>점)</td>
+        <td><img src="<?php echo G5_URL; ?>/shop/img/s_star<?php echo $is['is_score']; ?>.png" width="100"> (<?php echo $is['is_score']; ?>점)</td>
     </tr>
     <tr>
         <th scope="row"><label for="is_subject">제목</label></th>
@@ -75,7 +75,7 @@ $qstr .= ($qstr ? '&amp;' : '').'sca='.$sca;
     </tr>
     <tr>
         <th scope="row">내용</th>
-        <td><?php echo editor_html('is_content', get_text($is['is_content'], 0)); ?></td>
+        <td><?php echo editor_html('is_content', get_text(html_purifier($is['is_content']), 0)); ?></td>
     </tr>
     <tr>
         <th scope="row"><label for="is_reply_subject">답변 제목</label></th>
@@ -84,7 +84,7 @@ $qstr .= ($qstr ? '&amp;' : '').'sca='.$sca;
     </tr>
     <tr>
         <th scope="row">답변 내용</th>
-        <td><?php echo editor_html('is_reply_content', get_text($is['is_reply_content'], 0)); ?></td>
+        <td><?php echo editor_html('is_reply_content', get_text(html_purifier($is['is_reply_content']), 0)); ?></td>
     </tr>
     <tr>
         <th scope="row">확인</th>
@@ -99,9 +99,9 @@ $qstr .= ($qstr ? '&amp;' : '').'sca='.$sca;
     </table>
 </div>
 
-<div class="btn_confirm01 btn_confirm">
-    <input type="submit" value="확인" class="btn_submit" accesskey="s">
-    <a href="./itemuselist.php?<?php echo $qstr; ?>">목록</a>
+<div class="btn_fixed_top">
+    <a href="./itemuselist.php?<?php echo $qstr; ?>" class="btn_02 btn">목록</a>
+    <input type="submit" value="확인" class="btn_submit btn" accesskey="s">
 </div>
 </form>
 

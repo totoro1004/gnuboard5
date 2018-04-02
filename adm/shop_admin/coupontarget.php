@@ -4,7 +4,7 @@ include_once('./_common.php');
 
 auth_check($auth[$sub_menu], "w");
 
-$sch_target = substr($_GET['sch_target'], 0, 1);
+$sch_target = substr(preg_replace('/[^a-zA-Z0-9]/', '', strip_tags($_GET['sch_target'])), 0, 1);
 $sch_word   = clean_xss_tags($_GET['sch_word']);
 
 if($_GET['sch_target'] == 1) {
@@ -67,15 +67,15 @@ $qstr1 = 'sch_target='.$sch_target.'&amp;sch_word='.urlencode($sch_word);
     </div>
 
     <form name="ftarget" method="get">
-    <input type="hidden" name="sch_target" value="<?php echo $_GET['sch_target']; ?>">
+    <input type="hidden" name="sch_target" value="<?php echo preg_replace('/[^a-zA-Z0-9]/', '', strip_tags($_GET['sch_target'])); ?>">
 
     <div id="scp_list_find">
         <label for="sch_word"><?php echo $t_name; ?></label>
         <input type="text" name="sch_word" id="sch_word" value="<?php echo get_text($sch_word); ?>" class="frm_input required" required size="20">
         <input type="submit" value="검색" class="btn_frmline">
     </div>
-
-    <div class="tbl_head01 tbl_wrap">
+    
+    <div class="tbl_head01 tbl_wrap new_win_con">
         <table>
         <caption>검색결과</caption>
         <thead>
@@ -90,9 +90,9 @@ $qstr1 = 'sch_target='.$sch_target.'&amp;sch_word='.urlencode($sch_word);
         for($i=0; $row=sql_fetch_array($result); $i++) {
         ?>
         <tr>
-            <td><?php echo $row['t_name']; ?></td>
+            <td class="td_left"><?php echo $row['t_name']; ?></td>
             <td class="scp_target_code"><?php echo $row['t_id']; ?></td>
-            <td class="scp_target_select"><button type="button" class="btn_frmline" onclick="sel_target_id('<?php echo $row['t_id']; ?>');">선택</button>
+            <td class="td_mng td_mng_s"><button type="button" class="btn btn_03" onclick="sel_target_id('<?php echo $row['t_id']; ?>');">선택</button>
         </tr>
         <?php
         }
@@ -107,8 +107,8 @@ $qstr1 = 'sch_target='.$sch_target.'&amp;sch_word='.urlencode($sch_word);
 
     <?php echo get_paging(G5_IS_MOBILE ? $config['cf_mobile_pages'] : $config['cf_write_pages'], $page, $total_page, '?'.$qstr1.'&amp;page='); ?>
 
-    <div class="btn_confirm01 btn_confirm">
-        <button type="button" onclick="window.close();">닫기</button>
+    <div class="btn_confirm01 btn_confirm win_btn">
+        <button type="button" onclick="window.close();" class="btn">닫기</button>
     </div>
 </div>
 

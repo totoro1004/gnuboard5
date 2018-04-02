@@ -5,7 +5,7 @@ include_once('./_common.php');
 auth_check($auth[$sub_menu], "r");
 
 $doc = strip_tags($doc);
-$sort1 = strip_tags($sort1);
+$sort1 = in_array($sort1, array('it_id', 'it_name', 'it_stock_qty', 'it_use', 'it_soldout', 'it_stock_sms')) ? $sort1 : '';
 $sort2 = in_array($sort2, array('desc', 'asc')) ? $sort2 : 'desc';
 $sel_ca_id = get_search_string($sel_ca_id);
 $sel_field = get_search_string($sel_field);
@@ -62,7 +62,7 @@ $listall = '<a href="'.$_SERVER['SCRIPT_NAME'].'" class="ov_listall">전체목�
 
 <div class="local_ov01 local_ov">
     <?php echo $listall; ?>
-    전체 상품 <?php echo $total_count; ?>개
+    <span class="btn_ov01"><span class="ov_txt">전체 상품</span><span class="ov_num">  <?php echo $total_count; ?>개</span></span>
 </div>
 
 <form name="flist" class="local_sch01 local_sch">
@@ -93,7 +93,7 @@ $listall = '<a href="'.$_SERVER['SCRIPT_NAME'].'" class="ov_listall">전체목�
 </select>
 
 <label for="search" class="sound_only">검색어<strong class="sound_only"> 필수</strong></label>
-<input type="text" name="search" value="<?php echo $search; ?>" required class="frm_input required">
+<input type="text" name="search" id="search" value="<?php echo $search; ?>" required class="frm_input required">
 <input type="submit" value="검색" class="btn_submit">
 
 </form>
@@ -102,10 +102,6 @@ $listall = '<a href="'.$_SERVER['SCRIPT_NAME'].'" class="ov_listall">전체목�
     <p>재고수정의 수치를 수정하시면 창고재고의 수치가 변경됩니다.</p>
 </div>
 
-<div class="btn_add01 btn_add">
-    <a href="./optionstocklist.php" class="btn_add01 btn_add_optional">상품옵션재고</a>
-    <a href="./itemsellrank.php" class="btn_add01 btn_add_optional">상품판매순위</a>
-</div>
 
 <form name="fitemstocklist" action="./itemstocklistupdate.php" method="post">
 <input type="hidden" name="sort1" value="<?php echo $sort1; ?>">
@@ -172,7 +168,7 @@ $listall = '<a href="'.$_SERVER['SCRIPT_NAME'].'" class="ov_listall">전체목�
             <input type="hidden" name="it_id[<?php echo $i; ?>]" value="<?php echo $row['it_id']; ?>">
             <?php echo $row['it_id']; ?>
         </td>
-        <td><a href="<?php echo $href; ?>"><?php echo get_it_image($row['it_id'], 50, 50); ?> <?php echo cut_str(stripslashes($row['it_name']), 60, "&#133"); ?></a></td>
+        <td class="td_left"><a href="<?php echo $href; ?>"><?php echo get_it_image($row['it_id'], 50, 50); ?> <?php echo cut_str(stripslashes($row['it_name']), 60, "&#133"); ?></a></td>
         <td class="td_num<?php echo $it_stock_qty_st; ?>"><?php echo $it_stock_qty; ?></td>
         <td class="td_num"><?php echo number_format($wait_qty); ?></td>
         <td class="td_num"><?php echo number_format($temporary_qty); ?></td>
@@ -184,19 +180,19 @@ $listall = '<a href="'.$_SERVER['SCRIPT_NAME'].'" class="ov_listall">전체목�
             <label for="noti_qty_<?php echo $i; ?>" class="sound_only">통보수량</label>
             <input type="text" name="it_noti_qty[<?php echo $i; ?>]" value="<?php echo $row['it_noti_qty']; ?>" id="noti_qty_<?php echo $i; ?>" class="frm_input" size="10" autocomplete="off">
         </td>
-        <td class="td_chk">
+        <td class="td_chk2">
             <label for="use_<?php echo $i; ?>" class="sound_only">판매</label>
             <input type="checkbox" name="it_use[<?php echo $i; ?>]" value="1" id="use_<?php echo $i; ?>" <?php echo ($row['it_use'] ? "checked" : ""); ?>>
         </td>
-        <td class="td_chk">
+        <td class="td_chk2">
             <label for="soldout_<?php echo $i; ?>" class="sound_only">품절</label>
             <input type="checkbox" name="it_soldout[<?php echo $i; ?>]" value="1" id="soldout_<?php echo $i; ?>" <?php echo ($row['it_soldout'] ? "checked" : ""); ?>>
         </td>
-        <td class="td_chk">
+        <td class="td_chk2">
             <label for="stock_sms_<?php echo $i; ?>" class="sound_only">재입고 알림</label>
             <input type="checkbox" name="it_stock_sms[<?php echo $i; ?>]" value="1" id="stock_sms_<?php echo $i; ?>" <?php echo ($row['it_stock_sms'] ? "checked" : ""); ?>>
         </td>
-        <td class="td_mngsmall"><a href="./itemform.php?w=u&amp;it_id=<?php echo $row['it_id']; ?>&amp;ca_id=<?php echo $row['ca_id']; ?>&amp;<?php echo $qstr; ?>">수정</a></td>
+        <td class="td_mng td_mng_s"><a href="./itemform.php?w=u&amp;it_id=<?php echo $row['it_id']; ?>&amp;ca_id=<?php echo $row['ca_id']; ?>&amp;<?php echo $qstr; ?>" class="btn btn_03">수정</a></td>
     </tr>
     <?php
     }
@@ -207,8 +203,10 @@ $listall = '<a href="'.$_SERVER['SCRIPT_NAME'].'" class="ov_listall">전체목�
     </table>
 </div>
 
-<div class="btn_confirm01 btn_confirm">
-    <input type="submit" value="일괄수정" class="btn_submit">
+<div class="btn_fixed_top">
+    <a href="./optionstocklist.php" class="btn btn_02">상품옵션재고</a>
+    <a href="./itemsellrank.php"  class="btn btn_02">상품판매순위</a>
+    <input type="submit" value="일괄수정" class="btn_submit btn">
 </div>
 </form>
 

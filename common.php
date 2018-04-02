@@ -29,7 +29,8 @@ for ($i=0; $i<$ext_cnt; $i++) {
 
 function g5_path()
 {
-    $result['path'] = str_replace('\\', '/', dirname(__FILE__));
+    $chroot = substr($_SERVER['SCRIPT_FILENAME'], 0, strpos($_SERVER['SCRIPT_FILENAME'], dirname(__FILE__)));
+    $result['path'] = str_replace('\\', '/', $chroot.dirname(__FILE__));
     $tilde_remove = preg_replace('/^\/\~[^\/]+(.*)$/', '$1', $_SERVER['SCRIPT_NAME']);
     $document_root = str_replace($tilde_remove, '', $_SERVER['SCRIPT_FILENAME']);
     $pattern = '/' . preg_quote($document_root, '/') . '/i';
@@ -139,7 +140,7 @@ if (file_exists($dbconfig_file)) {
 
     sql_set_charset('utf8', $connect_db);
     if(defined('G5_MYSQL_SET_MODE') && G5_MYSQL_SET_MODE) sql_query("SET SESSION sql_mode = ''");
-    if (defined(G5_TIMEZONE)) sql_query(" set time_zone = '".G5_TIMEZONE."'");
+    if (defined('G5_TIMEZONE')) sql_query(" set time_zone = '".G5_TIMEZONE."'");
 } else {
 ?>
 
@@ -220,6 +221,10 @@ if ($config['cf_editor'])
 else
     define('G5_EDITOR_LIB', G5_LIB_PATH."/editor.lib.php");
 
+define('G5_CAPTCHA_DIR',    !empty($config['cf_captcha']) ? $config['cf_captcha'] : 'kcaptcha');
+define('G5_CAPTCHA_URL',    G5_PLUGIN_URL.'/'.G5_CAPTCHA_DIR);
+define('G5_CAPTCHA_PATH',   G5_PLUGIN_PATH.'/'.G5_CAPTCHA_DIR);
+
 // 4.00.03 : [보안관련] PHPSESSID 가 틀리면 로그아웃한다.
 if (isset($_REQUEST['PHPSESSID']) && $_REQUEST['PHPSESSID'] != session_id())
     goto_url(G5_BBS_URL.'/logout.php');
@@ -249,7 +254,7 @@ if (isset($_REQUEST['sfl']))  {
 
 if (isset($_REQUEST['stx']))  { // search text (검색어)
     $stx = get_search_string(trim($_REQUEST['stx']));
-    if ($stx)
+    if ($stx || $stx === '0')
         $qstr .= '&amp;stx=' . urlencode(cut_str($stx, 20, ''));
 } else {
     $stx = '';
@@ -368,20 +373,22 @@ if ($_SESSION['ss_mb_id']) { // 로그인중이라면
         if (strtolower($tmp_mb_id) != strtolower($config['cf_admin'])) {
             $sql = " select mb_password, mb_intercept_date, mb_leave_date, mb_email_certify from {$g5['member_table']} where mb_id = '{$tmp_mb_id}' ";
             $row = sql_fetch($sql);
-            $key = md5($_SERVER['SERVER_ADDR'] . $_SERVER['REMOTE_ADDR'] . $_SERVER['HTTP_USER_AGENT'] . $row['mb_password']);
-            // 쿠키에 저장된 키와 같다면
-            $tmp_key = get_cookie('ck_auto');
-            if ($tmp_key === $key && $tmp_key) {
-                // 차단, 탈퇴가 아니고 메일인증이 사용이면서 인증을 받았다면
-                if ($row['mb_intercept_date'] == '' &&
-                    $row['mb_leave_date'] == '' &&
-                    (!$config['cf_use_email_certify'] || preg_match('/[1-9]/', $row['mb_email_certify'])) ) {
-                    // 세션에 회원아이디를 저장하여 로그인으로 간주
-                    set_session('ss_mb_id', $tmp_mb_id);
+            if($row['mb_password']){
+                $key = md5($_SERVER['SERVER_ADDR'] . $_SERVER['REMOTE_ADDR'] . $_SERVER['HTTP_USER_AGENT'] . $row['mb_password']);
+                // 쿠키에 저장된 키와 같다면
+                $tmp_key = get_cookie('ck_auto');
+                if ($tmp_key === $key && $tmp_key) {
+                    // 차단, 탈퇴가 아니고 메일인증이 사용이면서 인증을 받았다면
+                    if ($row['mb_intercept_date'] == '' &&
+                        $row['mb_leave_date'] == '' &&
+                        (!$config['cf_use_email_certify'] || preg_match('/[1-9]/', $row['mb_email_certify'])) ) {
+                        // 세션에 회원아이디를 저장하여 로그인으로 간주
+                        set_session('ss_mb_id', $tmp_mb_id);
 
-                    // 페이지를 재실행
-                    echo "<script type='text/javascript'> window.location.reload(); </script>";
-                    exit;
+                        // 페이지를 재실행
+                        echo "<script type='text/javascript'> window.location.reload(); </script>";
+                        exit;
+                    }
                 }
             }
             // $row 배열변수 해제
@@ -485,7 +492,7 @@ if(isset($config['cf_theme']) && trim($config['cf_theme'])) {
 
 
 // 테마 설정 로드
-if(is_file(G5_THEME_PATH.'/theme.config.php'))
+if(defined('G5_THEME_PATH') && is_file(G5_THEME_PATH.'/theme.config.php'))
     include_once(G5_THEME_PATH.'/theme.config.php');
 
 

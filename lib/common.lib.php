@@ -216,11 +216,12 @@ function url_auto_link($str)
     // 140326 유창화님 제안코드로 수정
     // http://sir.kr/pg_lecture/461
     // http://sir.kr/pg_lecture/463
+    $attr_nofollow = (function_exists('check_html_link_nofollow') && check_html_link_nofollow('url_auto_link')) ? ' rel="nofollow"' : '';
     $str = str_replace(array("&lt;", "&gt;", "&amp;", "&quot;", "&nbsp;", "&#039;"), array("\t_lt_\t", "\t_gt_\t", "&", "\"", "\t_nbsp_\t", "'"), $str);
     //$str = preg_replace("`(?:(?:(?:href|src)\s*=\s*(?:\"|'|)){0})((http|https|ftp|telnet|news|mms)://[^\"'\s()]+)`", "<A HREF=\"\\1\" TARGET='{$config['cf_link_target']}'>\\1</A>", $str);
-    $str = preg_replace("/([^(href=\"?'?)|(src=\"?'?)]|\(|^)((http|https|ftp|telnet|news|mms):\/\/[a-zA-Z0-9\.-]+\.[가-힣\xA1-\xFEa-zA-Z0-9\.:&#!=_\?\/~\+%@;\-\|\,\(\)]+)/i", "\\1<A HREF=\"\\2\" TARGET=\"{$config['cf_link_target']}\">\\2</A>", $str);
-    $str = preg_replace("/(^|[\"'\s(])(www\.[^\"'\s()]+)/i", "\\1<A HREF=\"http://\\2\" TARGET=\"{$config['cf_link_target']}\">\\2</A>", $str);
-    $str = preg_replace("/[0-9a-z_-]+@[a-z0-9._-]{4,}/i", "<a href=\"mailto:\\0\">\\0</a>", $str);
+    $str = preg_replace("/([^(href=\"?'?)|(src=\"?'?)]|\(|^)((http|https|ftp|telnet|news|mms):\/\/[a-zA-Z0-9\.-]+\.[가-힣\xA1-\xFEa-zA-Z0-9\.:&#!=_\?\/~\+%@;\-\|\,\(\)]+)/i", "\\1<A HREF=\"\\2\" TARGET=\"{$config['cf_link_target']}\" $attr_nofollow>\\2</A>", $str);
+    $str = preg_replace("/(^|[\"'\s(])(www\.[^\"'\s()]+)/i", "\\1<A HREF=\"http://\\2\" TARGET=\"{$config['cf_link_target']}\" $attr_nofollow>\\2</A>", $str);
+    $str = preg_replace("/[0-9a-z_-]+@[a-z0-9._-]{4,}/i", "<a href=\"mailto:\\0\" $attr_nofollow>\\0</a>", $str);
     $str = str_replace(array("\t_nbsp_\t", "\t_lt_\t", "\t_gt_\t", "'"), array("&nbsp;", "&lt;", "&gt;", "&#039;"), $str);
 
     /*
@@ -393,15 +394,15 @@ function get_list($write_row, $board, $skin_url, $subject_len=40)
 
     $reply = $list['wr_reply'];
 
-    $list['reply'] = strlen($reply)*10;
+    $list['reply'] = strlen($reply)*20;
 
     $list['icon_reply'] = '';
     if ($list['reply'])
-        $list['icon_reply'] = '<img src="'.$skin_url.'/img/icon_reply.gif" style="margin-left:'.$list['reply'].'px;" alt="답변글">';
+        $list['icon_reply'] = '<img src="'.$skin_url.'/img/icon_reply.gif" class="icon_reply" alt="답변글">';
 
     $list['icon_link'] = '';
     if ($list['wr_link1'] || $list['wr_link2'])
-        $list['icon_link'] = '<img src="'.$skin_url.'/img/icon_link.gif" alt="관련링크">';
+        $list['icon_link'] = '<i class="fa fa-link" aria-hidden="true"></i> ';
 
     // 분류명 링크
     $list['ca_name_href'] = G5_BBS_URL.'/board.php?bo_table='.$board['bo_table'].'&amp;sca='.urlencode($list['ca_name']);
@@ -411,15 +412,15 @@ function get_list($write_row, $board, $skin_url, $subject_len=40)
 
     $list['icon_new'] = '';
     if ($board['bo_new'] && $list['wr_datetime'] >= date("Y-m-d H:i:s", G5_SERVER_TIME - ($board['bo_new'] * 3600)))
-        $list['icon_new'] = '<img src="'.$skin_url.'/img/icon_new.gif" alt="새글">';
+        $list['icon_new'] = '<img src="'.$skin_url.'/img/icon_new.gif" alt="새글"> ';
 
     $list['icon_hot'] = '';
     if ($board['bo_hot'] && $list['wr_hit'] >= $board['bo_hot'])
-        $list['icon_hot'] = '<img src="'.$skin_url.'/img/icon_hot.gif" alt="인기글">';
+        $list['icon_hot'] = '<i class="fa fa-heart" aria-hidden="true"></i> ';
 
     $list['icon_secret'] = '';
     if (strstr($list['wr_option'], 'secret'))
-        $list['icon_secret'] = '<img src="'.$skin_url.'/img/icon_secret.gif" alt="비밀글">';
+        $list['icon_secret'] = '<i class="fa fa-lock" aria-hidden="true"></i> ';
 
     // 링크
     for ($i=1; $i<=G5_LINK_COUNT; $i++) {
@@ -436,7 +437,7 @@ function get_list($write_row, $board, $skin_url, $subject_len=40)
     }
 
     if ($list['file']['count'])
-        $list['icon_file'] = '<img src="'.$skin_url.'/img/icon_file.gif" alt="첨부파일">';
+        $list['icon_file'] = '<i class="fa fa-download" aria-hidden="true"></i> ';
 
     return $list;
 }
@@ -457,7 +458,7 @@ function search_font($stx, $str)
     $src = array('/', '|');
     $dst = array('\/', '\|');
 
-    if (!trim($stx)) return $str;
+    if (!trim($stx) && $stx !== '0') return $str;
 
     // 검색어 전체를 공란으로 나눈다
     $s = explode(' ', $stx);
@@ -538,6 +539,9 @@ function conv_content($content, $html, $filter=true)
     return $content;
 }
 
+function check_html_link_nofollow($type=''){
+    return true;
+}
 
 // http://htmlpurifier.org/
 // Standards-Compliant HTML Filtering
@@ -561,6 +565,7 @@ function html_purifier($html)
     $safeiframe = implode('|', $domains);
 
     include_once(G5_PLUGIN_PATH.'/htmlpurifier/HTMLPurifier.standalone.php');
+    include_once(G5_PLUGIN_PATH.'/htmlpurifier/extend.video.php');
     $config = HTMLPurifier_Config::createDefault();
     // data/cache 디렉토리에 CSS, HTML, URI 디렉토리 등을 만든다.
     $config->set('Cache.SerializerPath', G5_DATA_PATH.'/cache');
@@ -568,8 +573,13 @@ function html_purifier($html)
     $config->set('HTML.SafeObject', false);
     $config->set('Output.FlashCompat', false);
     $config->set('HTML.SafeIframe', true);
+    if( (function_exists('check_html_link_nofollow') && check_html_link_nofollow('html_purifier')) ){
+        $config->set('HTML.Nofollow', true);    // rel=nofollow 으로 스팸유입을 줄임
+    }
     $config->set('URI.SafeIframeRegexp','%^(https?:)?//('.$safeiframe.')%');
     $config->set('Attr.AllowedFrameTargets', array('_blank'));
+    //유튜브, 비메오 전체화면 가능하게 하기
+    $config->set('Filter.Custom', array(new HTMLPurifier_Filter_Iframevideo()));
     $purifier = new HTMLPurifier($config);
     return $purifier->purify($html);
 }
@@ -587,7 +597,7 @@ function get_sql_search($search_ca_name, $search_field, $search_text, $search_op
     $search_text = strip_tags(($search_text));
     $search_text = trim(stripslashes($search_text));
 
-    if (!$search_text) {
+    if (!$search_text && $search_text !== '0') {
         if ($search_ca_name) {
             return $str;
         } else {
@@ -1213,8 +1223,8 @@ function get_sideview($mb_id, $name='', $email='', $homepage='')
 
     $tmp_name = "";
     if ($mb_id) {
-        //$tmp_name = "<a href=\"".G5_BBS_URL."/profile.php?mb_id=".$mb_id."\" class=\"sv_member\" title=\"$name 자기소개\" target=\"_blank\" onclick=\"return false;\">$name</a>";
-        $tmp_name = '<a href="'.G5_BBS_URL.'/profile.php?mb_id='.$mb_id.'" class="sv_member" title="'.$name.' 자기소개" target="_blank" onclick="return false;">';
+        //$tmp_name = "<a href=\"".G5_BBS_URL."/profile.php?mb_id=".$mb_id."\" class=\"sv_member\" title=\"$name 자기소개\" rel="nofollow" target=\"_blank\" onclick=\"return false;\">$name</a>";
+        $tmp_name = '<a href="'.G5_BBS_URL.'/profile.php?mb_id='.$mb_id.'" class="sv_member" title="'.$name.' 자기소개" target="_blank" rel="nofollow" onclick="return false;">';
 
         if ($config['cf_use_member_icon']) {
             $mb_dir = substr($mb_id,0,2);
@@ -1224,12 +1234,18 @@ function get_sideview($mb_id, $name='', $email='', $homepage='')
                 $width = $config['cf_member_icon_width'];
                 $height = $config['cf_member_icon_height'];
                 $icon_file_url = G5_DATA_URL.'/member/'.$mb_dir.'/'.$mb_id.'.gif';
-                $tmp_name .= '<img src="'.$icon_file_url.'" width="'.$width.'" height="'.$height.'" alt="">';
+                $tmp_name .= '<span class="profile_img"><img src="'.$icon_file_url.'" width="'.$width.'" height="'.$height.'" alt=""></span>';
 
                 if ($config['cf_use_member_icon'] == 2) // 회원아이콘+이름
                     $tmp_name = $tmp_name.' '.$name;
             } else {
-                  $tmp_name = $tmp_name." ".$name;
+                if( defined('G5_THEME_NO_PROFILE_IMG') ){
+                    $tmp_name .= G5_THEME_NO_PROFILE_IMG;
+                } else if( defined('G5_NO_PROFILE_IMG') ){
+                    $tmp_name .= G5_NO_PROFILE_IMG;
+                }
+                if ($config['cf_use_member_icon'] == 2) // 회원아이콘+이름
+                    $tmp_name = $tmp_name.' '.$name;
             }
         } else {
             $tmp_name = $tmp_name.' '.$name;
@@ -1241,7 +1257,7 @@ function get_sideview($mb_id, $name='', $email='', $homepage='')
         if(!$bo_table)
             return $name;
 
-        $tmp_name = '<a href="'.G5_BBS_URL.'/board.php?bo_table='.$bo_table.'&amp;sca='.$sca.'&amp;sfl=wr_name,1&amp;stx='.$name.'" title="'.$name.' 이름으로 검색" class="sv_guest" onclick="return false;">'.$name.'</a>';
+        $tmp_name = '<a href="'.G5_BBS_URL.'/board.php?bo_table='.$bo_table.'&amp;sca='.$sca.'&amp;sfl=wr_name,1&amp;stx='.$name.'" title="'.$name.' 이름으로 검색" class="sv_guest" rel="nofollow" onclick="return false;">'.$name.'</a>';
         $title_mb_id = '[비회원]';
     }
 
@@ -2137,6 +2153,10 @@ function check_device($device)
 // 게시판 최신글 캐시 파일 삭제
 function delete_cache_latest($bo_table)
 {
+    if (!preg_match("/^([A-Za-z0-9_]{1,20})$/", $bo_table)) {
+        return;
+    }
+
     $files = glob(G5_DATA_PATH.'/cache/latest-'.$bo_table.'-*');
     if (is_array($files)) {
         foreach ($files as $filename)
@@ -2926,6 +2946,11 @@ function member_delete($mb_id)
     // 게시판관리자인 경우 게시판관리자를 공백으로
     sql_query(" update {$g5['board_table']} set bo_admin = '' where bo_admin = '$mb_id' ");
 
+    //소셜로그인에서 삭제 또는 해제
+    if(function_exists('social_member_link_delete')){
+        social_member_link_delete($mb_id);
+    }
+
     // 아이콘 삭제
     @unlink(G5_DATA_PATH.'/member/'.substr($mb_id,0,2).'/'.$mb_id.'.gif');
 }
@@ -2953,9 +2978,13 @@ function replace_filename($name)
     @session_start();
     $ss_id = session_id();
     $usec = get_microtime();
-    $ext = array_pop(explode('.', $name));
+    $file_path = pathinfo($name);
+    $ext = $file_path['extension'];
+    $return_filename = sha1($ss_id.$_SERVER['REMOTE_ADDR'].$usec); 
+    if( $ext )
+        $return_filename .= '.'.$ext;
 
-    return sha1($ss_id.$_SERVER['REMOTE_ADDR'].$usec).'.'.$ext;
+    return $return_filename;
 }
 
 // 아이코드 사용자정보
@@ -3005,7 +3034,7 @@ function check_password($pass, $hash)
 }
 
 // 동일한 host url 인지
-function check_url_host($url, $msg='', $return_url=G5_URL)
+function check_url_host($url, $msg='', $return_url=G5_URL, $is_redirect=false)
 {
     if(!$msg)
         $msg = 'url에 타 도메인을 지정할 수 없습니다.';
@@ -3013,6 +3042,22 @@ function check_url_host($url, $msg='', $return_url=G5_URL)
     $p = @parse_url($url);
     $host = preg_replace('/:[0-9]+$/', '', $_SERVER['HTTP_HOST']);
     $is_host_check = false;
+    
+    // url을 urlencode 를 2번이상하면 parse_url 에서 scheme와 host 값을 가져올수 없는 취약점이 존재함
+    if ( $is_redirect && !isset($p['host']) && urldecode($url) != $url ){
+        $i = 0;
+        while($i <= 3){
+            $url = urldecode($url);
+            if( urldecode($url) == $url ) break;
+            $i++;
+        }
+
+        if( urldecode($url) == $url ){
+            $p = @parse_url($url);
+        } else {
+            $is_host_check = true;
+        }
+    }
 
     if(stripos($url, 'http:') !== false) {
         if(!isset($p['scheme']) || !$p['scheme'] || !isset($p['host']) || !$p['host'])
@@ -3020,7 +3065,8 @@ function check_url_host($url, $msg='', $return_url=G5_URL)
     }
 
     //php 5.6.29 이하 버전에서는 parse_url 버그가 존재함
-    if ( (isset($p['host']) && $p['host']) && version_compare(PHP_VERSION, '5.6.29') < 0) {
+    //php 7.0.1 ~ 7.0.5 버전에서는 parse_url 버그가 존재함
+    if ( $is_redirect && (isset($p['host']) && $p['host']) ) {
         $bool_ch = false;
         foreach( array('user','host') as $key) {
             if ( isset( $p[ $key ] ) && strpbrk( $p[ $key ], ':/?#@' ) ) {
@@ -3301,6 +3347,77 @@ function check_write_token($bo_table)
     return true;
 }
 
+function get_member_profile_img($mb_id='', $width='', $height='', $alt='profile_image', $title=''){
+    global $member;
+
+    static $no_profile_cache = '';
+    static $member_cache = array();
+    
+    $src = '';
+
+    if( $mb_id ){
+        if( isset($member_cache[$mb_id]) ){
+            $src = $member_cache[$mb_id];
+        } else {
+            $member_img = G5_DATA_PATH.'/member_image/'.substr($mb_id,0,2).'/'.$mb_id.'.gif';
+            if (is_file($member_img)) {
+                $member_cache[$mb_id] = $src = str_replace(G5_DATA_PATH, G5_DATA_URL, $member_img);
+            }
+        }
+    }
+
+    if( !$src ){
+        if( !empty($no_profile_cache) ){
+            $src = $no_profile_cache;
+        } else {
+            // 프로필 이미지가 없을때 기본 이미지
+            $no_profile_img = (defined('G5_THEME_NO_PROFILE_IMG') && G5_THEME_NO_PROFILE_IMG) ? G5_THEME_NO_PROFILE_IMG : G5_NO_PROFILE_IMG;
+            $tmp = array();
+            preg_match( '/src="([^"]*)"/i', $foo, $tmp );
+            $no_profile_cache = $src = isset($tmp[1]) ? $tmp[1] : G5_IMG_URL.'/no_profile.gif';
+        }
+    }
+
+    if( $src ){
+        $attributes = array('src'=>$src, 'width'=>$width, 'height'=>$height, 'alt'=>$alt, 'title'=>$title);
+
+        $output = '<img';
+        foreach ($attributes as $name => $value) {
+            if (!empty($value)) {
+                $output .= sprintf(' %s="%s"', $name, $value);
+            }
+        }
+        $output .= '>';
+
+        return $output;
+    }
+
+    return '';
+}
+
+function get_head_title($title){
+    global $g5;
+
+    if( isset($g5['board_title']) && $g5['board_title'] ){
+        $title = $g5['board_title'];
+    }
+
+    return $title;
+}
+
+function is_use_email_certify(){
+    global $config;
+
+    if( $config['cf_use_email_certify'] && function_exists('social_is_login_check') ){
+        if( $config['cf_social_login_use'] && (get_session('ss_social_provider') || social_is_login_check()) ){      //소셜 로그인을 사용한다면
+            $tmp = (defined('G5_SOCIAL_CERTIFY_MAIL') && G5_SOCIAL_CERTIFY_MAIL) ? 1 : 0;
+            return $tmp;
+        }
+    }
+
+    return $config['cf_use_email_certify'];
+}
+
 function get_call_func_cache($func, $args=array()){
     
     static $cache = array();
@@ -3327,6 +3444,11 @@ function is_include_path_check($path='', $is_input='')
 {
     if( $path ){
         if ($is_input){
+
+            if( strpos($path, 'php://') !== false || strpos($path, 'zlib://') !== false || strpos($path, 'bzip2://') !== false || strpos($path, 'zip://') !== false ){
+                return false;
+            }
+
             try {
                 // whether $path is unix or not
                 $unipath = strlen($path)==0 || $path{0}!='/';
@@ -3376,5 +3498,19 @@ function is_include_path_check($path='', $is_input='')
     }
 
     return true;
+}
+
+function option_array_checked($option, $arr=array()){
+    $checked = '';
+
+    if( !is_array($arr) ){
+        $arr = explode(',', $arr);
+    }
+
+    if ( !empty($arr) && in_array($option, (array) $arr) ){
+        $checked = 'checked="checked"';
+    }
+
+    return $checked;
 }
 ?>
