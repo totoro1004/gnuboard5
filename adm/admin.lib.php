@@ -380,6 +380,18 @@ function get_admin_token()
     return $token;
 }
 
+// 관리자가 자동등록방지를 사용해야 할 경우
+function get_admin_captcha_by($type='get'){
+    
+    $captcha_name = 'ss_admin_use_captcha';
+
+    if($type === 'remove'){
+        set_session($captcha_name, '');
+    }
+
+    return get_session($captcha_name);
+}
+
 //input value 에서 xss 공격 filter 역할을 함 ( 반드시 input value='' 타입에만 사용할것 )
 function get_sanitize_input($s, $is_html=false){
 
@@ -461,7 +473,7 @@ else if ($is_admin != 'super')
 }
 
 // 관리자의 아이피, 브라우저와 다르다면 세션을 끊고 관리자에게 메일을 보낸다.
-$admin_key = md5($member['mb_datetime'] . $_SERVER['REMOTE_ADDR'] . $_SERVER['HTTP_USER_AGENT']);
+$admin_key = md5($member['mb_datetime'] . get_real_client_ip() . $_SERVER['HTTP_USER_AGENT']);
 if (get_session('ss_mb_key') !== $admin_key) {
 
     session_destroy();

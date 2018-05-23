@@ -3418,6 +3418,14 @@ function is_use_email_certify(){
     return $config['cf_use_email_certify'];
 }
 
+function get_real_client_ip(){
+
+    if(isset($_SERVER['HTTP_X_FORWARDED_FOR']))
+        return $_SERVER['HTTP_X_FORWARDED_FOR'];
+
+    return $_SERVER['REMOTE_ADDR'];
+}
+
 function get_call_func_cache($func, $args=array()){
     
     static $cache = array();
@@ -3445,7 +3453,7 @@ function is_include_path_check($path='', $is_input='')
     if( $path ){
         if ($is_input){
 
-            if( strpos($path, 'php://') !== false || strpos($path, 'zlib://') !== false || strpos($path, 'bzip2://') !== false || strpos($path, 'zip://') !== false ){
+            if( stripos($path, 'php://') !== false || stripos($path, 'zlib://') !== false || stripos($path, 'bzip2://') !== false || stripos($path, 'zip://') !== false || stripos($path, 'data:text/') !== false || stripos($path, 'data://') !== false ){
                 return false;
             }
 
@@ -3492,7 +3500,7 @@ function is_include_path_check($path='', $is_input='')
 
         $extension = pathinfo($path, PATHINFO_EXTENSION);
         
-        if($extension && preg_match('/(jpg|jpeg|png|gif|bmp|conf)$/', $extension)) {
+        if($extension && preg_match('/(jpg|jpeg|png|gif|bmp|conf)$/i', $extension)) {
             return false;
         }
     }
