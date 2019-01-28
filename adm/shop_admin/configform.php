@@ -1812,6 +1812,10 @@ if($default['de_iche_use'] || $default['de_vbank_use'] || $default['de_hp_use'] 
                 echo '<script>'.PHP_EOL;
                 echo 'alert("'.str_replace(G5_PATH.'/', '',$log_path).' 폴더에 쓰기권한을 부여해 주십시오.\n> chmod 707 log");'.PHP_EOL;
                 echo '</script>'.PHP_EOL;
+            } else {
+                if( function_exists('check_log_folder') && is_writable($log_path) ){
+                    check_log_folder($log_path);
+                }
             }
         }
     }
@@ -1829,6 +1833,10 @@ if($default['de_iche_use'] || $default['de_vbank_use'] || $default['de_hp_use'] 
                 echo '<script>'.PHP_EOL;
                 echo 'alert("'.str_replace(G5_PATH.'/', '',$log_path).' 폴더에 쓰기권한을 부여해 주십시오.\n> chmod 707 log");'.PHP_EOL;
                 echo '</script>'.PHP_EOL;
+            } else {
+                if( function_exists('check_log_folder') && is_writable($log_path) ){
+                    check_log_folder($log_path);
+                }
             }
         }
     }
