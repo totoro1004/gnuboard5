@@ -55,7 +55,7 @@ if($PGIP == "211.219.96.165" || $PGIP == "118.129.210.25" || $PGIP == "183.109.7
 
     include_once(G5_MSHOP_PATH.'/settle_inicis.inc.php');
     
-    if(! ($default['de_pg_service'] === 'inicis' && $default['de_inicis_mid'] === $default['de_inicis_mid'])){
+    if(! ($default['de_pg_service'] === 'inicis' && $default['de_inicis_mid'] === $P_MID)){
         echo "FAIL";
         return;
     }
