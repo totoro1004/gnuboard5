@@ -1,6 +1,8 @@
 <?php
 include_once('./_common.php');
 
+$ev_id = (int) $ev_id;
+
 $sql = " select * from {$g5['g5_shop_event_table']}
           where ev_id = '$ev_id'
             and ev_use = 1 ";
@@ -29,7 +31,7 @@ else
     $order_by = 'b.it_order, b.it_id desc';
 
 if ($skin) {
-    $skin = preg_replace('#\.+/#', '', $skin);
+    $skin = preg_replace('#\.+(\/|\\\)#', '', $skin);
     $ev['ev_skin'] = $skin;
 }
 

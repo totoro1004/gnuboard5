@@ -1,6 +1,8 @@
 <?php
 include_once('./_common.php');
 
+$ev_id = (int) $ev_id;
+
 if (G5_IS_MOBILE) {
     include_once(G5_MSHOP_PATH.'/event.php');
     return;
@@ -41,7 +43,7 @@ else
     $order_by = 'b.it_order, b.it_id desc';
 
 if ($skin) {
-    $skin = preg_replace('#\.+/#', '', $skin);
+    $skin = preg_replace('#\.+(\/|\\\)#', '', $skin);
     $ev['ev_skin'] = $skin;
 }
 
