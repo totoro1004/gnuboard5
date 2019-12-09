@@ -79,4 +79,38 @@ add_replace('add_nginx_conf_rules', 'add_shop_nginx_conf_rules', 10, 3);
 add_replace('add_mod_rewrite_rules', 'add_shop_mod_rewrite_rules', 10, 3);
 add_replace('admin_dbupgrade', 'add_shop_admin_dbupgrade', 10, 3);
 add_replace('exist_check_seo_title', 'shop_exist_check_seo_title', 10, 4);
+
+// PG 강제 설정
+if(isset($_GET['pg'])) {
+    switch($_GET['pg']) {
+        case 'lg':
+            set_session('ss_default_pg', 'lg');
+            break;
+        case 'kcp':
+            set_session('ss_default_pg', 'kcp');
+            break;
+        case 'inicis':
+            set_session('ss_default_pg', 'inicis');
+            break;
+        default:
+            set_session('ss_default_pg', $default['de_pg_service']);
+            break;
+    }
+}
+
+if(isset($_SESSION['ss_default_pg'])) {
+    switch($_SESSION['ss_default_pg']) {
+        case 'lg':
+            $default['de_pg_service'] = 'lg';
+            break;
+        case 'kcp':
+            $default['de_pg_service'] = 'kcp';
+            break;
+        case 'inicis':
+            $default['de_pg_service'] = 'inicis';
+            break;
+        default:
+            break;
+    }
+}
 ?>
