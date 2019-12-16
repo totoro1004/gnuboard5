@@ -490,6 +490,9 @@ if ($is_admin != 'super') {
     }
 }
 
+// 테마데모1
+if(!defined('G5_IS_ADMIN'))
+    include_once(G5_PATH.'/theme1.php');
 
 // 테마경로
 if(defined('_THEME_PREVIEW_') && _THEME_PREVIEW_ === true)
@@ -513,6 +516,10 @@ if(isset($config['cf_theme']) && trim($config['cf_theme'])) {
 // 테마 설정 로드
 if(defined('G5_THEME_PATH') && is_file(G5_THEME_PATH.'/theme.config.php'))
     include_once(G5_THEME_PATH.'/theme.config.php');
+
+// 테마데모2
+if(!defined('G5_IS_ADMIN'))
+    include_once(G5_PATH.'/theme2.php');
 
 //=====================================================================================
 // 사용기기 설정
