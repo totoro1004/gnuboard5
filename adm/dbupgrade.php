@@ -147,6 +147,22 @@ if(!isset($member['mb_memo_cnt'])) {
     $is_check = true;
 }
 
+// 스크랩 읽은 수 추가
+if(!isset($member['mb_scrap_cnt'])) {
+    sql_query(" ALTER TABLE `{$g5['member_table']}`
+                ADD `mb_scrap_cnt` int(11) NOT NULL DEFAULT '0' AFTER `mb_memo_cnt`", true);
+
+	$is_check = true;
+}
+
+// 짧은 URL 주소를 사용 여부 필드 추가
+if (!isset($config['cf_bbs_rewrite'])) {
+    sql_query(" ALTER TABLE `{$g5['config_table']}`
+                    ADD `cf_bbs_rewrite` tinyint(4) NOT NULL DEFAULT '0' AFTER `cf_link_target` ", true);
+
+	$is_check = true;
+}
+
 // 파일테이블에 추가 칼럼
 
 $sql = " SHOW COLUMNS FROM `{$g5['board_file_table']}` LIKE 'bf_fileurl' ";
@@ -159,6 +175,22 @@ if( !$row ) {
                 ADD COLUMN `bf_storage` VARCHAR(50) NOT NULL DEFAULT '' AFTER `bf_thumburl`", true);
 
     $is_check = true;
+}
+
+// 임시저장 테이블이 없을 경우 생성
+if(!sql_query(" DESC {$g5['g5_shop_post_log_table']} ", false)) {
+    sql_query(" CREATE TABLE IF NOT EXISTS `{$g5['g5_shop_post_log_table']}` (
+                  `oid` bigint(20) unsigned NOT NULL,
+                  `mb_id` varchar(255) NOT NULL DEFAULT '',
+                  `post_data` text NOT NULL,
+                  `ol_code` varchar(255) NOT NULL DEFAULT '',
+                  `ol_msg` varchar(255) NOT NULL DEFAULT '',
+                  `ol_datetime` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+                  `ol_ip` varchar(25) NOT NULL DEFAULT '',
+                  PRIMARY KEY (`oid`)
+                ) ENGINE=MyISAM DEFAULT CHARSET=utf8; ", true);
+
+	$is_check = true;
 }
 
 $is_check = run_replace('admin_dbupgrade', $is_check);
