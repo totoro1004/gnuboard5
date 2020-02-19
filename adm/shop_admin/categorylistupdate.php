@@ -10,7 +10,7 @@ check_admin_token();
 
 for ($i=0; $i<count($_POST['ca_id']); $i++)
 {
-    $str_ca_mb_id = isset($_POST['ca_mb_id'][$i]) ? strip_tags($_POST['ca_mb_id'][$i]) : '';
+    $str_ca_mb_id = isset($_POST['ca_mb_id'][$i]) ? strip_tags(clean_xss_attributes($_POST['ca_mb_id'][$i])) : '';
 
     if ($str_ca_mb_id)
     {
@@ -60,11 +60,11 @@ for ($i=0; $i<count($_POST['ca_id']); $i++)
         }
     }
     
-    $p_ca_name = is_array($_POST['ca_name']) ? strip_tags($_POST['ca_name'][$i]) : '';
+    $p_ca_name = is_array($_POST['ca_name']) ? strip_tags(clean_xss_attributes($_POST['ca_name'][$i])) : '';
 
     $sql = " update {$g5['g5_shop_category_table']}
                 set ca_name             = '".$p_ca_name."',
-                    ca_mb_id            = '".sql_real_escape_string(strip_tags($_POST['ca_mb_id'][$i]))."',
+                    ca_mb_id            = '".sql_real_escape_string(strip_tags(clean_xss_attributes($_POST['ca_mb_id'][$i])))."',
                     ca_use              = '".sql_real_escape_string(strip_tags($_POST['ca_use'][$i]))."',
                     ca_list_mod         = '".sql_real_escape_string(strip_tags($_POST['ca_list_mod'][$i]))."',
                     ca_cert_use         = '".sql_real_escape_string(strip_tags($_POST['ca_cert_use'][$i]))."',
