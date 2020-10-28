@@ -217,79 +217,80 @@ session_set_cookie_params(0, '/');
 ini_set("session.cookie_domain", G5_COOKIE_DOMAIN);
 
 if( ! class_exists('XenoPostToForm') ){
-	class XenoPostToForm
-	{
-		public static function check() {
-			return !isset($_COOKIE['PHPSESSID']) && count($_POST) && ((isset($_SERVER['HTTP_REFERER']) && !preg_match('~^https://'.preg_quote($_SERVER['HTTP_HOST'], '~').'/~', $_SERVER['HTTP_REFERER']) || ! isset($_SERVER['HTTP_REFERER']) ));
-		}
+    class XenoPostToForm
+    {
+        public static function check() {
+            return !isset($_COOKIE['PHPSESSID']) && count($_POST) && ((isset($_SERVER['HTTP_REFERER']) && !preg_match('~^https://'.preg_quote($_SERVER['HTTP_HOST'], '~').'/~', $_SERVER['HTTP_REFERER']) || ! isset($_SERVER['HTTP_REFERER']) ));
+        }
 
-		public static function submit($posts) {
-			echo '<html><head><meta charset="UTF-8"></head><body>';
-			echo '<form id="f" name="f" method="post">';
-			echo self::makeInputArray($posts);
-			echo '</form>';
-			echo '<script>';
-					echo 'document.f.submit();';
-					echo '</script></body></html>';
-			exit;
-		}
+        public static function submit($posts) {
+            echo '<html><head><meta charset="UTF-8"></head><body>';
+            echo '<form id="f" name="f" method="post">';
+            echo self::makeInputArray($posts);
+            echo '</form>';
+            echo '<script>';
+            echo 'document.f.submit();';
+            echo '</script></body></html>';
+            exit;
+        }
 
-		public static function makeInputArray($posts) {
-			$res = array();
-			foreach($posts as $k => $v) {
-				$res[] = self::makeInputArray_($k, $v);
-			}
-			return implode('', $res);
-		}
+        public static function makeInputArray($posts) {
+            $res = array();
+            foreach($posts as $k => $v) {
+                $res[] = self::makeInputArray_($k, $v);
+            }
+            return implode('', $res);
+        }
 
-		private static function makeInputArray_($k, $v) {
-			if(is_array($v)) {
-				$res = array();
-				foreach($v as $i => $j) {
-					$res[] = self::makeInputArray_($k.'['.htmlspecialchars($i).']', $j);
-				}
-				return implode('', $res);
-			}
-			return '<input type="hidden" name="'.$k.'" value="'.htmlspecialchars($v).'" />';
-		}
-	}
+        private static function makeInputArray_($k, $v) {
+            if(is_array($v)) {
+                $res = array();
+                foreach($v as $i => $j) {
+                    $res[] = self::makeInputArray_($k.'['.htmlspecialchars($i).']', $j);
+                }
+                return implode('', $res);
+            }
+            return '<input type="hidden" name="'.$k.'" value="'.htmlspecialchars($v).'" />';
+        }
+    }
 }
 
 if( !function_exists('shop_check_is_pay_page') ){
-	function shop_check_is_pay_page(){
-		$shop_dir = 'shop';
-		$mobile_dir = G5_MOBILE_DIR;
+    function shop_check_is_pay_page(){
+        $shop_dir = 'shop';
+        $mobile_dir = G5_MOBILE_DIR;
 
-		// PG 결제사의 리턴페이지 목록들
-		$pg_checks_pages = array(
-			$shop_dir.'/inicis/INIStdPayReturn.php',	// 영카트 5.2.9.5 이하에서 사용됨, 그 이상버전에서는 파일 삭제됨
-			$shop_dir.'/inicis/inistdpay_return.php',	// 영카트 5.2.9.6 이상에서 사용됨
-			$mobile_dir.'/'.$shop_dir.'/inicis/pay_return.php',
-			$mobile_dir.'/'.$shop_dir.'/inicis/pay_approval.php',
-			$shop_dir.'/lg/returnurl.php',
-			$mobile_dir.'/'.$shop_dir.'/lg/returnurl.php',
-			$mobile_dir.'/'.$shop_dir.'/lg/xpay_approval.php',
-		);
-		
-		$server_script_name = str_replace('\\', '/', $_SERVER['SCRIPT_NAME']);
-		
-		// PG 결제사의 리턴페이지이면
-		foreach( $pg_checks_pages as $pg_page ){
-			if( preg_match('~'.preg_quote($pg_page).'$~i', $server_script_name) ){
-				return true;
-			}
-		}
+        // PG 결제사의 리턴페이지 목록들
+        $pg_checks_pages = array(
+            $shop_dir.'/inicis/INIStdPayReturn.php',	// 영카트 5.2.9.5 이하에서 사용됨, 그 이상버전에서는 파일 삭제됨
+            $shop_dir.'/inicis/inistdpay_return.php',	// 영카트 5.2.9.6 이상에서 사용됨
+            $mobile_dir.'/'.$shop_dir.'/inicis/pay_return.php',
+            $mobile_dir.'/'.$shop_dir.'/inicis/pay_approval.php',
+            $shop_dir.'/lg/returnurl.php',
+            $mobile_dir.'/'.$shop_dir.'/lg/returnurl.php',
+            $mobile_dir.'/'.$shop_dir.'/lg/xpay_approval.php',
+            $mobile_dir.'/'.$shop_dir.'/kcp/order_approval_form.php',
+        );
 
-		return false;
-	}
+        $server_script_name = str_replace('\\', '/', $_SERVER['SCRIPT_NAME']);
+
+        // PG 결제사의 리턴페이지이면
+        foreach( $pg_checks_pages as $pg_page ){
+            if( preg_match('~'.preg_quote($pg_page).'$~i', $server_script_name) ){
+                return true;
+            }
+        }
+
+        return false;
+    }
 }
 
 // PG 결제시에 세션이 없으면 내 호출페이지를 다시 호출하여 쿠키 PHPSESSID를 살려내어 세션값을 정상적으로 불러오게 합니다.
 // 위와 같이 코드를 전부 한페이지에 넣은 이유는 이전 버전 사용자들이 패치시 어려울수 있으므로 한페이지에 코드를 다 넣었습니다.
 if(XenoPostToForm::check()) {
-	if ( shop_check_is_pay_page() ){	// PG 결제 리턴페이지에서만 사용
-		XenoPostToForm::submit($_POST); // session_start(); 하기 전에
-	}
+    if ( shop_check_is_pay_page() ){	// PG 결제 리턴페이지에서만 사용
+        XenoPostToForm::submit($_POST); // session_start(); 하기 전에
+    }
 }
 
 //==============================================================================
@@ -297,40 +298,40 @@ if(XenoPostToForm::check()) {
 //------------------------------------------------------------------------------
 // 기본환경설정
 // 기본적으로 사용하는 필드만 얻은 후 상황에 따라 필드를 추가로 얻음
-$config = get_config();
+$config = get_config(true);
 
 // 본인인증 또는 쇼핑몰 사용시에만 secure; SameSite=None 로 설정합니다.
 if( $config['cf_cert_use'] || (defined('G5_YOUNGCART_VER') && G5_YOUNGCART_VER) ) {
-	// Chrome 80 버전부터 아래 이슈 대응
-	// https://developers-kr.googleblog.com/2020/01/developers-get-ready-for-new.html?fbclid=IwAR0wnJFGd6Fg9_WIbQPK3_FxSSpFLqDCr9bjicXdzy--CCLJhJgC9pJe5ss
-	if(!function_exists('session_start_samesite')) {
-		function session_start_samesite($options = array())
-		{
+    // Chrome 80 버전부터 아래 이슈 대응
+    // https://developers-kr.googleblog.com/2020/01/developers-get-ready-for-new.html?fbclid=IwAR0wnJFGd6Fg9_WIbQPK3_FxSSpFLqDCr9bjicXdzy--CCLJhJgC9pJe5ss
+    if(!function_exists('session_start_samesite')) {
+        function session_start_samesite($options = array())
+        {
             global $g5;
-    
-			$res = @session_start($options);
-			
+
+            $res = @session_start($options);
+
             // IE 브라우저 또는 엣지브라우저 또는 IOS 모바일과 http환경에서는 secure; SameSite=None을 설정하지 않습니다.
             if( preg_match('/Edge/i', $_SERVER['HTTP_USER_AGENT']) || preg_match('/(iPhone|iPod|iPad).*AppleWebKit.*Safari/i', $_SERVER['HTTP_USER_AGENT']) || preg_match('~MSIE|Internet Explorer~i', $_SERVER['HTTP_USER_AGENT']) || preg_match('~Trident/7.0(; Touch)?; rv:11.0~',$_SERVER['HTTP_USER_AGENT']) || ! (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS']=='on') ){
                 return $res;
             }
 
-			$headers = headers_list();
-			krsort($headers);
-			foreach ($headers as $header) {
-				if (!preg_match('~^Set-Cookie: PHPSESSID=~', $header)) continue;
-				$header = preg_replace('~; secure(; HttpOnly)?$~', '', $header) . '; secure; SameSite=None';
-				header($header, false);
+            $headers = headers_list();
+            krsort($headers);
+            foreach ($headers as $header) {
+                if (!preg_match('~^Set-Cookie: PHPSESSID=~', $header)) continue;
+                $header = preg_replace('~; secure(; HttpOnly)?$~', '', $header) . '; secure; SameSite=None';
+                header($header, false);
                 $g5['session_cookie_samesite'] = 'none';
-				break;
-			}
-			return $res;
-		}
-	}
+                break;
+            }
+            return $res;
+        }
+    }
 
-	session_start_samesite();
+    session_start_samesite();
 } else {
-	@session_start();
+    @session_start();
 }
 //==============================================================================
 
@@ -518,7 +519,7 @@ if ($_SESSION['ss_mb_id']) { // 로그인중이라면
 $write = array();
 $write_table = "";
 if ($bo_table) {
-    $board = get_board_db($bo_table);
+    $board = get_board_db($bo_table, true);
     if ($board['bo_table']) {
         set_cookie("ck_bo_table", $board['bo_table'], 86400 * 1);
         $gr_id = $board['gr_id'];
@@ -541,7 +542,7 @@ if ($bo_table) {
 }
 
 if ($gr_id && !is_array($gr_id)) {
-    $group = get_group($gr_id);
+    $group = get_group($gr_id, true);
 }
 
 if ($config['cf_editor']) {
