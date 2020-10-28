@@ -84,6 +84,7 @@ add_replace('exist_check_seo_title', 'shop_exist_check_seo_title', 10, 4);
 if(isset($_GET['pg'])) {
     switch($_GET['pg']) {
         case 'lg':
+        case 'tosspayments' :
             set_session('ss_default_pg', 'lg');
             break;
         case 'kcp':
@@ -101,6 +102,7 @@ if(isset($_GET['pg'])) {
 if(isset($_SESSION['ss_default_pg'])) {
     switch($_SESSION['ss_default_pg']) {
         case 'lg':
+        case 'tosspayments' :
             $default['de_pg_service'] = 'lg';
             break;
         case 'kcp':
