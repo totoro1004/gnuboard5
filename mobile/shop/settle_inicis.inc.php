@@ -8,6 +8,8 @@ if (!function_exists('curl_init')) {
     alert('cURL 모듈이 설치되어 있지 않습니다.\\n상점관리자에게 문의해 주십시오.');
 }
 
+$useescrow = '';
+
 if ($default['de_card_test']) {
     if ($default['de_escrow_use'] == 1) {
         // 에스크로결제 테스트
@@ -50,6 +52,8 @@ $BANK_CODE = array(
     '71' => '우체국',
     '81' => '하나은행',
     '88' => '신한은행',
+    '89' => '케이뱅크',
+    '90' => '카카오뱅크',
     'D1' => '동양종합금융증권',
     'D2' => '현대증권',
     'D3' => '미래에셋증권',
@@ -107,4 +111,3 @@ $inicis_cardpoint = $default['de_inicis_cartpoint_use'] ? '&cp_yn=Y' : '';
 $noti_url   = G5_MSHOP_URL.'/inicis/settle_common.php';
 $next_url   = G5_MSHOP_URL.'/inicis/pay_approval.php';
 $return_url = G5_MSHOP_URL.'/inicis/pay_return.php?oid=';
-?>

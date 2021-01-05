@@ -1,6 +1,8 @@
 <?php
 if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
 
+$useescrow = '';
+
 if ($default['de_card_test']) {
     if ($default['de_escrow_use'] == 1) {
         // 에스크로결제 테스트
@@ -98,6 +100,8 @@ $BANK_CODE = array(
     '71' => '우체국',
     '81' => '하나은행',
     '88' => '신한은행',
+    '89' => '케이뱅크',
+    '90' => '카카오뱅크',
     'D1' => '동양종합금융증권',
     'D2' => '현대증권',
     'D3' => '미래에셋증권',
@@ -144,4 +148,3 @@ $PAY_METHOD = array(
     'HPP'        => '휴대폰',
     'VBank'      => '가상계좌'
 );
-?>
