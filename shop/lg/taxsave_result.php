@@ -3,6 +3,9 @@ include_once('./_common.php');
 
 require_once(G5_SHOP_PATH.'/settle_lg.inc.php');
 
+$od_id = isset($_REQUEST['od_id']) ? safe_replace_regex($_REQUEST['od_id'], 'od_id') : '';
+$tx = isset($_REQUEST['tx']) ? clean_xss_tags($_REQUEST['tx'], 1, 1) : '';
+
 if($tx == 'personalpay') {
     $od = sql_fetch(" select * from {$g5['g5_shop_personalpay_table']} where pp_id = '$od_id' ");
     if (!$od)
@@ -189,9 +192,9 @@ $g5['title'] = '';
 include_once(G5_PATH.'/head.sub.php');
 
 if($default['de_card_test']) {
-    echo '<script language="JavaScript" src="http://pgweb.uplus.co.kr:7085/WEB_SERVER/js/receipt_link.js"></script>'.PHP_EOL;
+    echo '<script language="JavaScript" src="'.SHOP_TOSSPAYMENTS_CASHRECEIPT_TEST_JS.'"></script>'.PHP_EOL;
 } else {
-    echo '<script language="JavaScript" src="http://pgweb.uplus.co.kr/WEB_SERVER/js/receipt_link.js"></script>'.PHP_EOL;
+    echo '<script language="JavaScript" src="'.SHOP_TOSSPAYMENTS_CASHRECEIPT_REAL_JS.'"></script>'.PHP_EOL;
 }
 
 switch($LGD_PAYTYPE) {
