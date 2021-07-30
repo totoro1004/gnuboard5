@@ -141,6 +141,13 @@ $download_point = 0;
 //-------------------------------------------------------------------------------------------------
 // config 테이블 설정
 if($g5_install || !$result) {
+    // 기본 이미지 확장자를 설정하고
+    $image_extension = "gif|jpg|jpeg|png";
+    // 서버에서 webp 를 지원하면 확장자를 추가한다.
+    if (function_exists("imagewebp")) {
+        $image_extension .= "|webp";
+    }
+
     $sql = " insert into `{$table_prefix}config`
                 set cf_title = '".G5_VERSION."',
                     cf_theme = 'basic',
@@ -197,7 +204,7 @@ if($g5_install || !$result) {
                     cf_member_img_width = '60',
                     cf_member_img_height = '60',
                     cf_login_minutes = '10',
-                    cf_image_extension = 'gif|jpg|jpeg|png',
+                    cf_image_extension = '{$image_extension}',
                     cf_flash_extension = 'swf',
                     cf_movie_extension = 'asx|asf|wmv|wma|mpg|mpeg|mov|avi|mp3',
                     cf_formmail_is_member = '1',
@@ -241,8 +248,11 @@ if($g5_install || !$result) {
     // FAQ Master
     sql_query(" insert into `{$table_prefix}faq_master` set fm_id = '1', fm_subject = '자주하시는 질문' ", true, $dblink);
 
-    $tmp_gr_id = defined('G5_YOUNGCART_VER') ? 'shop' : 'community';
-    $tmp_gr_subject = defined('G5_YOUNGCART_VER') ? '쇼핑몰' : '커뮤니티';
+    // 그누보드, 영카트 통합으로 인하여 게시판그룹을 커뮤니티(community)로 생성 (NaviGator님,210624)
+    // $tmp_gr_id = defined('G5_YOUNGCART_VER') ? 'shop' : 'community';
+    // $tmp_gr_subject = defined('G5_YOUNGCART_VER') ? '쇼핑몰' : '커뮤니티';
+    $tmp_gr_id = 'community';
+    $tmp_gr_subject = '커뮤니티';
 
     // 게시판 그룹 생성
     sql_query(" insert into `{$table_prefix}group` set gr_id = '$tmp_gr_id', gr_subject = '$tmp_gr_subject' ", true, $dblink);
