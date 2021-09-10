@@ -22,6 +22,10 @@ else if ($w == 'u')  {
 } else
     alert('w 값이 제대로 넘어오지 않았습니다.');
 
+if (!isset($po['po_use'])) {
+    sql_query(" alter table `{$g5['poll_table']}` add `po_use` tinyint not null default '0' after `mb_ids` ", false);
+}
+
 $g5['title'] = $html_title;
 include_once('./admin.head.php');
 ?>
@@ -92,6 +96,10 @@ include_once('./admin.head.php');
     </tr>
 
     <?php if ($w == 'u') { ?>
+    <tr>
+        <th scope="row">투표사용</th>
+        <td><input type="checkbox" name="po_use" id="po_use" value="1" <?php if ($po['po_use']) { echo 'checked="checked"'; } ?>> <label for="po_use">사용</label></td>
+    </tr>
     <tr>
         <th scope="row">투표등록일</th>
         <td><?php echo $po['po_date']; ?></td>
