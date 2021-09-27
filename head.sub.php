@@ -79,6 +79,7 @@ var g5_bo_table  = "<?php echo isset($bo_table)?$bo_table:''; ?>";
 var g5_sca       = "<?php echo isset($sca)?$sca:''; ?>";
 var g5_editor    = "<?php echo ($config['cf_editor'] && $board['bo_use_dhtml_editor'])?$config['cf_editor']:''; ?>";
 var g5_cookie_domain = "<?php echo G5_COOKIE_DOMAIN ?>";
+var g5_upload_max_filesize = "<?php echo get_upload_max_filesize(); ?>";
 <?php if(defined('G5_USE_SHOP') && G5_USE_SHOP) { ?>
 var g5_shop_url = "<?php echo G5_SHOP_URL; ?>";
 <?php } ?>

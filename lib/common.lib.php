@@ -3894,3 +3894,19 @@ function option_array_checked($option, $arr=array()){
 
     return $checked;
 }
+
+function get_upload_max_filesize() {
+    $val = ini_get('upload_max_filesize');
+    $last = strtolower($val[strlen($val)-1]);
+    $val = (int)$val;
+    switch ($last) {
+        // The 'G' modifier is available
+        case 'g':
+            $val *= 1024;
+        case 'm':
+            $val *= 1024;
+        case 'k':
+            $val *= 1024;
+    }
+    return $val;
+}

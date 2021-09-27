@@ -759,3 +759,43 @@ $(function() {
         return true;
     });
 });
+
+$(document).on("change", "input:file", function () {
+    // 변수 선언이 되어있지 않을때
+    if (typeof (g5_upload_max_filesize) === "undefined") {
+        return true;
+    } else {
+        var f = $(this).closest("form");
+        var max_size = g5_upload_max_filesize;
+        var input_file = $("input:file", f);
+        var total_size = 0;
+        input_file.each(function (index, item) {
+            if ($(item).val()) {
+                total_size += $(item)[0].files[0].size;
+            }
+        });
+        var id = $(this).attr("id");
+        if (total_size > max_size) {0
+            $(this).val('');
+            var label = $(this).siblings(".fileName").length;
+            if (label > 0) {
+                $(this).siblings(".fileName").val('');
+            }
+            alert("최대용량 : " + get_mega_byte(max_size) + " 을 초과하였습니다.\n현재용량 : " + get_mega_byte(total_size) + " 입니다.");
+        }
+    }
+    return true;
+});
+
+function get_mega_byte(size)
+{
+    var return_size = 0;
+    if (size < 1048576) {
+        return_size = size + "Byte"
+    } else {
+        var point = size / 1024 / 1024;
+        var cal = point.toFixed(2);
+        return_size = cal + "MB";
+    }
+    return return_size;
+}
