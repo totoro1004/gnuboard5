@@ -110,7 +110,7 @@ if ($w == '' || $w == 'u') {
     if ($msg = prohibit_mb_email($mb_email))alert($msg, "", true, true);
 
     // 휴대폰 필수입력일 경우 휴대폰번호 유효성 체크
-    if (($config['cf_use_hp'] || $config['cf_cert_hp']) && $config['cf_req_hp']) {
+    if ($config['cf_use_hp'] || ($config['cf_cert_hp'] || $config['cf_cert_sa']) && $config['cf_req_hp']) {
         if ($msg = valid_mb_hp($mb_hp))     alert($msg, "", true, true);
     }
 
@@ -166,8 +166,8 @@ if($config['cf_cert_use'] && get_session('ss_cert_type') && get_session('ss_cert
     // 중복체크
     $sql = " select mb_id from {$g5['member_table']} where mb_id <> '{$member['mb_id']}' and mb_dupinfo = '".get_session('ss_cert_dupinfo')."' ";
     $row = sql_fetch($sql);
-    if ($row['mb_id']) {
-        alert("입력하신 본인확인 정보로 가입된 내역이 존재합니다.\\n회원아이디 : ".$row['mb_id']);
+    if (!empty($row['mb_id'])) {
+        alert("입력하신 본인확인 정보로 가입된 내역이 존재합니다.");
     }
 }
 
@@ -304,6 +304,10 @@ if ($w == '') {
 
     set_session('ss_mb_reg', $mb_id);
 
+    if(get_session('ss_cert_hash') == md5($mb_name.$cert_type.get_session('ss_cert_birth').$md5_cert_no)) { 
+        insert_member_cert_history($mb_id, $mb_name, $mb_hp, get_session('ss_cert_birth'), get_session('ss_cert_type') ); // 본인인증 후 정보 인서트시 내역 기록
+    }
+
 } else if ($w == 'u') {
     if (!trim(get_session('ss_mb_id')))
         alert('로그인 되어 있지 않습니다.');
@@ -361,6 +365,10 @@ if ($w == '') {
                     {$sql_certify}
               where mb_id = '$mb_id' ";
     sql_query($sql);
+
+    if(get_session('ss_cert_hash') == md5($mb_name.$cert_type.get_session('ss_cert_birth').$md5_cert_no)) { 
+        insert_member_cert_history($mb_id, $mb_name, $mb_hp, get_session('ss_cert_birth'), get_session('ss_cert_type') ); // 본인인증 후 정보 수정 시 내역 기록
+    }
 }
 
 
