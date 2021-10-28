@@ -2,10 +2,71 @@
 if (!defined('_INDEX_')) define('_INDEX_', true);
 if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
 
-if (G5_IS_MOBILE) {
-    include_once(G5_THEME_MOBILE_PATH.'/index.php');
+function mobile_view($file) {
+    if (G5_IS_MOBILE) return false;
+    if (file_exists($file)) {
+        ob_start();
+        include_once($file);
+        $data = trim(ob_get_clean());
+        ob_end_clean();
+        if ($data) {
+            return $data;
+        }
+    }
+    return '';
+}
+
+function pc_view($file) {
+    if (!G5_IS_MOBILE) return false;
+    if (file_exists($file)) {
+        ob_start();
+        include_once($file);
+        $data = trim(ob_get_clean());
+        ob_end_clean();
+        if ($data) {
+            return $data;
+        }
+    }
+    return '';
+}
+
+$data = mobile_view(G5_THEME_PATH.'/index.mobile.php');
+if ($data) {
+    echo $data;
     return;
 }
+
+// if ($data = mobile_view(G5_THEME_PATH.'/index.mobile.php')) {
+//     echo $data;
+//     return;
+// } else if ($data = pc_view(G5_THEME_PATH.'/index.pc.php')) {
+//     echo $data;
+//     return;
+// }
+
+// if (G5_IS_MOBILE) {
+//     if (file_exists(G5_THEME_PATH.'/index.mobile.php')) {
+//         ob_start();
+//         include_once(G5_THEME_PATH.'/index.mobile.php');
+//         $data = trim(ob_get_clean());
+//         ob_end_clean();
+//         if ($data) {
+//             echo $data;
+//             return;
+//         }
+//     }
+// } else {
+//     if (file_exists(G5_THEME_PATH.'/index.pc.php')) {
+//         ob_start();
+//         include_once(G5_THEME_PATH.'/index.pc.php');
+//         $data = trim(ob_get_clean());
+//         ob_end_clean();
+//         if ($data) {
+//             echo $data;
+//             return;
+//         }
+//     }
+// }
 
 if(G5_COMMUNITY_USE === false) {
     include_once(G5_THEME_SHOP_PATH.'/index.php');
