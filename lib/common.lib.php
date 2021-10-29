@@ -3894,3 +3894,28 @@ function option_array_checked($option, $arr=array()){
 
     return $checked;
 }
+
+// 다른 버전(mode)의 파일을 보여주고자 할 때 (기본은 pc 버전)
+// 예) /theme/basic/index.php 가 반응형으로 보여지는 경우에 /theme/basic/index.pc.php 를 보여주고자 
+function show_file(string $file, string $mode='pc', int $is_mobile = G5_IS_MOBILE) 
+{
+    global $g5, $config, $member, $is_member, $is_admin, $board;
+
+    $result = '';
+    // 모바일이 아니라면 (다른 버전에서 본다면) 
+    if (!$is_mobile) {
+        // 파일명과 확장자(.php) 사이에 문자열 $mode(다른 버전)를 넣습니다.
+        $other_file = preg_replace("#^(.*)\.([^\.]+)$#", "$1.{$mode}.$2", $file);
+        // PC 파일이 있다면
+        if (file_exists($other_file)) {
+            // 파일 내용을 문자열로 저장
+            // PHP 코드를 실행해야 하므로 file_get_contents() 함수는 사용할 수 없음
+            ob_start();
+            include_once($other_file);
+            $str = ob_get_clean();
+            $result = trim($str);
+        } 
+    }
+    return $result;
+}
+?>
