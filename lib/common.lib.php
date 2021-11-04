@@ -3300,6 +3300,18 @@ function check_url_host($url, $msg='', $return_url=G5_URL, $is_redirect=false)
         $msg = 'url에 타 도메인을 지정할 수 없습니다.';
 
     $p = @parse_url($url);
+
+    // http://gnuboard.com/bbs/member_confirm.php?url=https://google.com\@gnuboard.com:80
+    // 위와 같은 경우 $p['user']에 google.com\\ 값이 들어가서 google.com 로 이동 Open Redirect 취약점이 발생합니다.
+    // 그래서 아래와 같은 조건이라면 함수를 작동하게 하지 않습니다.
+    if (isset($p['user'])) {
+        $puser = parse_url($p['user']);
+        if (isset($puser['path'])) {
+            alert('url 정보가 올바르지 않습니다.', $return_url);
+            // print_r2(parse_url($p['user'])); exit;
+        }
+    }
+
     $host = preg_replace('/:[0-9]+$/', '', $_SERVER['HTTP_HOST']);
     $is_host_check = false;
     
@@ -3321,7 +3333,7 @@ function check_url_host($url, $msg='', $return_url=G5_URL, $is_redirect=false)
 
     if(stripos($url, 'http:') !== false) {
         if(!isset($p['scheme']) || !$p['scheme'] || !isset($p['host']) || !$p['host'])
-            alert('url 정보가 올바르지 않습니다.', $return_url);
+            alert('url 정보가 올바르지 않습니다..', $return_url);
     }
 
     //php 5.6.29 이하 버전에서는 parse_url 버그가 존재함
