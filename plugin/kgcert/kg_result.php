@@ -44,9 +44,10 @@ if ($_POST["resultCode"] === "0000") {
         if(!$phone_no)
         alert_close("정상적인 인증이 아닙니다. 올바른 방법으로 이용해 주세요.");
 
-        $md5_ci = md5($ci . $ci);
-        $phone_no = hyphen_hp_number($phone_no);
-        $mb_dupinfo = $md5_ci;
+        // $md5_ci = md5($ci . $ci);
+        // $phone_no = hyphen_hp_number($phone_no);
+        // $mb_dupinfo = $md5_ci;
+        $mb_dupinfo = md5($user_name.$phone_no.$birth_day);
 
         $sql = " select mb_id from {$g5['member_table']} where mb_id <> '{$member['mb_id']}' and mb_dupinfo = '{$mb_dupinfo}' ";
         $row = sql_fetch($sql);
