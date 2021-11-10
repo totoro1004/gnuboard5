@@ -3918,4 +3918,56 @@ function show_file(string $file, string $mode='pc', int $is_mobile = G5_IS_MOBIL
     }
     return $result;
 }
+
+function show_file2(string $file, int $is_mobile=G5_IS_MOBILE)
+{
+    global $g5, $config, $member, $is_member, $is_admin, $board;
+
+    $result = '';
+    // if (!$file) $file = $_SERVER['SCRIPT_FILENAME'];
+
+    if ($is_mobile) {
+        $other_file = preg_replace("#^(.*)\.([^\.]+)$#", "$1.mobile.$2", $file);
+        if (file_exists($other_file)) {
+            // 파일 내용을 문자열로 저장
+            // PHP 코드를 실행해야 하므로 file_get_contents() 함수는 사용할 수 없음
+            ob_start();
+            include_once($other_file);
+            $str = trim(ob_get_clean());
+            if ($str) {
+                echo "M";
+                return "mobile";
+            }
+        } 
+    }
+
+    $other_file = preg_replace("#^(.*)\.([^\.]+)$#", "$1.pc.$2", $file);
+    if (file_exists($other_file)) {
+        // 파일 내용을 문자열로 저장
+        // PHP 코드를 실행해야 하므로 file_get_contents() 함수는 사용할 수 없음
+        ob_start();
+        include_once($other_file);
+        $str = trim(ob_get_clean());
+        if ($str) {
+            echo "P";
+            return "pc";
+        }
+    }     
+
+    $other_file = preg_replace("#^(.*)\.([^\.]+)$#", "$1.responsive.$2", $file);
+    if (file_exists($other_file)) {
+        // 파일 내용을 문자열로 저장
+        // PHP 코드를 실행해야 하므로 file_get_contents() 함수는 사용할 수 없음
+        ob_start();
+        include_once($other_file);
+        $str = trim(ob_get_clean());
+        if ($str) {
+            echo "R";
+            return "responsive";
+        }
+    }     
+
+    echo "E";
+    return "error";
+}
 ?>

@@ -135,6 +135,13 @@ define('G5_SET_DEVICE', 'both');
 define('G5_USE_MOBILE', true); // 모바일 홈페이지를 사용하지 않을 경우 false 로 설정
 define('G5_USE_CACHE',  true); // 최신글등에 cache 기능 사용 여부
 
+define('G5_SET_DESKTOP', 'responsive');
+// define('G5_SET_DESKTOP', 'desktop');
+// define('G5_SET_DESKTOP', 'mobile');
+define('G5_SET_MOBILE', 'desktop');
+// define('G5_SET_MOBILE', 'desktop');
+// define('G5_SET_MOBILE', 'mobile');
+
 
 /********************
     시간 상수

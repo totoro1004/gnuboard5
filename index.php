@@ -4,15 +4,44 @@ include_once('./_common.php');
 define('_INDEX_', true);
 if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
 
-if(defined('G5_THEME_PATH')) {
-    require_once(G5_THEME_PATH.'/index.php');
+$theme_path = G5_THEME_PATH;
+if (G5_IS_MOBILE) {
+    $theme_mobile_path = $theme_path.'/'.G5_SET_MOBILE;
+    $result = @include_once($theme_mobile_path.'/index.php');
+    if (!$result) {
+        $theme_mobile_path = $theme_path.'/responsive';
+        $result = @include_once($theme_mobile_path.'/index.php');
+        if (!$result) {
+            $theme_mobile_path = $theme_path.'/mobile';
+            $result = @include_once($theme_mobile_path.'/index.php');
+            if (!$result) {
+                $theme_mobile_path = $theme_path.'/desktop';
+                $result = @include_once($theme_mobile_path.'/index.php');
+                if (!$result) {
+                    die($theme_mobile_path.'/index.php'." file not found");
+                }
+            }
+        }
+    } 
     return;
 }
 
-if (G5_IS_MOBILE) {
-    include_once(G5_MOBILE_PATH.'/index.php');
-    return;
-}
+$theme_desktop_path = $theme_path.'/'.G5_SET_DESKTOP;
+$result = @include_once($theme_desktop_path.'/index.php');
+echo $result;
+return;
+
+// if(defined('G5_THEME_PATH')) {
+//     require_once(G5_THEME_PATH.'/index.php');
+//     return;
+// }
+
+// if (G5_IS_MOBILE) {
+//     include_once(G5_MOBILE_PATH.'/index.php');
+//     return;
+// }
+
+
 
 include_once(G5_PATH.'/head.php');
 ?>

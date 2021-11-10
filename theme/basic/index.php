@@ -2,12 +2,28 @@
 if (!defined('_INDEX_')) define('_INDEX_', true);
 if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
 
+// phpinfo(); exit;
+
+// if (G5_IS_MOBILE) {
+//     $str = show_file(file:G5_THEME_PATH.'/index.php', mode:'mobile');    
+//     if ($str) {
+//         echo $str;
+//         return; // PC 버전을 보여준 다음에는 아래 코드를 실행하지 않음  
+//     }
+// } 
+
+// $str = show_file(file:G5_THEME_PATH.'/index.php', mode:'pc');    
+// if ($str) {
+//     echo $str;
+//     return; // PC 버전을 보여준 다음에는 아래 코드를 실행하지 않음  
+// }
+
 // 이 파일(모바일 or 반응형 파일)을 보여주는 대신 PC 버전의 파일을 보여주고 싶다면
-$str = show_file(file:G5_THEME_PATH.'/index.php', mode:'pc');
-if ($str) {
-    echo $str;
-    return; // PC 버전을 보여준 다음에는 아래 코드를 실행하지 않음  
-}
+// $str = show_file(file:G5_THEME_PATH.'/index.php', mode:'pc');
+// if ($str) {
+//     echo $str;
+//     return; // PC 버전을 보여준 다음에는 아래 코드를 실행하지 않음  
+// }
 
 // if(G5_COMMUNITY_USE === false) {
 //     include_once(G5_THEME_SHOP_PATH.'/index.php');
@@ -15,7 +31,11 @@ if ($str) {
 // }
 
 // 아래 파일의 내용은 반응형으로 개발한다.
-include_once(G5_THEME_PATH.'/head.php');
+// include_once(G5_THEME_PATH.'/head.php');
+show_file2(file:G5_THEME_PATH.'/head.php');
+show_file2(file:G5_THEME_PATH.'/index.php');
+/*
+if (!show_file2(file:G5_THEME_PATH.'/index.php')) {
 ?>
 
 <h2 class="sound_only">최신글</h2>
@@ -72,5 +92,7 @@ include_once(G5_THEME_PATH.'/head.php');
 </div>
 
 <?php
-include_once(G5_THEME_PATH.'/tail.php');
+}
+*/
+show_file2(file:G5_THEME_PATH.'/tail.php');
 ?>
