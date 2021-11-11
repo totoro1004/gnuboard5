@@ -31,7 +31,7 @@ if (! (isset($od['od_id']) && $od['od_id']) || (!$is_member && md5($od['od_id'].
 $settle_case = $od['od_settle_case'];
 
 if (G5_IS_MOBILE) {
-    include_once(G5_MSHOP_PATH.'/orderinquiryview.php');
+    include_once(G5_THEME_MSHOP_PATH.'/orderinquiryview.php');
     return;
 }
 

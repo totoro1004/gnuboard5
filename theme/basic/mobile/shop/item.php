@@ -193,7 +193,7 @@ define('G5_SHOP_CSS_URL', str_replace(G5_PATH, G5_URL, $skin_dir));
 $g5['title'] = $it['it_name'].' &gt; '.$it['ca_name'];
 $naverpay_button_js = '';
 
-include_once(G5_MSHOP_PATH.'/_head.php');
+include_once(G5_THEME_MSHOP_PATH.'/shop.head.php');
 include_once(G5_SHOP_PATH.'/settle_naverpay.inc.php');
 
 // 상단 HTML
@@ -224,4 +224,4 @@ else
 // 하단 HTML
 echo conv_content($it['it_mobile_tail_html'], 1);
 
-include_once(G5_MSHOP_PATH.'/_tail.php');
+include_once(G5_THEME_MSHOP_PATH.'/shop.tail.php');

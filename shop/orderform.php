@@ -40,7 +40,7 @@ $tot_price = 0;
 $g5['title'] = '주문서 작성';
 
 if(G5_IS_MOBILE)
-    include_once(G5_MSHOP_PATH.'/_head.php');
+    include_once(G5_THEME_MSHOP_PATH.'/shop.head.php');
 else
     include_once(G5_SHOP_PATH.'/_head.php');
 
@@ -59,6 +59,6 @@ if($is_mobile_order) {
 }
 
 if(G5_IS_MOBILE)
-    include_once(G5_MSHOP_PATH.'/_tail.php');
+    include_once(G5_THEME_MSHOP_PATH.'/shop.tail.php');
 else
     include_once(G5_SHOP_PATH.'/_tail.php');

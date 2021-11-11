@@ -44,7 +44,10 @@ include_once('./admin.head.php');
             $screenshot = '<img src="'.G5_ADMIN_URL.'/img/theme_img.jpg" alt="">';
 
         if($config['cf_theme'] == $theme[$i]) {
-            $btn_active = '<span class="theme_sl theme_sl_use">사용중</span><button type="button" class="theme_sl theme_deactive" data-theme="'.$theme[$i].'" '.'data-name="'.$name.'">사용안함</button>';
+            $btn_active = '<span class="theme_sl theme_sl_use">사용중</span>';
+            // if ($total_count > 1) {
+            //     $btn_active .= '<button type="button" class="theme_sl theme_deactive" data-theme="'.$theme[$i].'" '.'data-name="'.$name.'">사용안함</button>';
+            // }
         } else {
             $tconfig = get_theme_config_value($theme[$i], 'set_default_skin');
             if($tconfig['set_default_skin'])
