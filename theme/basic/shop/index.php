@@ -105,7 +105,7 @@ $(function(){
 <!-- } 추천상품 끝 -->
 <?php } ?>
 
-<?php include_once(G5_SHOP_SKIN_PATH.'/boxevent.skin.php'); // 이벤트 ?>
+<?php include_once(G5_THEME_SHOP_PATH.'/boxevent.skin.php'); // 이벤트 ?>
 
 <?php if($default['de_type5_list_use']) { ?>
 <!-- 할인상품 시작 { -->

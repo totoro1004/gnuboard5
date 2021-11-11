@@ -133,19 +133,19 @@ add_stylesheet('<link rel="stylesheet" href="'.G5_JS_URL.'/owlcarousel/owl.carou
 	    </div>
 	    <div class="side_mn_wr2 qk_con">
 	    	<div class="qk_con_wr">
-	        	<?php include(G5_SHOP_SKIN_PATH.'/boxtodayview.skin.php'); // 오늘 본 상품 ?>
+	        	<?php include(G5_THEME_SHOP_PATH.'/boxtodayview.skin.php'); // 오늘 본 상품 ?>
 	    		<button type="button" class="con_close"><i class="fa fa-times-circle" aria-hidden="true"></i><span class="sound_only">오늘 본 상품 닫기</span></button>
 	    	</div>
 	    </div>
 	    <div class="side_mn_wr3 qk_con">
 	    	<div class="qk_con_wr">
-	        	<?php include_once(G5_SHOP_SKIN_PATH.'/boxcart.skin.php'); // 장바구니 ?>
+	        	<?php include_once(G5_THEME_SHOP_PATH.'/boxcart.skin.php'); // 장바구니 ?>
 	    		<button type="button" class="con_close"><i class="fa fa-times-circle" aria-hidden="true"></i><span class="sound_only">장바구니 닫기</span></button>
 	    	</div>
 	    </div>
 	    <div class="side_mn_wr4 qk_con">
 	    	<div class="qk_con_wr">
-	        	<?php include_once(G5_SHOP_SKIN_PATH.'/boxwish.skin.php'); // 위시리스트 ?>
+	        	<?php include_once(G5_THEME_SHOP_PATH.'/boxwish.skin.php'); // 위시리스트 ?>
 	    		<button type="button" class="con_close"><i class="fa fa-times-circle" aria-hidden="true"></i><span class="sound_only">위시리스트 닫기</span></button>
 	    	</div>
 	    </div>
@@ -218,7 +218,7 @@ jQuery(function ($){
 
         <?php if(defined('_INDEX_')) { ?>
         <div id="aside">
-            <?php include_once(G5_SHOP_SKIN_PATH.'/boxcategory.skin.php'); // 상품분류 ?>
+            <?php include_once(G5_THEME_SHOP_PATH.'/boxcategory.skin.php'); // 상품분류 ?>
             <?php if($default['de_type4_list_use']) { ?>
             <!-- 인기상품 시작 { -->
             <section id="side_pd">

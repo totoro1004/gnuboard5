@@ -152,9 +152,9 @@ class item_list
     function set_list_skin($list_skin) {
         global $default;
         if ($this->is_mobile) {
-            $this->list_skin = $list_skin ? $list_skin : G5_MSHOP_SKIN_PATH.'/'.preg_replace('/[^A-Za-z0-9 _ .-]/', '', $default['de_mobile_type'.$this->type.'_list_skin']);
+            $this->list_skin = $list_skin ? $list_skin : G5_THEME_MSHOP_PATH.'/'.preg_replace('/[^A-Za-z0-9 _ .-]/', '', $default['de_mobile_type'.$this->type.'_list_skin']);
         } else {
-            $this->list_skin = $list_skin ? $list_skin : G5_SHOP_SKIN_PATH.'/'.preg_replace('/[^A-Za-z0-9 _ .-]/', '', $default['de_type'.$this->type.'_list_skin']);
+            $this->list_skin = $list_skin ? $list_skin : G5_THEME_SHOP_PATH.'/'.preg_replace('/[^A-Za-z0-9 _ .-]/', '', $default['de_type'.$this->type.'_list_skin']);
         }
     }
 
@@ -1190,9 +1190,9 @@ function display_banner($position, $skin='')
     if (!$position) $position = '왼쪽';
     if (!$skin) $skin = 'boxbanner.skin.php';
 
-    $skin_path = G5_SHOP_SKIN_PATH.'/'.$skin;
+    $skin_path = G5_THEME_SHOP_PATH.'/'.$skin;
     if(G5_IS_MOBILE)
-        $skin_path = G5_MSHOP_SKIN_PATH.'/'.$skin;
+        $skin_path = G5_THEME_MSHOP_PATH.'/'.$skin;
 
     if(file_exists($skin_path)) {
         // 접속기기
