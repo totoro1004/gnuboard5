@@ -1411,10 +1411,10 @@ function forderform_check(f)
         }
     }
 
-    if( jQuery(f).triggerHandler("form_sumbit_order_"+form_order_method) !== false ) {
+    if (jQuery(f).triggerHandler("form_sumbit_order_"+form_order_method) !== false) {
         
-        // pay_method 설정
-        <?php if($default['de_pg_service'] == 'kcp') { ?>
+    // pay_method 설정
+    <?php if($default['de_pg_service'] == 'kcp') { ?>
         f.site_cd.value = f.def_site_cd.value;
         if(typeof f.payco_direct !== "undefined") f.payco_direct.value = "";
         if(typeof f.naverpay_direct !== "undefined") f.naverpay_direct.value = "A";
@@ -1454,7 +1454,7 @@ function forderform_check(f)
                 f.pay_method.value   = "무통장";
                 break;
         }
-        <?php } else if($default['de_pg_service'] == 'lg') { ?>
+    <?php } else if($default['de_pg_service'] == 'lg') { ?>
         f.LGD_EASYPAY_ONLY.value = "";
         if(typeof f.LGD_CUSTOM_USABLEPAY === "undefined") {
             var input = document.createElement("input");
@@ -1492,7 +1492,7 @@ function forderform_check(f)
                 f.LGD_CUSTOM_FIRSTPAY.value = "무통장";
                 break;
         }
-        <?php }  else if($default['de_pg_service'] == 'inicis') { ?>
+    <?php }  else if($default['de_pg_service'] == 'inicis') { ?>
         switch(settle_method)
         {
             case "계좌이체":
@@ -1523,10 +1523,10 @@ function forderform_check(f)
                 f.gopaymethod.value = "무통장";
                 break;
         }
-        <?php } ?>
+    <?php } // pay method end ?>
 
-        // 결제정보설정
-        <?php if($default['de_pg_service'] == 'kcp') { ?>
+    // 결제정보설정
+    <?php if($default['de_pg_service'] == 'kcp') { // kcp begin ?>
         f.buyr_name.value = f.od_name.value;
         f.buyr_mail.value = f.od_email.value;
         f.buyr_tel1.value = f.od_tel.value;
@@ -1544,8 +1544,9 @@ function forderform_check(f)
         } else {
             f.submit();
         }
-        <?php } ?>
-        <?php if($default['de_pg_service'] == 'lg') { ?>
+    <?php } // kcp end ?>
+
+    <?php if($default['de_pg_service'] == 'lg') { // tosspayments begin ?>
         f.LGD_BUYER.value = f.od_name.value;
         f.LGD_BUYEREMAIL.value = f.od_email.value;
         f.LGD_BUYERPHONE.value = f.od_hp.value;
@@ -1567,8 +1568,9 @@ function forderform_check(f)
         } else {
             f.submit();
         }
-        <?php } ?>
-        <?php if($default['de_pg_service'] == 'inicis') { ?>
+    <?php } // tosspayments (lg) end ?>
+
+    <?php if($default['de_pg_service'] == 'inicis') { // inicis begin ?>
         f.price.value       = f.good_mny.value;
         <?php if($default['de_tax_flag_use']) { ?>
         f.tax.value         = f.comm_vat_mny.value;
@@ -1609,8 +1611,27 @@ function forderform_check(f)
         } else {
             f.submit();
         }
-        <?php } ?>
-    }
+    <?php } // inicis end ?>
+
+    <?php if($default['de_pg_service'] == 'nicepay') { // nicepay begin ?>
+        // if(f.pay_method.value != "무통장") {
+        if (settle_method != '무통장') {
+            if (settle_method == '신용카드') {
+                f.PayMethod.value = 'CARD';
+            } else if (settle_method == '계좌이체') {
+                f.PayMethod.value = 'BANK';
+            } else if (settle_method == '가상계좌') {
+                f.PayMethod.value = 'VBANK';
+            } else if (settle_method == '휴대폰') {
+                f.PayMethod.value = 'CELLPHONE';
+            }
+            nicepayStart(f);
+        } else {
+            f.submit();
+        }
+    <?php } // nicepay end ?>    
+
+    } // jQuery(f).triggerHandler end
 
 }
 

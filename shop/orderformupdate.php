@@ -2,6 +2,8 @@
 include_once('./_common.php');
 include_once(G5_LIB_PATH.'/mailer.lib.php');
 
+// print_r2($_POST); exit;
+
 //이니시스 lpay 요청으로 왔다면 $default['de_pg_service'] 값을 이니시스로 변경합니다.
 if( in_array($od_settle_case, array('lpay', 'inicis_kakaopay')) ){
     $default['de_pg_service'] = 'inicis';
@@ -397,6 +399,9 @@ else if ($od_settle_case == "휴대폰")
 else if ($od_settle_case == "신용카드")
 {
     switch($default['de_pg_service']) {
+        case 'nicepay':
+            include G5_SHOP_PATH.'/nicepay/nicepay_result.php';
+            break;
         case 'lg':
             include G5_SHOP_PATH.'/lg/xpay_result.php';
             break;
