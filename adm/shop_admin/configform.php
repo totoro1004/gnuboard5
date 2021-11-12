@@ -327,7 +327,7 @@ if(!$default['de_kakaopay_cancelpwd']){
     </div>
 </section>
 
-<button type="button" class="get_shop_skin">테마 스킨설정 가져오기</button>
+<!-- <button type="button" class="get_shop_skin">테마 스킨설정 가져오기</button> -->
 
 <section id="anc_scf_index">
     <h2 class="h2_frm">쇼핑몰 초기화면</h2>
@@ -1826,36 +1826,36 @@ $(function() {
         }
     });
 
-    $(".get_shop_skin").on("click", function() {
-        if(!confirm("현재 테마의 쇼핑몰 스킨 설정을 적용하시겠습니까?"))
-            return false;
+    // $(".get_shop_skin").on("click", function() {
+    //     if(!confirm("현재 테마의 쇼핑몰 스킨 설정을 적용하시겠습니까?"))
+    //         return false;
 
-        $.ajax({
-            type: "POST",
-            url: "../theme_config_load.php",
-            cache: false,
-            async: false,
-            data: { type: "shop_skin" },
-            dataType: "json",
-            success: function(data) {
-                if(data.error) {
-                    alert(data.error);
-                    return false;
-                }
+    //     $.ajax({
+    //         type: "POST",
+    //         url: "../theme_config_load.php",
+    //         cache: false,
+    //         async: false,
+    //         data: { type: "shop_skin" },
+    //         dataType: "json",
+    //         success: function(data) {
+    //             if(data.error) {
+    //                 alert(data.error);
+    //                 return false;
+    //             }
 
-                var field = Array('de_shop_skin', 'de_shop_mobile_skin');
-                var count = field.length;
-                var key;
+    //             var field = Array('de_shop_skin', 'de_shop_mobile_skin');
+    //             var count = field.length;
+    //             var key;
 
-                for(i=0; i<count; i++) {
-                    key = field[i];
+    //             for(i=0; i<count; i++) {
+    //                 key = field[i];
 
-                    if(data[key] != undefined && data[key] != "")
-                        $("select[name="+key+"]").val(data[key]);
-                }
-            }
-        });
-    });
+    //                 if(data[key] != undefined && data[key] != "")
+    //                     $("select[name="+key+"]").val(data[key]);
+    //             }
+    //         }
+    //     });
+    // });
 
     $(".shop_pc_index, .shop_mobile_index, .shop_etc").on("click", function() {
         if(!confirm("현재 테마의 스킨, 이미지 사이즈 등의 설정을 적용하시겠습니까?"))

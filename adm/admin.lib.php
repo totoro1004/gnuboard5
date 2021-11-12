@@ -20,7 +20,8 @@ function get_skin_select($skin_gubun, $id, $name, $selected='', $event='')
         $dirs = get_skin_dir($skin_gubun, G5_THEME_PATH.'/'.G5_SKIN_DIR);
         if(!empty($dirs)) {
             foreach($dirs as $dir) {
-                $skins[] = 'theme/'.$dir;
+                // $skins[] = 'theme/'.$dir;
+                $skins[] = $dir;
             }
         }
     }
@@ -52,7 +53,8 @@ function get_mobile_skin_select($skin_gubun, $id, $name, $selected='', $event=''
         $dirs = get_skin_dir($skin_gubun, G5_THEME_MOBILE_PATH.'/'.G5_SKIN_DIR);
         if(!empty($dirs)) {
             foreach($dirs as $dir) {
-                $skins[] = 'theme/'.$dir;
+                // $skins[] = 'theme/'.$dir;
+                $skins[] = $dir;
             }
         }
     }
