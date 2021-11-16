@@ -28,6 +28,7 @@ function get_hook_class(){
     return null;
 }
 
+// $priority 숫자가 낮을 수록 빠르게 실행됩니다.
 function add_event($tag, $func, $priority=G5_HOOK_DEFAULT_PRIORITY, $args=0){
 
     if( $hook = get_hook_class() ){
