@@ -32,14 +32,17 @@ if ($_POST["resultCode"] === "0000") {
 
     if($res_data['resultCode'] === "0000") {
 
-        @insert_cert_history($member['mb_id'], 'kg', 'sa'); // 인증성공 시 내역 기록
+        $dev_code       =  $res_data['providerDevCd'];      // 제휴사코드 (인증회사)
+        $cert_type      = 'inicert';                        // 인증타입
+        $cert_no        = $res_data['txId'];                // 이니시스 트랜잭션 ID
+        $phone_no       = $res_data['userPhone'];           // 전화번호
+        $user_name      = $res_data['userName'];            // 이름
+        $birth_day      = $res_data['userBirthday'];        // 생년월일
+        $ci             = $res_data['userCi'];              // CI           
 
-        $cert_type      = 'sa';                                 // 인증타입
-        $cert_no        = $res_data['txId'];                    // 이니시스 트랜잭션 ID
-        $phone_no       = $res_data['userPhone'];               // 전화번호
-        $user_name      = $res_data['userName'];                // 이름
-        $birth_day      = $res_data['userBirthday'];            // 생년월일
-        $ci             = $res_data['userCi'];                  // CI           
+        @insert_cert_history($member['mb_id'], 'inicis', $cert_type); // 인증성공 시 내역 기록
+
+        error_log("{$dev_code}:{$phone_no}:{$ci}");
         
         if(!$phone_no)
         alert_close("정상적인 인증이 아닙니다. 올바른 방법으로 이용해 주세요.");
@@ -51,13 +54,14 @@ if ($_POST["resultCode"] === "0000") {
         $sql = " select mb_id from {$g5['member_table']} where mb_id <> '{$member['mb_id']}' and mb_dupinfo = '{$mb_dupinfo}' ";
         $row = sql_fetch($sql);
         if (!empty($row['mb_id'])) {
-            alert_close("입력하신 본인확인 정보로 가입된 내역이 존재합니다.\\n회원아이디 : ".$row['mb_id']);
+            alert_close("입력하신 본인확인 정보로 이미 가입된 내역이 존재합니다.\\n회원아이디 : ".$row['mb_id']);
         }
 
         // hash 데이터
         
         $md5_cert_no = md5($cert_no);
         $hash_data   = md5($user_name.$cert_type.$birth_day.$md5_cert_no);
+        error_log($user_name.$cert_type.$birth_day.$md5_cert_no);
 
         // 성인인증결과
         $adult_day = date("Ymd", strtotime("-19 years", G5_SERVER_TIME));

@@ -44,16 +44,16 @@ if($flgFixedUser == 'Y') {
 
 switch($_GET['pageType']) {		
     case "register":
-        $resultPage = "/kg_result.php";
+        $resultPage = "/ini_result.php";
         break;
     case "find":
-        $resultPage = "/kg_find_result.php";
+        $resultPage = "/ini_find_result.php";
         break;
     default:
         alert_close('잘못된 접근입니다.');
 }
 
-$resultUrl = G5_KGCERT_URL . $resultPage;
+$resultUrl = G5_INICERT_URL . $resultPage;
 $g5['title'] = 'KG이니시스 통합인증';
 include_once(G5_PATH.'/head.sub.php'); 	
 ?>
@@ -69,7 +69,8 @@ include_once(G5_PATH.'/head.sub.php');
         <input type="hidden" name="userBirth" value="<?php echo $userBirth ?>">
         <input type="hidden" name="userHash" value="<?php echo $userHash ?>">
         <input type="hidden" name="mbId" value="<?php echo $member['mb_id'] ?>">
-        <input type="hidden" name="directAgency" value="<?php echo $_GET['directAgency']; ?>">
+        <!-- <input type="hidden" name="directAgency" value="<?php echo $_GET['directAgency']; ?>"> -->
+        <input type="hidden" name="directAgency" value="">
 
         <input type="hidden" name="successUrl" value="<?php echo $resultUrl; ?>"> <!-- 필수 값 -->
         <input type="hidden" name="failUrl" value="<?php echo $resultUrl; ?>"> <!-- 필수 값 -->

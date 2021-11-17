@@ -2754,13 +2754,7 @@ function insert_cert_history($mb_id, $company, $method)
 {
     global $g5;
 
-    $sql = " insert into {$g5['cert_history_table']}
-                set mb_id = '$mb_id',
-                    cr_company = '$company',
-                    cr_method = '$method',
-                    cr_ip = '{$_SERVER['REMOTE_ADDR']}',
-                    cr_date = '".G5_TIME_YMD."',
-                    cr_time = '".G5_TIME_HIS."' ";
+    $sql = " insert into {$g5['cert_history_table']} set mb_id = '$mb_id', cr_company = '$company', cr_method = '$method', cr_ip = '{$_SERVER['REMOTE_ADDR']}', cr_date = '".G5_TIME_YMD."', cr_time = '".G5_TIME_HIS."' ";
     sql_query($sql);
 }
 

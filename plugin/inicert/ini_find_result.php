@@ -29,7 +29,7 @@ if ($_POST["resultCode"] === "0000") {
 
     if($res_data['resultCode'] === "0000") {
 
-        @insert_cert_history($member['mb_id'], 'kg', 'sa'); // 인증성공 시 내역 기록
+        @insert_cert_history($member['mb_id'], 'inicis', 'sa'); // 인증성공 시 내역 기록
 
         $cert_type      = 'sa';                                 // 인증타입
         $cert_no        = $res_data['txId'];                    // 이니시스 트랜잭션 ID
