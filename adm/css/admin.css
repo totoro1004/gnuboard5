@@ -509,7 +509,7 @@ td.td_grpset {width:160px;border-left:1px solid #e9ecee;text-align:center}
 .td_mng_l{width:160px}
 
 .txt_true {color:#e8180c}
-.txt_false {color:#ccc}
+.txt_false {color:#999}
 .txt_succeed {color:#40b300}
 .txt_fail {color:#ce4242}
 .td_left{text-align:left !important}
