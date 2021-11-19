@@ -1,0 +1,37 @@
+@charset "utf-8";
+
+.lt_service{background:#edf1f4;padding:150px 0}
+.lt_service h2{text-align:center;font-size:2.5em;margin-bottom:40px}
+.lt_service h2 a{padding:10px 0;}
+.lt_service ul{;margin:0 auto;max-width:1200px;padding:0 10px}
+.lt_service ul:after {display:block;visibility:hidden;clear:both;content:""}
+.lt_service li{float:left;width:25%;padding:20px}
+.lt_service li .lt_img{display:block;width:100%}
+.lt_service li .lt_img img{vertical-align:top;width:100%;height:auto}
+.lt_service li .lt_tit{font-size:1.5em;font-weight:bold;margin:10px 0;display:block;line-height:1.5em;color:#fff}
+.lt_service li .lt_detail{font-size:1.077em;color:#ddd;line-height:1.5em}
+
+.lt_service .empty_li  {width:100%;padding:100px 0;text-align:center;color:#aaa}    
+
+.lt_service .card{background: white;position: relative;height:100%;display: flex;align-items: flex-end;transition: 0.4s ease-out;box-shadow: 0px 7px 10px rgba(0, 0, 0, 0.5);}
+.lt_service .card:before {; content: ""; position: absolute;top: 0; left: 0; display: block; width: 100%; height: 100%;;z-index: 2;transition: 0.5s;opacity: 0;
+background:rgba(0,0,0,0.5);
+background: -moz-linear-gradient(top, rgba(255,255,255,0) 40%, rgba(255,255,255,0.01) 41%, rgba(0,0,0,0.64) 100%);
+background: -webkit-gradient(left top, left bottom, color-stop(40%, rgba(255,255,255,0)), color-stop(41%, rgba(255,255,255,0.01)), color-stop(100%, rgba(0,0,0,0.64)));
+background: -webkit-linear-gradient(top, rgba(255,255,255,0) 40%, rgba(255,255,255,0.01) 41%, rgba(0,0,0,0.64) 100%);
+background: -o-linear-gradient(top, rgba(255,255,255,0) 40%, rgba(255,255,255,0.01) 41%, rgba(0,0,0,0.64) 100%);
+background: -ms-linear-gradient(top, rgba(255,255,255,0) 40%, rgba(255,255,255,0.01) 41%, rgba(0,0,0,0.64) 100%);
+background: linear-gradient(to bottom, rgba(255,255,255,0) 40%, rgba(255,255,255,0.01) 41%, rgba(0,0,0,0.64) 100%);
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#000000', GradientType=0 )}
+.lt_service .card:hover:before { opacity: 1;}
+.lt_service .card:hover { -webkit-transform: translateY(20px); transform: translateY(20px);}
+.lt_service .card .info {position: absolute;bottom:0;left:0;width:100%;z-index: 3; color: #fff;opacity: 0;-webkit-transform: translateY(30px); transform: translateY(30px); transition: 0.5s;padding:35px;}
+.lt_service .card:hover .info {opacity: 1;-webkit-transform: translateY(0px);transform: translateY(0px); }
+
+ @media (max-width: 969px){
+    .lt_service{padding:80px 0}
+    .lt_service h2{font-size:1.8em;margin-bottom:20px}
+    .lt_service li{width:50%;}
+    .lt_service .card:before{opacity:1}
+    .lt_service .card .info{opacity: 1;-webkit-transform: translateY(0px);transform: translateY(0px);padding:9%}
+ }

@@ -1,0 +1,24 @@
+@charset "utf-8";
+
+/* 최근게시물 스킨 (latest) */
+.lt_slide {width:100%}
+.lt_slide h2 {position:absolute;font-size:0;text-indent:-9999em;line-height:0;overflow:hidden}
+
+.lt_slide ul {margin:0;padding:0;list-style:none}
+.lt_slide li {width:50%;padding-left:10px;float:left;line-height:24px;text-align:left}
+.lt_slide li:first-child {padding-left:0}
+.lt_slide li .lt_cate {line-height:18px;margin-bottom:5px}
+.lt_slide li .lt_cate a {display:inline-block;color:#fff;font-size:0.95em;padding:0 8px;border-radius:30px}
+.lt_slide li:nth-child(odd) .lt_cate a {background:#3084e3}
+.lt_slide li:nth-child(even) .lt_cate a {background:#ff5151}
+.lt_slide li .lt_tit {position:relative;display:inline-block;height:20px;line-height:20px;padding-right:30px;font-size:1.25em;vertical-align:top;font-weight:bold;overflow:hidden}
+
+.lt_slide li .icon>span {display:inline-block;font-weight:normal;width:20px;height:20px;line-height:18px;margin-right:3px;font-size:1em;color:#fff;text-align:center;border-radius:2px;vertical-align:baseline}
+.lt_slide li .heart_icon {background:#ff5050;border:1px solid #ff5050}
+.lt_slide li .new_icon {background:#f8b202;border:1px solid #f8b202}
+.lt_slide li .fa-lock {background:#4caf50;border:1px solid #4caf50;display:inline-block;width:20px;height:20px;line-height:18px;margin-right:3px;font-size:0.95em;color:#fff;text-align:center;border-radius:2px;vertical-align:baseline}
+
+.lt_slide li.empty_li {min-height:350px;text-align:center;line-height:25;color:#777}
+.lt_slide .lt_detail {color:#ddd;margin-top:5px;line-height:18px;height:75px;margin-bottom:5px;overflow:hidden;text-overflow:ellipsis;color:#989898}
+.lt_info {display:block;border-top:1px solid #eee;padding-top:2px;color:#8c8c8c}
+.lt_date {float:right}

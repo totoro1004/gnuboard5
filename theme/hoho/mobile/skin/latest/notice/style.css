@@ -1,0 +1,10 @@
+@charset "utf-8";
+
+/* 최근게시물 스킨 (latest) */
+.lt_notice {position:relative;padding:10px 10px 10px 70px;}
+.lt_notice .lt_title {background:#4a5ba9;color:#fff;display:block;width:50px;position:absolute;font-weight:normal;top:10px;left:10px;text-align:center;line-height:25px}
+.lt_notice ul{line-height:25px}
+.lt_notice li{text-overflow: ellipsis;overflow: hidden;white-space: nowrap;}
+.lt_notice .new_icon  {display:inline-block;width:16px;height:16px;line-height:16px;background: #c56bed; color: #fff;text-align:center;font-size:10px;border-radius:2px}
+
+

@@ -1,0 +1,5 @@
+@charset "utf-8";
+
+.gallery button {outline:none}
+.gallery ul {margin:0;padding:0}
+.gallery ul li {list-style:none;height:auto;position:relative;overflow:hidden;text-align:center}

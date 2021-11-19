@@ -1,0 +1,30 @@
+@charset "utf-8";
+.lt_about {position:relative;overflow:hidden}
+.lt_about li{padding:80px;text-align:center;background-position:center center;background-size:cover;background-repeat:no-repeat;text-align:center;color:#fff;background-attachment:fixed;}
+.lt_about .bg{;position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.3);content:'';z-index:1;overflow:hidden;z-index:2;}
+
+.lt_about .bn_txt{display:table;height:100%;width:100%;position:relative;z-index:5;}
+
+.lt_about .txt_wr{display:table-cell;vertical-align:middle;padding:0 20%}
+
+.lt_about li .bn_tit{font-size:3.8em;font-weight:bold; line-height:1.53em;
+-webkit-text-shadow:2px 2px 5px rgba(55,55,55,0.4);
+-moz-text-shadow:2px 2px 5px rgba(55,55,55,0.4);
+text-shadow: 2px 2px 5px rgba(55,55,55,0.4);}
+.lt_about li .bn_detail{font-size:1.231em;margin:20px 0 20px; line-height:1.7em;
+-webkit-text-shadow:2px 2px 5px rgba(55,55,55,0.4);
+-moz-text-shadow:2px 2px 5px rgba(55,55,55,0.4);
+text-shadow: 2px 2px 5px rgba(55,55,55,0.4);}
+.lt_about li .bn_view {display:inline-block;background:#fff;color:#333;padding:0 35px;line-height:45px;margin-top:20px}
+
+.lt_about .bn_link{display:none;position:absolute;bottom:10px;right:10px;z-index:99;background:#ff0000;color:#fff;width:40px;line-height:40px;border-radius:30px;text-align:center;font-size:16px}
+.lt_about:hover .bn_link{display:block}
+.lt_about .bn_link:hover {transform: rotate( -45deg );color:#fff;}
+
+.lt_about .bx-pager{position:absolute;bottom:0;right:0}
+ 
+ @media (max-width: 969px){
+    .lt_about .txt_wr {padding:0}
+    .lt_about li .bn_tit{font-size:2em}
+}
+

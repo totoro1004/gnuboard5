@@ -1,0 +1,47 @@
+@charset "utf-8";
+
+/* 최근게시물 스킨 (latest) */
+.lt_basic {clear:both;position:relative;width:100%}
+.lt_basic h2 {margin-bottom:65px;text-align:center}
+.lt_basic h2>a {display:block;color:#fff;font-size:2.8em;font-weight:100;font-style:normal;font-family:"Nanum Square", "Nanum Gothic", "dotum", "Poppins", sans-serif}
+.lt_basic h2 p {margin:30px 0 25px;font-size:1.8em;font-weight:100;color:#fff;font-family:"Nanum Square", "Nanum Gothic", "dotum", "Poppins", sans-serif;opacity:0.8}
+.lt_basic h2 .lt_more {margin:0 auto;display:inline-block;padding:10px 20px;border-radius:50px;line-height:15px;background:#303030;color:#fff;text-align:center;font-size:1.2em;font-weight:bold}
+.lt_basic h2 .lt_more:hover {background:#000}
+.lt_basic .lt_title {display:block;padding:0 0 20px;border-bottom:1px solid #e9e9e9;text-align:left;font-size:1.2em}
+
+@media (max-width:890px) {
+	.lt_basic h2 {margin:50px 0 30px}
+	.lt_basic h2>a {font-size:2.4em}
+}
+
+.lt_basic ul {margin:0;padding:0;list-style:none}
+.lt_basic li {width:25%;float:left;line-height:24px;text-align:left;padding:0 10px;margin-bottom:20px}
+.lt_basic li:nth-child(4n+1) {}
+.lt_basic_cnt {position:relative;height:220px}
+.lt_basic_cnt:hover {margin:0 !important}
+.lt_basic .lt_writer img {width:25px;height:25px;border-radius:25px}
+.lt_basic .lt_tit {height:24px;font-size:1.4em;vertical-align:top;font-weight:normal;overflow:hidden;font-family:"Nanum Square", "Nanum Gothic", "dotum", "Poppins", sans-serif;}
+
+.lt_basic li .lt_cate {line-height:18px;margin-bottom:5px}
+.lt_basic li .lt_cate a {display:inline-block;font-size:1em;color:#4CAF50}
+
+.lt_basic li .icon {position:absolute;top:-10px;left:20px}
+.lt_basic li .icon span {float:left;display:inline-block;width:20px;height:20px;line-height:18px;margin-right:3px;font-size:0.95em;color:#fff;text-align:center;border-radius:2px;vertical-align:baseline}
+.lt_basic li .heart_icon {background:#ff5050;border:1px solid #ff5050}
+.lt_basic li .new_icon {background:#f8b202;border:1px solid #f8b202}
+.lt_basic li .fa-lock {background:#4caf50;border:1px solid #4caf50;display:inline-block;width:20px;height:20px;line-height:18px;margin-right:3px;font-size:0.95em;color:#fff;text-align:center;border-radius:2px;vertical-align:baseline}
+.lt_basic li.empty_li {min-height:350px;text-align:center;line-height:25;color:#777}
+
+.lt_basic .lt_detail {color:#ddd;margin-top:10px;line-height:18px;height:75px;margin-bottom:10px;overflow:hidden;text-overflow:ellipsis;color:#989898}
+.lt_basic li:hover .lt_detail {color:#2f84e3}
+.lt_basic .lt_info {position:absolute;left:0;bottom:0;width:100%;padding:10px 20px 20px;display:block;border-top:1px solid #eee;color:#8c8c8c}
+.lt_basic .lt_info img {border-radius:50%}
+.lt_basic .lt_date {float:right}
+
+@media (max-width:890px) {
+	.lt_basic li {width:50%}
+}
+
+@media (max-width:560px) {
+	.lt_basic li {width:100%}
+}

@@ -1,0 +1,30 @@
+@charset "utf-8";
+
+/* 아웃로그인 스킨 */
+.ol_main {position:relative;padding:28px}
+.ol_main h2 {font-size:1.2em;text-align:left;padding-bottom:15px}
+.ol_main a.btn_admin {display:inline-block;padding:0 10px;height:25px;text-decoration:none;line-height:25px;vertical-align:middle} /* 관리자 전용 버튼 */
+.ol_main a.btn_admin:focus, .ol_main a.btn_admin:hover {text-decoration:none}
+
+#ol_main_before:after {display:block;visibility:hidden;clear:both;content:""}
+#ol_main_before form {}
+#ol_main_before .ol_wr {position:relative;margin-bottom:5px;text-align:left}
+
+#ol_id, #ol_pw {display:block;width:100%;border:1px solid #dcdcdc;padding:0 10px;height:35px;margin-bottom:5px}
+#ol_main_submit {width:100%;height:40px;margin-top:10px;background:#fe4444;border-radius:3px;color:#fff;font-weight:bold;font-size:1em}
+
+#ol_auto {line-height:20px}
+#ol_auto label {color:#555}
+#ol_auto input {width:13px;height:13px} 
+
+#ol_main_svc {position:relative;margin:0}
+#ol_main_svc:after {display:block;visibility:hidden;clear:both;content:""}
+#ol_main_svc a {float:left;display:inline-block;width:50%;padding:10px 0;color:#555;text-align:center}
+#ol_main_svc a#ol_password_lost {background:url(./img/division_bg.png) left 13px no-repeat}
+#ol_main_svc b {color:#0060ff}
+
+#main_login_after {text-align:center;background:#c9d89e;font-family:"Nanum Square";font-size:1.6em}
+#main_login_after h2 {position:absolute;font-size:0;line-height:0;overflow:hidden}
+#main_login_after .hello {height:260px;line-height:28px;color:#9aad64}
+#main_login_after .profile_img {display:inline-block;margin:60px 0 15px}
+#main_login_after .profile_img img {border-radius:50%}

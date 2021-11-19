@@ -1,0 +1,17 @@
+@charset "utf-8";
+
+/* 새글 스킨 (latest) */
+.news {position:relative;margin-bottom:20px}
+.news .news_title a {font-size:1.6em;font-weight:bold;text-align:left;padding-bottom:10px;margin-bottom:10px;position:relative;font-family:'Nanum Square';color:#ff9728}
+.news .news_title a span {color:#ff3228}
+.news ul {padding:15px 0}
+.news li {position:relative;line-height:24px;padding:5px 0;position:relative;border-bottom:1px solid #eceeef}
+.news li:last-child {border:0}
+.news li:hover a {color:#4493fe}
+.news li a {font-size:1.2em}
+.news li .news_date {float:right;color:#bfbfbf}
+.news li .fa-lock {display:inline-block;line-height:14px;width:16px;font-size:0.833em;color:#fff;background:#ad68d8;text-align:center;border-radius:2px;border:1px solid #ad68d8;font-size:12px}
+.news li .new_icon {display:inline-block;width:16px;line-height:16px;font-size:0.833em;color:#fff;background:#fe4444;text-align:center;border-radius:2px;margin-left:3px}
+
+.news .empty_li {line-height:165px;color:#666;text-align:center;padding:0;border:0}
+.news .empty_li:before {background:none;padding:0}

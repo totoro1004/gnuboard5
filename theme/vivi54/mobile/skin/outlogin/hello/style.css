@@ -1,0 +1,34 @@
+@charset "utf-8";
+@import url(http://fonts.googleapis.com/earlyaccess/nanumgothic.css);
+@import url(//cdn.rawgit.com/hiun/NanumSquare/master/nanumsquare.css);
+
+
+#hello_world {display:block;text-align:center;margin-bottom:65px;font-size:2.8em;font-weight:100;font-style:normal;font-family:"Nanum Square", "Nanum Gothic", "dotum", "Poppins", sans-serif}
+.login_hello h2 {}
+.logout_hello h2 {}
+
+.animated {
+  -webkit-animation-duration:1s;
+  animation-duration:1s;
+  -webkit-animation-fill-mode:both;
+  animation-fill-mode:both;
+  -webkit-animation-timing-function:linear;
+  animation-timing-function:linear;
+  animation-iteration-count:infinite;
+  -webkit-animation-iteration-count:infinite;
+}
+
+@-webkit-keyframes bounce {
+  0%, 100% {-webkit-transform:translateY(0)}
+  50% {-webkit-transform:translateY(-5px)}
+}
+
+@keyframes bounce {
+  0%, 100% {transform:translateY(0)}
+  50% {transform:translateY(-5px)}
+}
+.bounce {-webkit-animation-name:bounce;animation-name:bounce}
+
+@media (max-width:890px) {
+	#hello_world {font-size:2.4em;margin:80px 0 30px}
+}

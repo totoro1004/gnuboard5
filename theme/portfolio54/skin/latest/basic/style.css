@@ -1,0 +1,40 @@
+@charset "utf-8";
+
+/* 새글 스킨 (latest) */
+
+.lat {position:relative;margin-bottom:80px;overflow:hidden;background:#fff}
+.lat .lat_title {position:absolute;font-size:0;line-height:0;overflow:hidden}
+
+.lat ul {padding:0;margin:0}
+.lat ul:after {display:block;visibility:hidden;clear:both;content:""}
+.lat li {position:relative;display:inline-block;max-width:300px;float:left;line-height:18px;margin-bottom:10px}
+.lat li:hover .lat_innr {border:1px solid #ff8400}
+.lat .lat_innr {border:1px solid #e5ecee;position:relative;display:flex;flex-direction:column;min-width:0;word-wrap:break-word;background-color:#fff;background-clip:border-box;border:1px solid rgba(0, 0, 0, 0.125);border-radius:0.625rem;padding:2rem}
+.lat .lat_detail {margin:10px 0;font-size:1em;line-height:24px;max-height:100px;color:#6d6d6d;overflow-y:hidden}
+
+.lat li a {line-height:24px;font-weight:bold;font-size:1.125em;line-height:20px;vertical-align:middle;color:#000}
+.lat li a:hover {color:#ff8400;text-decoration:none}
+.lat li .fa-heart {color:#ff0000}
+.lat li .fa-lock {display:inline-block;line-height:14px;width:16px;font-size:0.833em;color:#4f818c;background:#cbe3e8;text-align:center;border-radius:2px;font-size:12px;border:1px solid #cbe3e8;vertical-align:middle}
+.lat li .new_icon {display:inline-block;width:16px;line-height:16px;font-size:0.833em;color:#23db79;background:#b9ffda;text-align:center;border-radius:2px;margin-left:2px;font-weight:bold;vertical-align:middle}
+.lat li .hot_icon {display:inline-block;width:16px;line-height:16px;font-size:0.833em;color:#ff0000;background:#ffb9b9;text-align:center;border-radius:2px;vertical-align:middle}
+.lat li .fa-caret-right {color:#bbb}
+.lat li .fa-download {display:inline-block;width:16px;line-height:16px;font-size:0.833em;color:#daae37;background:#ffefb9;text-align:center;border-radius:2px;vertical-align:middle}
+.lat li .fa-link {display:inline-block;width:16px;line-height:16px;font-size:0.833em;color:#b451fd;background:#edd3fd;text-align:center;border-radius:2px;vertical-align:middle}
+
+.lat_info {padding:10px 0}
+.lat_info .lt_nick {}
+.lat_info .lt_date {color:#888}
+
+.lat .empty_li {line-height:145px;color:#666;text-align:center;padding:0}
+.lat .empty_li:before {background:none;padding:0}
+
+.lat .lt_cmt {background:#e9eff5;color:#3a8afd;font-size:11px;height:16px;line-height:16px;padding:0 5px;border-radius:3px;vertical-align:middle}
+
+.bx-controls {text-align:center;margin-top:30px}
+.bx-controls .bx-prev,
+.bx-controls .bx-next {display:inline-block;margin:0 10px;width:30px;height:30px;text-indent:-9999px;background:url(img/btn_arrow.png) 50% 50% no-repeat }
+.bx-controls .bx-prev {background-position:5px 0;background-size:43px}
+.bx-controls .bx-next {background-position:-17px 0;background-size:43px}
+.bx-controls .bx-prev:hover {background-position:5px -29px}
+.bx-controls .bx-next:hover {background-position:-17px -29px}

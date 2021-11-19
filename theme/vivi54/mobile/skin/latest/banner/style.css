@@ -1,0 +1,9 @@
+@charset "utf-8";
+
+.lt_bn {position:relative;border-radius:10px;overflow:hidden}
+.lt_bn li {background-position:0 0;background-size:100% auto;background-repeat:no-repeat;height:200px;text-align:center;color:#fff}
+.lt_bn .bn_link {display:none;position:absolute;top:10px;right:10px;z-index:99;background:#ff0000;color:#fff;width:40px;line-height:40px;border-radius:30px;text-align:center;font-size:16px}
+.lt_bn:hover .bn_link {display:block}
+.lt_bn .bn_link:hover {transform:rotate( -45deg )}
+.lt_bn .lt_tit {display:block;line-height:200px}
+.lt_bn .bn_txt {font-size:1px;color:transparent}

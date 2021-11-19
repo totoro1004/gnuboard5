@@ -1,0 +1,25 @@
+@charset "utf-8";
+
+/* 새글 스킨 (latest) */
+.lat {position:relative;margin-bottom:20px}
+.lat:after {display:block;visibility:hidden;clear:both;content:""}
+.lat .lat_title {margin-bottom:60px;text-align:center}
+.lat .lat_title a {font-size:2.4em;text-align:left;padding-bottom:10px;margin-bottom:10px;position:relative;font-family:'Nanum Square'}
+
+.lat li {position:relative;float:left;width:260px !important;margin-right:20px;margin-bottom:20px}
+.lat li:last-child {margin:0}
+.lat li .in {display:block;width:260px !important;height:260px;padding:35px;background:#fff;border:1px solid #dcdcdc}
+.lat li:hover a {color:#4493fe}
+.lat li .lat_tit {font-size:1.5em;line-height:24px;font-family:'Nanum Square'}
+
+.lat li .lat_detail {margin-top:15px;line-height:20px;max-height:100px;overflow:hidden;text-overflow:ellipsis;color:#989898}
+.lat li .lat_info {margin-top:15px;color:#bdbdbd;font-size:1em}
+.lat li .new_icon {position:absolute;left:-1px;top:-1px;display:inline-block;width:25px;height:25px;line-height:28px;font-size:1em;color:#fff;background:#fe4444;text-align:center}
+.lat li .lt_cmt {margin-left:5px;padding-left:10px;display:inline-block;background:url(./img/division_bg.png) left 3px no-repeat}
+
+.lat .empty_li {width:100%;line-height:250px;color:#666;text-align:center;padding:0;border:0}
+.lat .empty_li:before {background:none;padding:0}
+
+.lat .bx-controls-direction {width:100%;margin:20px 0;text-align:center}
+.lat .bx-controls-direction a {display:inline-block;width:30px;height:30px;text-align:center;border:1px solid #dcdcdc;color:#dcdcdc;font-size:1.6em;margin:0 5px}
+.lat .bx-controls-direction a:hover {color:#7a99d6;border-color:#7a99d6}

@@ -1,0 +1,63 @@
+@charset "utf-8";
+
+.ol {position:relative;background:#fff;text-align:center}
+.ol h2 {font-size:1.4em;color:#000;margin-bottom:20px;text-align:center}
+.ol_wr {position:relative}
+
+#ol_s_before input[type=text],
+#ol_s_before input[type=password] {width:100%;background:#fbfbfc;height:45px;padding:0 80px 0 5px;border:1px solid #e6e6e6}
+#ol_s_before .i1,
+#ol_s_before .i2 {position:relative}
+#ol_s_before .i1:before {position:absolute;right:25px;top:5px;content:"\f007" !important;z-index:9;font-size:14px;line-height:34px;text-align:center;color:#909499;width:0;height:0;background:transparent;font-family:FontAwesome;font-style:normal;font-weight:normal;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+#ol_s_before input[type=password] {margin-top:5px;border-top:1px solid #e3e7ee}
+#ol_s_before .i2:before {position:absolute;right:25px;top:10px;content:"\f023" !important;z-index:9;font-size:14px;line-height:34px;text-align:center;color:#909499;width:0;height:0;background:transparent;font-family:FontAwesome;font-style:normal;font-weight:normal;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+
+#ol_svc:after {display:block;visibility:hidden;clear:both;content:""}
+#ol_svc {margin-top:10px}
+#ol_svc a {float:left;display:block;width:49%;height:38px;line-height:38px;margin-left:2%;font-weight:bold;border-radius:2px;text-align:center}
+#ol_s_submit {float:left;width:49%;height:38px;line-height:38px;font-weight:bold;font-size:1.083em;border-radius:2px;text-align:center}
+.ol_before_btn {float:right;margin:5px 0;color:#aaa;line-height:1em}
+.ol_before_btn a {display:inline-block;float:left;padding:5px;border:1px solid #d5d9dd;border-radius:3px;color:#999}
+
+.ol_auto_wr {margin:15px 0;clear:both;display:block}
+.ol_auto_wr:after {display:block;visibility:hidden;clear:both;content:""}
+#ol_auto {float:left;display:inline-block;line-height:20px}
+#ol_auto label {color:#555;vertical-align:top;padding-left:5px}
+#ol_auto label span {margin-top:2px}
+#ol_password_lost {display:inline-block;float:right;line-height:20px;color:#555}
+
+#ol_after_hd {position:relative}
+#ol_after_hd strong {display:block;margin-bottom:10px}
+#ol_after_hd .btn_admin {vertical-align:bottom;display:inline-block;padding:5px 10px;text-align:center;line-height:26px;font-size:1em;border-radius:2px}
+
+#ol_after_hd .profile_img {position:relative;display:inline-block;margin:0 0 10px}
+#ol_after_hd .profile_img img {width:50px;height:50px;border-radius:50%}
+#ol_after_info {position:absolute;bottom:0;right:0;color:#000;background:#fff;width:20px;line-height:20px;height:20px;overflow:hidden;border-radius:50%;-webkit-box-shadow:0 1px 5px #d6d6d6;-moz-box-shadow:0 1px 5px #d6d6d6;box-shadow:0 1px 5px #d6d6d6}
+
+.ol_m_info {text-align:center;padding:0 0 10px}
+.ol_m_info strong {color:#000}
+.ol_m_info a.btn_b04 {border:1px solid #d5d9dd;background:#fff;color:#555;padding:5px 10px;line-height:26px;font-size:1em}
+
+#ol_after_private {margin:0;margin-bottom:5px;padding:5px 0;list-style:none}
+#ol_after_private:after {display:block;visibility:hidden;clear:both;content:""}
+#ol_after_private li {float:left;width:33.333%}
+
+#ol_after_private a {display:block;color:#525d71}
+#ol_after_private span {display:block}
+#ol_after_private i {margin:5px 0;color:#fff;font-size:1em}
+
+#ol_after_memo, #ol_after_pt {border-right:1px solid #f5f5f5}
+#ol_after_memo strong,
+#ol_after_pt strong,
+#ol_after_scrap strong {display:inline-block;font-weight:normal;margin:5px 0;padding:1px 5px;background:#17bb9c;color:#fff;border-radius:10px}
+#ol_after_pt strong {background:#8e74ef}
+#ol_after_scrap strong {background:#ff9138}
+
+#ol_after_btn {margin:0 0 15px}
+#ol_after_btn a {display:inline-block;padding:0 10px;line-height:25px;border-radius:3px;font-weight:bold;vertical-align:baseline}
+#ol_after_btn a.btn_admin {border:1px solid #c90d1e}
+
+#sns_outlogin {text-align:center;border:0 !important;padding:0 !important;margin-top:10px !important;margin-bottom:20px}
+.login-sns h3 {position:absolute;font-size:0;text-indent:-9999em;line-height:0;overflow:hidden;margin-top:0 !important;padding-top:0 !important}
+.sns-wrap {margin:0 !important;text-align:left !important}
+

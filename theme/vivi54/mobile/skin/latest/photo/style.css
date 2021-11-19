@@ -1,0 +1,23 @@
+@charset "utf-8";
+
+/* 하이라이트 포토 최신글 */
+.highlight_photo h2 {position:absolute;font-size:0;text-indent:-9999em;line-height:0;overflow:hidden}
+.highlight_photo ul:after {display:block;visibility:hidden;clear:both;content:""}
+.highlight_photo li {position:relative;width:100%;text-align:left}
+.highlight_photo li:after {display:block;visibility:hidden;clear:both;content:""}
+
+.highlight_photo .lt_title {display:block;padding:15px 20px;text-align:left;font-size:1.25em;color:#010101}
+
+.highlight_photo .lt_img {display:block;width:100%;height:auto;margin-bottom:10px;background:yellow}
+.highlight_photo .lt_img img {width:100%;height:auto;border-radius:10px}
+.highlight_photo .lt_cnt {}
+.highlight_photo .lt_tit {height:24px;font-size:1.25em;vertical-align:top;font-weight:bold;overflow:hidden}
+
+.highlight_photo .profile_img img {border-radius:50%;width:20px !important;display:inline-block !important;vertical-align:top}
+
+.highlight_photo span {display:inline-block;width:20px;height:20px;line-height:18px;font-weight:normal;margin-right:3px;font-size:1em;color:#fff;text-align:center;border-radius:2px;vertical-align:baseline}
+.highlight_photo li .heart_icon {background:#ff5050;border:1px solid #ff5050}
+.highlight_photo li .new_icon {background:#f8b202;border:1px solid #f8b202}
+.highlight_photo li .fa-lock {background:#4caf50;border:1px solid #4caf50;display:inline-block;width:20px;height:20px;line-height:18px;margin-right:3px;font-size:0.95em;color:#fff;text-align:center;border-radius:2px;vertical-align:baseline}
+
+.highlight_photo li.empty_li {text-align:center;padding:40px 0;color:#777}

@@ -1,0 +1,11 @@
+@charset "utf-8";
+
+.notice {position:relative;background:#aea18c;height:300px}
+.notice h2 {padding:20px;border-bottom:1px solid #a29784}
+.notice h2 a {font-size:1.2em;color:#fff}
+.notice ul {padding:13px 20px}
+.notice li {text-overflow:ellipsis;overflow:hidden;white-space:nowrap;font-size:1.2em;border-bottom:1px solid #a29784}
+.notice li:last-child {border-bottom:0}
+.notice li a {color:#fff;padding:10px 0;display:inline-block}
+.notice li .lock_icon {display:inline-block;line-height:14px;width:16px;font-size:0.75em;color:#4f818c;background:#cbe3e8;text-align:center;border-radius:2px;font-size: 12px;border:1px solid #a2c6ce;vertical-align:baseline}
+.notice li .new_icon {display:inline-block;width:16px;line-height:16px;font-size:0.75em;color:#fff;background:#dad2bc;text-align:center;border-radius:2px;margin-left:5px;font-weight:bold;vertical-align:middle}
