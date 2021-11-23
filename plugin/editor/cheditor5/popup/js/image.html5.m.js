@@ -35,8 +35,9 @@ var activeImage = null,
     tmpTop = 0,
     uploadImagePath = '',
     uploadMaxNumber = 12,
-    uploadScript;
-    useWebGL = false;
+    uploadScript,
+    useWebGL = false,
+    supportImageOrientation;
 
 if (ArrayBuffer && !ArrayBuffer.prototype.slice) {
     ArrayBuffer.prototype.slice = function (start, end) {
@@ -972,7 +973,7 @@ DoUpload.prototype = {
                 if (agent.indexOf('trident') != -1 || agent.indexOf("msie") != -1) {
                     explorerFileFilterError(file.name);
                 } else {
-                    FileFilterError(file.name);
+                    fileFilterError(file.name);
                 }
                 continue;
             }
@@ -1089,50 +1090,46 @@ DoUpload.prototype = {
         return blob;
     },
 
-    imageResize : function (image, filetype, resizeWidth, orientation, addWaterMark) {
-        var canvas, source_w = image.width, source_h = image.height,
-            resize_h, resize_w, ratio_w, ratio_h, ratio_w_half, ratio_h_half,
+    imageResize : function (image, filetype, resize_w, orientation, addWaterMark) {
+        var canvas = document.createElement("canvas"),
+            ctx = canvas.getContext("2d"),
+            source_w = image.width,
+            source_h = image.height,
+            resize_h, ratio_w, ratio_h, ratio_w_half, ratio_h_half,
             source_img, resize_img, source_data, resize_data, j, i,
-            x2, weight, weights, weights_alpha, gx_a, gx_b, gx_g, gx_r, center_x, center_y, x_start, x_stop,
-            y_start, y_stop, y, dy, part_w, x, dx, w, pos_x,
-            ctx, gl, imageData = null;
+            x2, weight, weights, weights_alpha, gx_a, gx_b, gx_g, gx_r, 
+            center_x, center_y, x_start, x_stop,
+            y_start, y_stop, y, dy, part_w, x, dx, w, pos_x, gl, imageData = null;
 
         // 카메라 로테이션 보정
-        if (orientation > 0) {
-            canvas = document.createElement("canvas");
-            canvas.width = source_w;
-            canvas.height = source_h;
-            ctx = canvas.getContext("2d");
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.save();
+        if (orientation > 0 && !supportImageOrientation) {
+            if ([5,6,7,8].indexOf(orientation) > -1) {
+                canvas.width = source_h;
+                canvas.height = source_w;
+            } else {
+                canvas.width = source_w;
+                canvas.height = source_h;
+            }
 
             switch (orientation) {
-                case 2 :
-                    ctx.translate(-1, 0, 0, 1, canvas.width, 0); break;
-                case 3 :
-                    ctx.translate(-1, 0, 0, -1, canvas.width, canvas.height); break;
-                case 4 :
-                    ctx.translate(1, 0, 0, -1, 0, canvas.height); break;
-                case 5 :
-                    ctx.translate(0, 1, 1, 0, 0, 0); break;
-                case 6 :
-                    ctx.translate(0, 1, -1, 0, canvas.height, 0); break;
-                case 7 :
-                    ctx.translate(0, -1, -1, 0, canvas.height, canvas.width); break;
-                case 8 :
-                    ctx.translate(0, -1, 1, 0, 0, canvas.width); break;
+                case 2 : ctx.transform(-1, 0, 0, 1, source_w, 0); break;
+                case 3 : ctx.transform(-1, 0, 0, -1, source_w, source_h); break;
+                case 4 : ctx.transform(1, 0, 0, -1, 0, source_h); break;
+                case 5 : ctx.transform(0, 1, 1, 0, 0, 0); break;
+                case 6 : ctx.transform(0, 1, -1, 0, source_h, 0); break;
+                case 7 : ctx.transform(0, -1, -1, 0, source_h, source_w); break;
+                case 8 : ctx.transform(0, -1, 1, 0, 0, source_w); break;
                 default: break;
             }
 
-            ctx.drawImage(image, 0, 0);
+            ctx.drawImage(image, 0, 0, source_w, source_h);
             imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
             ctx.restore();
             source_w = canvas.width;
             source_h = canvas.height;
         }
 
-        if (source_w > resizeWidth) {
-            resize_w = resizeWidth;
+        if (source_w > resize_w) {
             resize_h = Math.ceil(resize_w / source_w * source_h);
 
             try {
@@ -1143,8 +1140,6 @@ DoUpload.prototype = {
                     canvas = gl_canvas;
                 });
             } catch (ignore) {
-                canvas = document.createElement("canvas");
-                ctx = canvas.getContext("2d");
                 canvas.width = source_w;
                 canvas.height = source_h;
 
@@ -1216,14 +1211,10 @@ DoUpload.prototype = {
                 canvas.height = resize_h;
                 ctx.putImageData(resize_img, 0, 0);
             }
-            
         } else {
-            canvas = document.createElement("canvas"),
-            canvas.width = source_w; canvas.height = source_h;
-            ctx = canvas.getContext("2d");
+            canvas.width = source_w;
+            canvas.height = source_h;
             ctx.drawImage(image, 0, 0);
-            resize_h = source_h;
-            resize_w = source_w;
         }
 
         if (this.reader.watermark && addWaterMark) {
@@ -1484,7 +1475,7 @@ function setResizeWidth() {
 }
 
 function init(dialog) {
-    var dlg, i, elem, input, select, value, name, xhr_f, xhr_v, tmpcanvas, glicon;
+    var dlg, i, elem, input, select, value, name, xhr_f, xhr_v, tmpcanvas, glicon, testImg;
 
     oEditor = this;
     oEditor.dialog = dialog;
@@ -1592,4 +1583,19 @@ function init(dialog) {
     glicon.className = 'webgl_logo';
     glicon.src = uploadImagePath + (useWebGL ? "/webgl.png" : "/webgl-off.png");
     document.getElementById('webgl_logo_wrapper').appendChild(glicon);
+
+    // 브라우저가 사진 Orientation 보정을 자동으로 지원하지는지 확인
+    testImg = new Image();
+    testImg.onload = function () {
+        supportImageOrientation = testImg.width === 2 && testImg.height === 3;
+    };
+    testImg.src =
+      'data:image/jpeg;base64,/9j/4QAiRXhpZgAATU0AKgAAAAgAAQESAAMAAAABAAYAAAA' +
+      'AAAD/2wCEAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBA' +
+      'QEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQE' +
+      'BAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAf/AABEIAAIAAwMBEQACEQEDEQH/x' +
+      'ABRAAEAAAAAAAAAAAAAAAAAAAAKEAEBAQADAQEAAAAAAAAAAAAGBQQDCAkCBwEBAAAAAAA' +
+      'AAAAAAAAAAAAAABEBAAAAAAAAAAAAAAAAAAAAAP/aAAwDAQACEQMRAD8AG8T9NfSMEVMhQ' +
+      'voP3fFiRZ+MTHDifa/95OFSZU5OzRzxkyejv8ciEfhSceSXGjS8eSdLnZc2HDm4M3BxcXw' +
+      'H/9k=';
 }
