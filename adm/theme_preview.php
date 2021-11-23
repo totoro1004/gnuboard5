@@ -73,10 +73,10 @@ if (G5_IS_MOBILE) {
 }
 
 // 쇼핑몰 스킨 재설정
-if($tconfig['de_shop_skin'])
+if(isset($tconfig['de_shop_skin']) && $tconfig['de_shop_skin'])
     $default['de_shop_skin'] = preg_match('#^theme/.+$#', $tconfig['de_shop_skin']) ? $tconfig['de_shop_skin'] : 'theme/'.$tconfig['de_shop_skin'];
 
-if($tconfig['de_shop_mobile_skin'])
+if(isset($tconfig['de_shop_mobile_skin']) && $tconfig['de_shop_mobile_skin'])
     $default['de_shop_mobile_skin'] = preg_match('#^theme/.+$#', $tconfig['de_shop_mobile_skin']) ? $tconfig['de_shop_mobile_skin'] : 'theme/'.$tconfig['de_shop_mobile_skin'];
 
 // 쇼핑몰초기화면 변수 재설정
