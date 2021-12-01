@@ -323,6 +323,9 @@ if ($od_settle_case == "무통장")
 else if ($od_settle_case == "계좌이체")
 {
     switch($default['de_pg_service']) {
+        case 'nicepay':
+            include G5_SHOP_PATH.'/nicepay/nicepay_result.php';
+            break;
         case 'lg':
             include G5_SHOP_PATH.'/lg/xpay_result.php';
             break;
@@ -349,6 +352,9 @@ else if ($od_settle_case == "계좌이체")
 else if ($od_settle_case == "가상계좌")
 {
     switch($default['de_pg_service']) {
+        case 'nicepay':
+            include G5_SHOP_PATH.'/nicepay/nicepay_result.php';
+            break;
         case 'lg':
             include G5_SHOP_PATH.'/lg/xpay_result.php';
             $od_receipt_time = '0000-00-00 00:00:00';
@@ -375,6 +381,9 @@ else if ($od_settle_case == "가상계좌")
 else if ($od_settle_case == "휴대폰")
 {
     switch($default['de_pg_service']) {
+        case 'nicepay':
+            include G5_SHOP_PATH.'/nicepay/nicepay_result.php';
+            break;
         case 'lg':
             include G5_SHOP_PATH.'/lg/xpay_result.php';
             break;

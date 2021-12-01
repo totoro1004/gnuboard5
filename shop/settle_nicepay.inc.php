@@ -70,3 +70,11 @@ $g_conf_site_name = $default['de_admin_company_name'];
 $g_conf_log_level = '3';           // 변경불가
 $g_conf_gw_port   = '8090';        // 포트번호(변경불가)
 $module_type      = '01';          // 변경불가;
+
+$PAY_METHOD = array(
+    'CARD'      => '신용카드',
+    'BANK'      => '계좌이체',
+    'CELLPHONE' => '휴대폰',
+    'VBANK'     => '가상계좌'
+);
+?>
