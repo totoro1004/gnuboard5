@@ -324,7 +324,7 @@ else if ($od_settle_case == "계좌이체")
 {
     switch($default['de_pg_service']) {
         case 'nicepay':
-            include G5_SHOP_PATH.'/nicepay/nicepay_result.php';
+            include G5_SHOP_PATH.'/nicepay/nicepay_pc.php';
             break;
         case 'lg':
             include G5_SHOP_PATH.'/lg/xpay_result.php';
@@ -353,7 +353,7 @@ else if ($od_settle_case == "가상계좌")
 {
     switch($default['de_pg_service']) {
         case 'nicepay':
-            include G5_SHOP_PATH.'/nicepay/nicepay_result.php';
+            include G5_SHOP_PATH.'/nicepay/nicepay_pc.php';
             break;
         case 'lg':
             include G5_SHOP_PATH.'/lg/xpay_result.php';
@@ -382,7 +382,7 @@ else if ($od_settle_case == "휴대폰")
 {
     switch($default['de_pg_service']) {
         case 'nicepay':
-            include G5_SHOP_PATH.'/nicepay/nicepay_result.php';
+            include G5_SHOP_PATH.'/nicepay/nicepay_pc.php';
             break;
         case 'lg':
             include G5_SHOP_PATH.'/lg/xpay_result.php';
@@ -409,7 +409,7 @@ else if ($od_settle_case == "신용카드")
 {
     switch($default['de_pg_service']) {
         case 'nicepay':
-            include G5_SHOP_PATH.'/nicepay/nicepay_result.php';
+            include G5_SHOP_PATH.'/nicepay/nicepay_pc.php';
             break;
         case 'lg':
             include G5_SHOP_PATH.'/lg/xpay_result.php';

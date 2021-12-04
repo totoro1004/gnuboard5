@@ -68,55 +68,39 @@ if($authResultCode === "0000" /* && $authSignature == $authComparisonSignature*/
 		$response = reqPost($data, $nextAppURL); //승인 호출
 		$resp_arr = json_decode($response, true); // true 일 경우 배열(array)로 반환
 
-		// print_r2($response); exit;
-
-		$tno        = $resp_arr['TID']; 		// nicepay 원거래번호
-		$amount     = $resp_arr['Amt']; 		// 금액
-		$app_time   = $resp_arr['AuthDate']; 	// 승인일시
-		$pay_method = $resp_arr['PayMethod']; 	// CARD, BANK, VBANK, CELLPHONE
-		$pay_type   = $PAY_METHOD[$pay_method]; // 신용카드, 계좌이체, 가상계좌, 휴대폰
-
-        $depositor  = $resp_arr['BuyerName'];  	// 주문자 이름
-        $mobile_no  = $resp_arr['BuyerTel'];	// 주문자 휴대폰번호
-        $card_name  = isset($resp_arr['CardName'])      ? $resp_arr['CardName']      : ''; // 카드명 (예) KB국민
-		$bank_name  = isset($resp_arr['BankName'])      ? $resp_arr['BankName']      : ''; // 은행명 (예) KB국민
-        $app_no     = isset($resp_arr['AuthCode'])      ? $resp_arr['AuthCode']      : ''; // 승인번호
-		$vbankname  = isset($resp_arr['VbankBankName']) ? $resp_arr['VbankBankName'] : ''; // 가상계좌 입금할 은행명
-		$vbanknum   = isset($resp_arr['VbankNum'])      ? $resp_arr['VbankNum']      : ''; // 가상계좌 입금할 계좌번호
-		$account    = $vbankname.' '.$vbanknum; // 은행명과 계좌번호
-        // $commid     = $xpay->Response('LGD_FINANCENAME',0);
-        // $escw_yn    = $xpay->Response('LGD_ESCROWYN',0);
+		// print_r2($resp_arr); exit;
+		$pay_method  = $resp_arr['PayMethod']; 	// CARD, BANK, VBANK, CELLPHONE
+		$pay_type    = $PAY_METHOD[$pay_method]; // 신용카드, 계좌이체, 가상계좌, 휴대폰
+		$result_code = $resp_arr['ResultCode'];
+		$result_msg  = $resp_arr['ResultMsg'];
 		
-		// $amount     = $response['Amt'];
-		// $app_time   = $response['AuthDate'];
-		// $pay_method = $response['PayMethod'];
-		// $pay_type   = $PAY_METHOD[$pay_method];
-		// $depositor  = isset($resultMap['VACT_InputName']) ? $resultMap['VACT_InputName'] : '';
-		// $commid     = '';
-		// $mobile_no  = isset($resultMap['HPP_Num']) ? $resultMap['HPP_Num'] : '';
-		// $app_no     = isset($resultMap['applNum']) ? $resultMap['applNum'] : '';
-		// $card_name  = isset($resultMap['CARD_Code']) ? $CARD_CODE[$resultMap['CARD_Code']] : '';
-		// switch($pay_type) {
-		// 	case '계좌이체':
-		// 		$bank_name = isset($BANK_CODE[$resultMap['ACCT_BankCode']]) ? $BANK_CODE[$resultMap['ACCT_BankCode']] : '';
-		// 		if ($default['de_escrow_use'] == 1)
-		// 			$escw_yn         = 'Y';
-		// 		break;
-		// 	case '가상계좌':
-		// 		$bankname  = isset($BANK_CODE[$resultMap['VACT_BankCode']]) ? $BANK_CODE[$resultMap['VACT_BankCode']] : '';
-		// 		$account   = $resultMap['VACT_Num'].' '.$resultMap['VACT_Name'];
-		// 		$app_no    = $resultMap['VACT_Num'];
-		// 		if ($default['de_escrow_use'] == 1)
-		// 			$escw_yn         = 'Y';
-		// 		break;
-		// 	default:
-		// 		break;
-		// }
+		error_log($signData.':넘어온값->:'.$resp_arr['SignData']);
 
-		// $inicis_pay_result = true;
-		
-		// jsonRespDump($response); //response json dump example 
-		// exit;
+		if ($pay_type === '신용카드' && $result_code === '3001') {
+			// 신용카드 결제 성공
+		} else if ($pay_type === '계좌이체' && $result_code === '4000') {
+			// 계좌이체 결제 성공
+		} else if ($pay_type === '가상계좌' && $result_code === '4100') {
+			// 가상계좌 발급 성공
+		} else if ($pay_type === '휴대폰' && $result_code === 'A000') {
+			// 휴대폰결제 처리 성공
+		} else {
+			alert("{$result_msg} ({$result_code})");
+			exit;
+		}
+
+		$tno         = $resp_arr['TID']; 		// nicepay 원거래번호
+		$amount      = $resp_arr['Amt']; 		// 금액
+		$app_time    = $resp_arr['AuthDate']; 	// 승인일시
+
+        $depositor   = $resp_arr['BuyerName'];  	// 주문자 이름
+        $mobile_no   = $resp_arr['BuyerTel'];	// 주문자 휴대폰번호
+        $card_name   = isset($resp_arr['CardName'])      ? $resp_arr['CardName']      : ''; // 카드명 (예) KB국민
+		$bank_name   = isset($resp_arr['BankName'])      ? $resp_arr['BankName']      : ''; // 은행명 (예) KB국민
+        $app_no      = isset($resp_arr['AuthCode'])      ? $resp_arr['AuthCode']      : ''; // 승인번호
+		$vbankname   = isset($resp_arr['VbankBankName']) ? $resp_arr['VbankBankName'] : ''; // 가상계좌 입금할 은행명
+		$vbanknum    = isset($resp_arr['VbankNum'])      ? $resp_arr['VbankNum']      : ''; // 가상계좌 입금할 계좌번호
+		$account     = $vbankname.' '.$vbanknum; // 은행명과 계좌번호
 		
 	}catch(Exception $e){
 		$e->getMessage();

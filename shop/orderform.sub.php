@@ -224,8 +224,6 @@ if($is_kakaopay_use) {
             $send_cost = get_sendcost($s_cart_id);
         }
 
-        $tot_price = $tot_sell_price + $send_cost; // 총계 = 주문상품금액합계 + 배송비
-
         // 복합과세처리
         if($default['de_tax_flag_use']) {
             $comm_tax_mny = round(($tot_tax_mny + $send_cost) / 1.1);
@@ -464,6 +462,7 @@ if($is_kakaopay_use) {
                 </li>
                <li class="sod_bsk_cnt">
                     <span>총계</span>
+                    <?php $tot_price = $tot_sell_price + $send_cost; // 총계 = 주문상품금액합계 + 배송비 ?>
                     <strong id="ct_tot_price"><?php echo number_format($tot_price); ?></strong>원
                 </li>
 
@@ -1412,10 +1411,10 @@ function forderform_check(f)
         }
     }
 
-    if (jQuery(f).triggerHandler("form_sumbit_order_"+form_order_method) !== false) {
+    if( jQuery(f).triggerHandler("form_sumbit_order_"+form_order_method) !== false ) {
         
-    // pay_method 설정
-    <?php if($default['de_pg_service'] == 'kcp') { ?>
+        // pay_method 설정
+        <?php if($default['de_pg_service'] == 'kcp') { ?>
         f.site_cd.value = f.def_site_cd.value;
         if(typeof f.payco_direct !== "undefined") f.payco_direct.value = "";
         if(typeof f.naverpay_direct !== "undefined") f.naverpay_direct.value = "A";
@@ -1455,7 +1454,7 @@ function forderform_check(f)
                 f.pay_method.value   = "무통장";
                 break;
         }
-    <?php } else if($default['de_pg_service'] == 'lg') { ?>
+        <?php } else if($default['de_pg_service'] == 'lg') { ?>
         f.LGD_EASYPAY_ONLY.value = "";
         if(typeof f.LGD_CUSTOM_USABLEPAY === "undefined") {
             var input = document.createElement("input");
@@ -1493,7 +1492,7 @@ function forderform_check(f)
                 f.LGD_CUSTOM_FIRSTPAY.value = "무통장";
                 break;
         }
-    <?php }  else if($default['de_pg_service'] == 'inicis') { ?>
+        <?php }  else if($default['de_pg_service'] == 'inicis') { ?>
         switch(settle_method)
         {
             case "계좌이체":
@@ -1524,10 +1523,10 @@ function forderform_check(f)
                 f.gopaymethod.value = "무통장";
                 break;
         }
-    <?php } // pay method end ?>
+        <?php } ?>
 
-    // 결제정보설정
-    <?php if($default['de_pg_service'] == 'kcp') { // kcp begin ?>
+        // 결제정보설정
+        <?php if($default['de_pg_service'] == 'kcp') { ?>
         f.buyr_name.value = f.od_name.value;
         f.buyr_mail.value = f.od_email.value;
         f.buyr_tel1.value = f.od_tel.value;
@@ -1545,9 +1544,8 @@ function forderform_check(f)
         } else {
             f.submit();
         }
-    <?php } // kcp end ?>
-
-    <?php if($default['de_pg_service'] == 'lg') { // tosspayments begin ?>
+        <?php } ?>
+        <?php if($default['de_pg_service'] == 'lg') { ?>
         f.LGD_BUYER.value = f.od_name.value;
         f.LGD_BUYEREMAIL.value = f.od_email.value;
         f.LGD_BUYERPHONE.value = f.od_hp.value;
@@ -1569,9 +1567,8 @@ function forderform_check(f)
         } else {
             f.submit();
         }
-    <?php } // tosspayments (lg) end ?>
-
-    <?php if($default['de_pg_service'] == 'inicis') { // inicis begin ?>
+        <?php } ?>
+        <?php if($default['de_pg_service'] == 'inicis') { ?>
         f.price.value       = f.good_mny.value;
         <?php if($default['de_tax_flag_use']) { ?>
         f.tax.value         = f.comm_vat_mny.value;
@@ -1612,31 +1609,37 @@ function forderform_check(f)
         } else {
             f.submit();
         }
-    <?php } // inicis end ?>
+        <?php } ?>
 
-    <?php if($default['de_pg_service'] == 'nicepay') { // nicepay begin ?>
-        // if(f.pay_method.value != "무통장") {
-        if (settle_method != '무통장') {
-            if (settle_method == '신용카드') {
-                f.PayMethod.value = 'CARD';
-            } else if (settle_method == '계좌이체') {
-                f.PayMethod.value = 'BANK';
-            } else if (settle_method == '가상계좌') {
-                f.PayMethod.value = 'VBANK';
-            } else if (settle_method == '휴대폰') {
-                f.PayMethod.value = 'CELLPHONE';
-            }
-            f.BuyerName.value  = f.od_name.value;
-            f.BuyerEmail.value = f.od_email.value;
-            f.BuyerTel.value   = f.od_hp.value;
-            
-            nicepayStart(f);
+        <?php if($default['de_pg_service'] == 'nicepay') { ?>
+        switch(settle_method) {
+            case "계좌이체":
+                f.PayMethod.value = "BANK";
+                break;
+            case "가상계좌":
+                f.PayMethod.value = "VBANK";
+                break;
+            case "휴대폰":
+                f.PayMethod.value = "CELLPHONE";
+                break;
+                case "신용카드":
+                f.PayMethod.value = "CARD";
+                // f.acceptmethod.value = f.acceptmethod.value.replace(":useescrow", "");
+                break;
+            default : 
+                f.PayMethod.value = "무통장";
+        }
+        f.BuyerName.value  = f.od_name.value;
+        f.BuyerEmail.value = f.od_email.value;
+        f.BuyerTel.value   = f.od_hp.value;
+
+        if(f.PayMethod.value != "무통장") {
+            nicepayStart();
         } else {
             f.submit();
         }
-    <?php } // nicepay end ?>    
-
-    } // jQuery(f).triggerHandler end
+        <?php } ?>
+    }
 
 }
 
