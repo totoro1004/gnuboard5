@@ -1320,6 +1320,25 @@ function pay_approval()
 
         }
 
+        <?php } else if($default['de_pg_service'] == 'nicepay') { ?>
+        switch(settle_method) {
+            case "계좌이체":
+                f.PayMethod.value = "BANK";
+                break;
+            case "가상계좌":
+                f.PayMethod.value = "VBANK";
+                break;
+            case "휴대폰":
+                f.PayMethod.value = "CELLPHONE";
+                break;
+            case "신용카드":
+                f.PayMethod.value = "CARD";
+                break;
+        }        
+        f.BuyerName.value  = pf.od_name.value;
+        f.BuyerEmail.value = pf.od_email.value;
+        f.BuyerTel.value   = pf.od_hp.value;
+        
         <?php } else if($default['de_pg_service'] == 'lg') { ?>
         var pay_method = "";
         var easy_pay = "";

@@ -51,6 +51,9 @@ if($pp_id !== get_session('ss_personalpay_id') || $hash_data !== get_session('ss
 if ($pp_settle_case == "계좌이체")
 {
     switch($default['de_pg_service']) {
+        case 'nicepay':
+            include G5_MSHOP_PATH.'/nicepay/nicepay_mobile.php';
+            break;
         case 'lg':
             include G5_SHOP_PATH.'/lg/xpay_result.php';
             break;
@@ -73,6 +76,9 @@ if ($pp_settle_case == "계좌이체")
 else if ($pp_settle_case == "가상계좌")
 {
     switch($default['de_pg_service']) {
+        case 'nicepay':
+            include G5_MSHOP_PATH.'/nicepay/nicepay_mobile.php';
+            break;
         case 'lg':
             include G5_SHOP_PATH.'/lg/xpay_result.php';
             break;
@@ -96,6 +102,9 @@ else if ($pp_settle_case == "가상계좌")
 else if ($pp_settle_case == "휴대폰")
 {
     switch($default['de_pg_service']) {
+        case 'nicepay':
+            include G5_MSHOP_PATH.'/nicepay/nicepay_mobile.php';
+            break;
         case 'lg':
             include G5_SHOP_PATH.'/lg/xpay_result.php';
             break;
@@ -116,6 +125,9 @@ else if ($pp_settle_case == "휴대폰")
 else if ($pp_settle_case == "신용카드")
 {
     switch($default['de_pg_service']) {
+        case 'nicepay':
+            include G5_MSHOP_PATH.'/nicepay/nicepay_mobile.php';
+            break;
         case 'lg':
             include G5_SHOP_PATH.'/lg/xpay_result.php';
             break;

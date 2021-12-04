@@ -758,6 +758,7 @@ if(!$default['de_kakaopay_cancelpwd']){
                     <li class="<?php if($default['de_pg_service'] == 'kcp') echo 'tab-current'; ?>"><a href="#kcp_info_anchor" data-value="kcp" title="NHN KCP 선택하기" >NHN KCP</a></li>
                     <li class="<?php if($default['de_pg_service'] == 'lg') echo 'tab-current'; ?>"><a href="#lg_info_anchor" data-value="lg" title="토스페이먼츠 선택하기">토스페이먼츠</a></li>
                     <li class="<?php if($default['de_pg_service'] == 'inicis') echo 'tab-current'; ?>"><a href="#inicis_info_anchor" data-value="inicis" title="KG이니시스 선택하기">KG이니시스</a></li>
+                    <li class="<?php if($default['de_pg_service'] == 'nicepay') echo 'tab-current'; ?>"><a href="#nicepay_info_anchor" data-value="nicepay" title="나이스페이 선택하기">나이스페이</a></li>
                 </ul>
             </td>
         </tr>

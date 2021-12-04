@@ -1610,6 +1610,35 @@ function forderform_check(f)
             f.submit();
         }
         <?php } ?>
+
+        <?php if($default['de_pg_service'] == 'nicepay') { ?>
+        switch(settle_method) {
+            case "계좌이체":
+                f.PayMethod.value = "BANK";
+                break;
+            case "가상계좌":
+                f.PayMethod.value = "VBANK";
+                break;
+            case "휴대폰":
+                f.PayMethod.value = "CELLPHONE";
+                break;
+                case "신용카드":
+                f.PayMethod.value = "CARD";
+                // f.acceptmethod.value = f.acceptmethod.value.replace(":useescrow", "");
+                break;
+            default : 
+                f.PayMethod.value = "무통장";
+        }
+        f.BuyerName.value  = f.od_name.value;
+        f.BuyerEmail.value = f.od_email.value;
+        f.BuyerTel.value   = f.od_hp.value;
+
+        if(f.PayMethod.value != "무통장") {
+            nicepayStart();
+        } else {
+            f.submit();
+        }
+        <?php } ?>
     }
 
 }
