@@ -137,92 +137,25 @@ function reqPost(Array $data, $url){
     curl_close($ch);	 
     return $response;
 }
-
-$resultCode     = $PAY['ResultCode'];	// 결과 코드
-$resultMsg      = $PAY['ResultMsg'];	// 결과메시지
-$mid            = $PAY['MID'];  // 상점ID
-$tid            = $PAY['TID'];  // 거래ID
-$amt            = $PAY['Amt'];  // 결제상품금액
-$moid           = $PAY['Moid'];  // 주문번호
-$authDate       = $PAY['AuthDate']; // 승인 시간
-$authCode       = $PAY['AuthCode']; // 승인 번호
-
-$tno            = $tid;
-$amount         = $amt;
-$res_cd         = $resultCode;
-$res_msg        = $resultMsg;
-
-$paySuccess = false;		// 결제 성공 여부
-if ($PayMethod == 'CARD') { //신용카드
-
-    $card_cd        = $PAY['CardCode']; // 카드사 코드
-    $card_name      = $PAY['CardName']; // 카드 종류
-    $app_time       = $authDate; // 승인 시간
-    $app_no         = $authCode; // 승인 번호
-    $card_mny       = $amt; // 카드결제금액
-
-	if ($resultCode == '3001') 
-        $paySuccess = true;	// 결과코드 (정상 :3001 , 그 외 에러)
-
-} else if ($PayMethod == 'BANK') { // 계좌이체
-
-    $app_time       = $authDate; // 승인 시간
-    $bankname       = $PAY['BankName']; // 은행명
-    $bank_code      = $PAY['BankCode']; // 은행코드
-    $bk_mny         = $amt; // 계좌이체결제금액
-
-	if ($resultCode == '4000') 
-        $paySuccess = true;	// 결과코드 (정상 :4000 , 그 외 에러)
-
-} else if ($PayMethod == 'CELLPHONE') { // 휴대폰
-    
-    $app_time       = $authDate; // 승인 시간
-    $commid         = $PAY['Carrier']; //  통신사 코드
-    $mobile_no      = $PAY['DstAddr']; // 휴대폰 번호
-
-	if ($resultCode == 'A000') 
-        $paySuccess = true;	//결과코드 (정상 : A000, 그 외 비정상)
-
-} else if ($PayMethod == 'VBANK') { // 가상계좌
-    
-    $bankname       = $PAY['VbankBankName']; // 입금할 은행 이름
-    $depositor      = ''; // 입금할 계좌 예금주
-    $account        = $PAY['VbankNum']; // 입금할 계좌 번호
-    $va_date        = $PAY['VbankExpDate']; // 가상계좌 입금마감시간
-
-	if ($resultCode == '4100') 
-        $paySuccess = true;	// 결과코드 (정상 :4100 , 그 외 에러)
-
-}
-
-$result_txt = "";
-$result_txt .= "resultCode:".$resultCode."|";
-$result_txt .= "resultMsg:".$resultMsg."|";
-$result_txt .= "authDate:".$authDate."|";
-$result_txt .= "authCode:".$authCode."|";
-$result_txt .= "mid:".$mid."|";
-$result_txt .= "tid:".$tid."|";
-$result_txt .= "moid:".$moid."|";
-$result_txt .= "amt:".$amt."|";
-
-/** 위의 응답 데이터 외에도 전문 Header와 개별부 데이터 Get 가능 */
-
-$tno            = $tid;
-$amount         = $amt;
-$res_cd         = $resultCode;
-$res_msg        = $resultMsg;
+ 
 
 // 세션 초기화
 set_session('P_TID',  '');
 set_session('P_AMT',  '');
 set_session('P_HASH', '');
 
-$oid  = trim($moid);
+$oid = isset($PAY['Moid']) ? trim($PAY['Moid']) : '';
+$tid = isset($PAY['TID'])  ? trim($PAY['TID'])  : '';
+// $p_req_url 	= isset($_REQUEST['P_REQ_URL']) ? trim($_REQUEST['P_REQ_URL']) : '';
+
+// if( ! $p_req_url || !preg_match('/^https\:\/\//i', $p_req_url)){
+//     alert("잘못된 요청 URL 입니다.");
+// }
 
 $sql = " select * from {$g5['g5_shop_order_data_table']} where od_id = '$oid' ";
 $row = sql_fetch($sql);
 
-$data = unserialize(base64_decode($row['dt_data']));
+$data = isset($row['dt_data']) ? unserialize(base64_decode($row['dt_data'])) : array();
 
 if(isset($data['pp_id']) && $data['pp_id']) {
     $order_action_url = G5_HTTPS_MSHOP_URL.'/personalpayformupdate.php';
@@ -230,72 +163,156 @@ if(isset($data['pp_id']) && $data['pp_id']) {
 } else {
     $order_action_url = G5_HTTPS_MSHOP_URL.'/orderformupdate.php';
     $page_return_url  = G5_SHOP_URL.'/orderform.php';
-    if (get_session('ss_direct'))
+    if(get_session('ss_direct'))
         $page_return_url .= '?sw_direct=1';
 
+    // 장바구니가 비어있는가?
     if (get_session('ss_direct'))
         $tmp_cart_id = get_session('ss_cart_direct');
     else
         $tmp_cart_id = get_session('ss_cart_id');
-    if (!$tmp_cart_id) {
-        print_r2($_SESSION);
+
+    if (get_cart_count($tmp_cart_id) == 0)// 장바구니에 담기
+        alert("({$tmp_cart_id}) 세션을 잃거나 다른 브라우저에서 데이터가 변경된 경우입니다. 장바구니 상태를 확인후에 다시 시도해 주세요.", G5_SHOP_URL.'/cart.php');
+
+    $error = "";
+    // 장바구니 상품 재고 검사
+    $sql = " select it_id,
+                    ct_qty,
+                    it_name,
+                    io_id,
+                    io_type,
+                    ct_option
+               from {$g5['g5_shop_cart_table']}
+              where od_id = '$tmp_cart_id'
+                and ct_select = '1' ";
+    $result = sql_query($sql);
+    for ($i=0; $row=sql_fetch_array($result); $i++)
+    {
+        // 상품에 대한 현재고수량
+        if($row['io_id']) {
+            $it_stock_qty = (int)get_option_stock_qty($row['it_id'], $row['io_id'], $row['io_type']);
+        } else {
+            $it_stock_qty = (int)get_it_stock_qty($row['it_id']);
+        }
+        // 장바구니 수량이 재고수량보다 많다면 오류
+        if ($row['ct_qty'] > $it_stock_qty)
+            $error .= "{$row['ct_option']} 의 재고수량이 부족합니다. 현재고수량 : $it_stock_qty 개\\n\\n";
+    }
+
+    if($i == 0)
+        alert('장바구니가 비어 있습니다.', G5_SHOP_URL.'/cart.php');
+
+    if ($error != "") {
+        $error .= "결제진행이 중단 되었습니다.";
+        alert($error, G5_SHOP_URL.'/cart.php');
     }
 }
 
-if ($paySuccess == true) { // 결제성공
-    
-    $hash = md5($tno.$g_conf_site_cd.$amount);
-    set_session('P_TID',  $tno);
-    set_session('P_AMT',  $amount);
-    set_session('P_HASH', $hash);
-
+$res_cd = "";
+// 결제성공
+if (($PAY['PayMethod'] === "CARD"      && $PAY['ResultCode'] === '3001') || 
+    ($PAY['PayMethod'] === "BANK"      && $PAY['ResultCode'] === '4000') || 
+    ($PAY['PayMethod'] === "VBANK"     && $PAY['ResultCode'] === '4100') || 
+    ($PAY['PayMethod'] === "CELLPHONE" && $PAY['ResultCode'] === 'A000')) 
+{
+    // 결제방식별로 결과값이 모두 다르게 나오므로 값을 0000 으로 통일
+    $res_cd = $_POST['res_cd'] = "0000";
+} else  {
+    $error_msg = "{$PAY['PayMethod']} 오류 : ".iconv_utf8($PAY['ResultMsg'])."({$PAY['ResultCode']})";
+    error_log($error_msg.', return url : '.$page_return_url);
+    alert($error_msg, $page_return_url);
+    exit;
 }
-else {
-    alert('오류 : '.$res_msg.' 코드 : '.$res_cd, $page_return_url);
+
+$PAY = array_map('trim', $PAY);
+$PAY = array_map('strip_tags', $PAY);
+$PAY = array_map('get_search_string', $PAY);
+
+$hash = md5($PAY['TID'].$PAY['MID'].$PAY['Amt']);
+set_session('P_TID',  $PAY['TID']);
+set_session('P_AMT',  $PAY['Amt']);
+set_session('P_HASH', $hash);
+
+$params = array();
+
+//개인결제
+if (isset($data['pp_id']) && !empty($data['pp_id'])) {
+    // 개인결제 정보
+    $pp_check = false;
+    $sql = " select * from {$g5['g5_shop_personalpay_table']} where pp_id = '{$oid}' and pp_tno = '{$tid}' and pp_use = '1' ";
+    $pp = sql_fetch($sql);
+
+    if (!$pp['pp_tno'] && $data['pp_id'] == $oid) {
+        $pp_id  = $oid;
+
+        $exclude = array('res_cd', 'P_HASH', 'P_TYPE', 'P_AUTH_DT', 'P_VACT_BANK', 'LGD_PAYKEY', 'pp_id', 'good_mny', 'pp_name', 'pp_email', 'pp_hp', 'pp_settle_case');
+
+        foreach($data as $key=>$v) {
+            if( !in_array($key, $exclude) ){
+                $_POST[$key] = $params[$key] = clean_xss_tags(strip_tags($v));
+            }
+        }
+
+        $good_mny       = isset($PAY['Amt']) ? $PAY['Amt'] : 0;
+        $pp_name        = clean_xss_tags($data['pp_name']);
+        $pp_email       = clean_xss_tags($data['pp_email']);
+        $pp_hp          = clean_xss_tags($data['pp_hp']);
+        $pp_settle_case = clean_xss_tags($data['pp_settle_case']);
+
+        $_POST['P_HASH']        = $hash;
+        $_POST['pp_id']         = $oid;     // 주문번호
+        $_POST['good_mny']      = isset($PAY['Amt'])        ? $PAY['Amt']        :  0; // 거래금액     
+        // $_POST['P_AUTH_NO']     = isset($PAY['AuthCode'])   ? $PAY['AuthCode']   : ''; // 승인번호
+        // $_POST['P_TYPE']        = isset($PAY['PayMethod'])  ? $PAY['PayMethod']  : ''; // 지불수단
+        // $_POST['P_AUTH_DT']     = isset($PAY['AuthDate'])   ? $PAY['AuthDate']   : ''; // 승인일시
+        // // $_POST['P_HPP_CORP']    = isset($PAY['P_HPP_CORP']) ? $PAY['P_HPP_CORP'] : ''; // 휴대폰 통신사
+        // $_POST['P_APPL_NUM']    = isset($PAY['BuyerTel'])   ? $PAY['BuyerTel']   : ''; // 휴대폰 번호
+        // $_POST['P_VACT_NUM']    = isset($PAY['VbankNum'])   ? $PAY['VbankNum']   : ''; // 입금할 계좌번호
+        // $_POST['P_VACT_NAME']   = isset($PAY['VbankBankName']) ? iconv_utf8($PAY['VbankBankName']) : ''; // 계좌주명
+        // $_POST['P_VACT_BANK']   = (isset($PAY['VbankBankCode']) && isset($BANK_CODE[$PAY['VbankBankCode']])) ? $BANK_CODE[$PAY['VbankBankCode']] : ''; // 은행코드
+        // $_POST['P_CARD_ISSUER'] = isset($CARD_CODE[$PAY['AcquCardCode']]) ? $CARD_CODE[$PAY['AcquCardCode']] : ''; // 신용카드(발급사) 코드
+        // $_POST['P_UNAME']       = isset($PAY['BuyerName']) ? iconv_utf8($PAY['BuyerName']) : ''; // 고객성명
+
+        include_once(G5_MSHOP_PATH.'/personalpayformupdate.php');
+    }
+
+} else {
+    // 상점 결제
+    $exclude = array('res_cd', 'P_HASH', 'P_TYPE', 'P_AUTH_DT', 'P_VACT_BANK', 'P_AUTH_NO');
+
+    foreach($data as $key=>$value) {
+        if(!empty($exclude) && in_array($key, $exclude))
+            continue;
+
+        if(is_array($value)) {
+            foreach($value as $k=>$v) {
+                $_POST[$key][$k] = $params[$key][$k] = clean_xss_tags(strip_tags($v));
+            }
+        } else {
+            $_POST[$key] = $params[$key] = clean_xss_tags(strip_tags($value));
+        }
+    }
+
+    $P_HASH         = $_POST['P_HASH']        = $hash;
+    // $P_TYPE         = $_POST['P_TYPE']        = isset($PAY['PayMethod'])  ? $PAY['PayMethod']  : ''; // 지불수단
+    // $P_AUTH_NO      = $_POST['P_AUTH_NO']     = isset($PAY['AuthCode'])   ? $PAY['AuthCode']   : ''; // 승인번호
+    // $P_AUTH_DT      = $_POST['P_AUTH_DT']     = isset($PAY['AuthDate'])   ? $PAY['AuthDate']   : ''; // 승인일시
+    // // $P_HPP_CORP     = $_POST['P_HPP_CORP'] = isset($PAY['P_HPP_CORP']) ? $PAY['P_HPP_CORP'] : ''; // 휴대폰 통신사
+    // $P_APPL_NUM     = $_POST['P_APPL_NUM']    = isset($PAY['BuyerTel'])   ? $PAY['BuyerTel']   : ''; // 휴대폰 번호
+    // $P_VACT_NUM     = $_POST['P_VACT_NUM']    = isset($PAY['VbankNum'])   ? $PAY['VbankNum']   : ''; // 입금할 계좌번호
+    // $P_VACT_NAME    = $_POST['P_VACT_NAME']   = isset($PAY['VbankBankName']) ? iconv_utf8($PAY['VbankBankName']) : ''; // 계좌주명
+    // $P_VACT_BANK    = $_POST['P_VACT_BANK']   = isset($PAY['VbankBankName']) ? iconv_utf8($PAY['VbankBankName']) : ''; // 은행명
+    // $P_CARD_ISSUER  = $_POST['P_CARD_ISSUER'] = isset($PAY['AcquCardName']) ? $PAY['AcquCardName'] : ''; // 신용카드사명
+    // $P_UNAME        = $_POST['P_UNAME']       = isset($PAY['BuyerName']) ? iconv_utf8($PAY['BuyerName']) : ''; // 고객명
+
+    $check_keys = array('od_name', 'od_tel', 'od_pwd', 'od_hp', 'od_zip', 'od_addr1', 'od_addr2', 'od_addr3', 'od_addr_jibeon', 'od_email', 'ad_default', 'ad_subject', 'od_hope_date', 'od_b_name', 'od_b_tel', 'od_b_hp', 'od_b_zip', 'od_b_addr1', 'od_b_addr2', 'od_b_addr3', 'od_b_addr_jibeon', 'od_memo', 'od_settle_case', 'max_temp_point', 'od_temp_point', 'od_send_cost', 'od_send_cost2', 'od_bank_account', 'od_deposit_name', 'od_test', 'od_ip');
+
+    foreach($check_keys as $key){
+        $$key = isset($params[$key]) ? $params[$key] : '';
+    }
+
+    include_once( G5_MSHOP_PATH.'/orderformupdate.php' );
 }
-
-$g5['title'] = '나이스페이 결제';
-include_once(G5_PATH.'/head.sub.php');
-
-$exclude = array('res_cd', 'P_HASH', 'P_TYPE', 'P_AUTH_DT', 'P_AUTH_NO', 'P_HPP_CORP', 'P_APPL_NUM', 'P_VACT_NUM', 'P_VACT_NAME', 'P_VACT_BANK', 'P_CARD_ISSUER', 'P_UNAME');
-
-echo '<form name="forderform" method="post" action="'.$order_action_url.'" autocomplete="off">'.PHP_EOL;
-
-echo make_order_field($data, $exclude);
-
-echo '<input type="hidden" name="res_cd"        value="'.$res_cd.'">'.PHP_EOL;
-echo '<input type="hidden" name="P_HASH"        value="'.$hash.'">'.PHP_EOL;
-echo '<input type="hidden" name="P_TYPE"        value="'.$PayMethod.'">'.PHP_EOL;
-echo '<input type="hidden" name="P_AUTH_DT"     value="'.$app_time.'">'.PHP_EOL;
-echo '<input type="hidden" name="P_AUTH_NO"     value="'.$app_no.'">'.PHP_EOL;
-echo '<input type="hidden" name="P_HPP_CORP"    value="'.$commid.'">'.PHP_EOL;
-echo '<input type="hidden" name="P_APPL_NUM"    value="'.$mobile_no.'">'.PHP_EOL;
-echo '<input type="hidden" name="P_VACT_NUM"    value="'.$account.'">'.PHP_EOL;
-echo '<input type="hidden" name="P_VACT_NAME"   value="">'.PHP_EOL;
-echo '<input type="hidden" name="P_VACT_BANK"   value="'.$bankname.'">'.PHP_EOL;
-echo '<input type="hidden" name="P_CARD_ISSUER" value="'.$card_name.'">'.PHP_EOL;
-echo '<input type="hidden" name="P_UNAME"       value="">'.PHP_EOL;
-
-echo '</form>'.PHP_EOL;
 exit;
-?>
-
-<div id="show_progress">
-    <span style="display:block; text-align:center;margin-top:120px"><img src="<?php echo G5_MOBILE_URL; ?>/shop/img/loading.gif" alt=""></span>
-    <span style="display:block; text-align:center;margin-top:10px; font-size:14px">주문완료 중입니다. 잠시만 기다려 주십시오.</span>
-</div>
-
-<script type="text/javascript">
-function setPAYResult() {
-    setTimeout( function() {
-        document.forderform.submit();
-    }, 300);
-}
-window.onload = function() {
-    setPAYResult();
-}
-</script>
-
-<?php
-include_once(G5_PATH.'/tail.sub.php');
 ?>
