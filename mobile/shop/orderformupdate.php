@@ -352,7 +352,7 @@ else if ($od_settle_case == "계좌이체")
 {
     switch($default['de_pg_service']) {
         case 'nicepay':
-            include G5_MSHOP_PATH.'/nicepay/nicepay_mobile.php';
+            include G5_MSHOP_PATH.'/nicepay/nicepay_result.php';
             break;
         case 'lg':
             include G5_SHOP_PATH.'/lg/xpay_result.php';
@@ -381,7 +381,7 @@ else if ($od_settle_case == "가상계좌")
 {
     switch($default['de_pg_service']) {
         case 'nicepay':
-            include G5_MSHOP_PATH.'/nicepay/nicepay_mobile.php';
+            include G5_MSHOP_PATH.'/nicepay/nicepay_result.php';
             break;
         case 'lg':
             include G5_SHOP_PATH.'/lg/xpay_result.php';
@@ -410,7 +410,7 @@ else if ($od_settle_case == "휴대폰")
 {
     switch($default['de_pg_service']) {
         case 'nicepay':
-            include G5_MSHOP_PATH.'/nicepay/nicepay_mobile.php';
+            include G5_MSHOP_PATH.'/nicepay/nicepay_result.php';
             break;
         case 'lg':
             include G5_SHOP_PATH.'/lg/xpay_result.php';
@@ -437,7 +437,7 @@ else if ($od_settle_case == "신용카드")
 {
     switch($default['de_pg_service']) {
         case 'nicepay':
-            include G5_MSHOP_PATH.'/nicepay/nicepay_mobile.php';
+            include G5_MSHOP_PATH.'/nicepay/nicepay_result.php';
             break;
         case 'lg':
             include G5_SHOP_PATH.'/lg/xpay_result.php';
@@ -533,6 +533,9 @@ if($tno) {
     if((int)$order_price !== (int)$pg_price) {
         $cancel_msg = '결제금액 불일치';
         switch($od_pg) {
+            case 'nicepay':
+                include G5_MSHOP_PATH.'/nicepay/nicepay_cancel.php';
+                break;
             case 'lg':
                 include G5_SHOP_PATH.'/lg/xpay_cancel.php';
                 break;
