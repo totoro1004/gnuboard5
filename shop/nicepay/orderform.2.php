@@ -31,7 +31,7 @@ $hashString   = bin2hex(hash('sha256', $ediDate.$MID.$price.$merchantKey, true))
 <input type="hidden" name="BuyerName"   value="<?php echo($buyerName)?>">   <!-- 구매자명 -->
 <input type="hidden" name="BuyerEmail"  value="<?php echo($buyerEmail)?>">  <!-- 구매자명 이메일 -->
 <input type="hidden" name="BuyerTel"    value="<?php echo($buyerTel)?>">    <!-- 구매자 연락처 -->
-<input type="hidden" name="MallUserID"  value="<?php echo($MallUserID)?>">  <!-- 구매자 연락처 -->
+<input type="hidden" name="MallUserID"  value="<?php echo($MallUserID)?>">  <!-- 쇼핑몰 회원아이디 -->
 <!-- (모바일 결제창 전용)PC 결제창 사용시 필요 없음 -->
 <input type="hidden" name="ReturnURL"   value="<?php echo($returnURL)?>">   <!-- 인증완료 결과처리 URL -->
 <input type="hidden" name="VbankExpDate" value="<?php echo($VbankExpDate)?>"><!-- 가상계좌입금만료일(YYYYMMDD) -->

@@ -85,6 +85,10 @@ if($authResultCode === "0000" /* && $authSignature == $authComparisonSignature*/
         $response = reqPost($data, $nextAppURL); //승인 호출
         
         // jsonRespDump($response); //response json dump example
+
+        // throw new Exception('강제 예외 처리를 일으킴');
+
+        include_once('./nicepay_approval.php');
         
     }catch(Exception $e){
         $e->getMessage();
@@ -99,6 +103,9 @@ if($authResultCode === "0000" /* && $authSignature == $authComparisonSignature*/
             'CharSet' => 'utf-8'
         );
         $response = reqPost($data, $netCancelURL); //예외 발생시 망취소 진행
+
+        // die('강제 예외 처리 됨');
+        include_once('./nicepay_cancel.php');
         
         // jsonRespDump($response); //response json dump example
     }
