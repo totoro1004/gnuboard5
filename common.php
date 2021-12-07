@@ -226,14 +226,8 @@ ini_set("session.gc_divisor", 100); // session.gc_divisor는 session.gc_probabil
 // 혹시나 있을지 모르는 오류를 방지하기 위하여 nicepay 결제에만 사용함
 // kagla 211207
 //------------------------------------------------------------------------------
-$nicepay_cookie = false;
-if (defined($default['de_nicepay_mid']) && $default['de_nicepay_mid'] === 'nicepay') {
-    if (PHP_VERSION_ID >= 70300 /* && $config['cf_cert_use'] || (defined('G5_YOUNGCART_VER') && G5_YOUNGCART_VER) */ ) {     
-        $nicepay_cookie = true;
-    }
-}
 
-if ($nicepay_cookie) {
+if (PHP_VERSION_ID >= 70300) {
     session_set_cookie_params(['lifetime' => 0, 'domain' => G5_COOKIE_DOMAIN, 'path' => '/', 'secure' => true, 'httponly' => true, 'samesite' => 'None' ]);
 } else {
     session_set_cookie_params(0, '/');
