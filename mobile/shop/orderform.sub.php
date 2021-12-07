@@ -750,9 +750,10 @@ if($is_kakaopay_use) {
     </form>
 
     <?php
+    require_once(G5_MSHOP_PATH.'/'.$default['de_pg_service'].'/orderform.3.php');
     if ($default['de_escrow_use']) {
         // 결제대행사별 코드 include (에스크로 안내)
-        require_once(G5_MSHOP_PATH.'/'.$default['de_pg_service'].'/orderform.3.php');
+        // require_once(G5_MSHOP_PATH.'/'.$default['de_pg_service'].'/orderform.3.php');
 
         if( is_inicis_simple_pay() ){   //삼성페이 사용시
             require_once(G5_MSHOP_PATH.'/samsungpay/orderform.3.php');

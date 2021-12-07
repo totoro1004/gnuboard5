@@ -6,8 +6,10 @@ $merchantKey = "";
 
 // if ($default['de_card_test']) 
 {
-    $MID         = "nictest00m"; // 상점아이디
-    $merchantKey = "33F49GnCMS1mFYlGXisbUDzVf2ATWCl9k3R++d5hDd3Frmuos/XLx8XhXpe+LDYAbpGKZYSwtlyyLOtS/8aD7A=="; // 상점키 // nictest00m
+    // $MID         = "nictest00m"; // 상점아이디
+    // $merchantKey = "33F49GnCMS1mFYlGXisbUDzVf2ATWCl9k3R++d5hDd3Frmuos/XLx8XhXpe+LDYAbpGKZYSwtlyyLOtS/8aD7A=="; // 상점키 // nictest00m
+    $MID         = "nicepay00m"; // 상점아이디
+    $merchantKey = "EYzu8jGGMfqaDEp76gSckuvnaHHu+bC4opsSN6lHv3b2lurNYkVXrZ7Z1AoqQnXI3eLuaUFyoRNC6FkrzVjceg=="; // 상점키 // "nicepay00m"
 }    
 
 $default['de_nicepay_mid']     = $MID;

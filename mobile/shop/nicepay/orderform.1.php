@@ -13,7 +13,7 @@ $TransType  = $default['de_escrow_use'] ? 1 : 0;
 $MallUserID = $member['mb_id'];
 
 $ediDate      = G5_TIME_YMD;
-$returnURL    = G5_MSHOP_URL."/nicepay/nicepay_approval_form.php";
+$returnURL    = G5_MSHOP_URL."/nicepay/nicepay_mobile.php";
 $VbankExpDate = date("Ymd", strtotime(G5_TIME_YMD." +1 days")); // 가상계좌입금만료일 오늘부터 1일 (오늘이 20211202 인 경우 20211203 까지)
 $hashString   = bin2hex(hash('sha256', $ediDate.$MID.$price.$merchantKey, true));
 ?>
