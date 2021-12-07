@@ -220,8 +220,27 @@ ini_set("session.gc_maxlifetime", 10800); // session data의 garbage collection 
 ini_set("session.gc_probability", 1); // session.gc_probability는 session.gc_divisor와 연계하여 gc(쓰레기 수거) 루틴의 시작 확률을 관리합니다. 기본값은 1입니다. 자세한 내용은 session.gc_divisor를 참고하십시오.
 ini_set("session.gc_divisor", 100); // session.gc_divisor는 session.gc_probability와 결합하여 각 세션 초기화 시에 gc(쓰레기 수거) 프로세스를 시작할 확률을 정의합니다. 확률은 gc_probability/gc_divisor를 사용하여 계산합니다. 즉, 1/100은 각 요청시에 GC 프로세스를 시작할 확률이 1%입니다. session.gc_divisor의 기본값은 100입니다.
 
-session_set_cookie_params(0, '/');
-ini_set("session.cookie_domain", G5_COOKIE_DOMAIN);
+//==============================================================================
+// 나이스페이 결제시 쿠키 문제 해결
+// 이 코드로 PG 결제시 크롬80 이슈가 모두 해결되는 것으로 보이지만 
+// 혹시나 있을지 모르는 오류를 방지하기 위하여 nicepay 결제에만 사용함
+// kagla 211207
+//------------------------------------------------------------------------------
+$nicepay_cookie = false;
+if (defined($default['de_nicepay_mid']) && $default['de_nicepay_mid'] === 'nicepay') {
+    if (PHP_VERSION_ID >= 70300 /* && $config['cf_cert_use'] || (defined('G5_YOUNGCART_VER') && G5_YOUNGCART_VER) */ ) {     
+        $nicepay_cookie = true;
+    }
+}
+
+if ($nicepay_cookie) {
+    session_set_cookie_params(['lifetime' => 0, 'domain' => G5_COOKIE_DOMAIN, 'path' => '/', 'secure' => true, 'httponly' => true, 'samesite' => 'None' ]);
+} else {
+    session_set_cookie_params(0, '/');
+    ini_set("session.cookie_domain", G5_COOKIE_DOMAIN);
+}
+//==============================================================================
+
 
 function chrome_domain_session_name(){
     // 크롬90버전대부터 아래 도메인을 포함된 주소로 접속시 특정조건에서 세션이 생성 안되는 문제가 있을수 있다.

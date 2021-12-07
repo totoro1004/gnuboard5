@@ -100,7 +100,7 @@ if($authResultCode === "0000" /* && $authSignature == $authComparisonSignature*/
     $ResultCode = $authResultCode; 	
     $ResultMsg = $authResultMsg;
 
-    die("{$ResultMsg}({$ResultCode})");
+    alert("{$ResultMsg}({$ResultCode})", G5_SHOP_URL.'/cart.php');
 }/*else{
     echo('인증 응답 Signature : '. $authSignature.'</br>');
     echo('인증 생성 Signature : '. $authComparisonSignature);
