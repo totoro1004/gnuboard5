@@ -228,7 +228,8 @@ ini_set("session.gc_divisor", 100); // session.gc_divisor는 session.gc_probabil
 //------------------------------------------------------------------------------
 
 if (PHP_VERSION_ID >= 70300) {
-    session_set_cookie_params(['lifetime' => 0, 'domain' => G5_COOKIE_DOMAIN, 'path' => '/', 'secure' => true, 'httponly' => true, 'samesite' => 'None' ]);
+    // session_set_cookie_params(['lifetime' => 0, 'domain' => G5_COOKIE_DOMAIN, 'path' => '/', 'secure' => true, 'httponly' => true, 'samesite' => 'None' ]);
+    session_set_cookie_params(['lifetime'=>0, 'domain'=>G5_COOKIE_DOMAIN, 'path'=>'/', 'samesite'=>'None']);
 } else {
     session_set_cookie_params(0, '/');
     ini_set("session.cookie_domain", G5_COOKIE_DOMAIN);
