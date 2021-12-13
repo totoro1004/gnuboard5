@@ -20,13 +20,13 @@ $MallUserID = $member['mb_id'];
 $ediDate      = G5_TIME_YMDHIS;
 $returnURL    = '';
 $VbankExpDate = date('Ymd', strtotime(G5_TIME_YMD.' +1 days')); // 가상계좌입금만료일 오늘부터 1일 (오늘이 20211202 인 경우 20211203 까지)
-$hashString   = bin2hex(hash('sha256', $ediDate.$MID.$price.$merchantKey, true));
+$hashString   = bin2hex(hash('sha256', $ediDate.$default['de_nicepay_mid'].$price.$default['de_nicepay_mertkey'], true));
 ?>
     
 <input type="hidden" name="PayMethod"   value="">                           <!-- 결제 수단 -->
 <input type="hidden" name="GoodsName"   value="<?php echo($goodsName)?>">   <!-- 결제 상품명 -->
 <input type="hidden" name="Amt"         value="<?php echo($price)?>">       <!-- 결제 상품금액 -->
-<input type="hidden" name="MID"         value="<?php echo($MID)?>">         <!-- 상점 아이디 -->
+<input type="hidden" name="MID"         value="<?php echo($default['de_nicepay_mid'])?>">         <!-- 상점 아이디 -->
 <input type="hidden" name="Moid"        value="<?php echo($moid)?>">        <!-- 상품 주문번호 -->
 <input type="hidden" name="BuyerName"   value="<?php echo($buyerName)?>">   <!-- 구매자명 -->
 <input type="hidden" name="BuyerEmail"  value="<?php echo($buyerEmail)?>">  <!-- 구매자명 이메일 -->
@@ -45,8 +45,8 @@ $hashString   = bin2hex(hash('sha256', $ediDate.$MID.$price.$merchantKey, true))
 <input type="hidden" name="SignData"    value="<?php echo($hashString)?>"/> <!-- 해쉬값 -->
 <!-- <a href="#" class="btn_blue" onClick="nicepayStart();">요 청</a> -->
 <?php if ($default['de_tax_flag_use']) { // 복합과세 ?>
-    <input type="hidden" name="SupplyAmt"   value="<?php echo $comm_tax_mny; ?>">   <!-- 공급가액 -->
-    <input type="hidden" name="GoodsVat"    value="<?php echo $comm_vat_mny; ?>">   <!-- 부가가치세 -->
+    <input type="hidden" name="SupplyAmt"   value="<?php echo($comm_tax_mny)?>">   <!-- 공급가액 -->
+    <input type="hidden" name="GoodsVat"    value="<?php echo($comm_vat_mny)?>">   <!-- 부가가치세 -->
     <input type="hidden" name="ServiceAmt"  value="0">                              <!-- 봉사료 -->
-    <input type="hidden" name="TaxFreeAmt"  value="<?php echo $comm_free_mny; ?>">  <!-- 비과세 금액 -->
+    <input type="hidden" name="TaxFreeAmt"  value="<?php echo($comm_free_mny)?>">  <!-- 비과세 금액 -->
 <?php } ?>

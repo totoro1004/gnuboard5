@@ -28,8 +28,7 @@ $netCancelURL   = $_POST['NetCancelURL'];   // 망취소 요청 URL
 * 위변조 검증 미사용으로 인해 발생하는 이슈는 당사의 책임이 없음 참고하시기 바랍니다.
 ****************************************************************************************
  */
-// $merchantKey = "EYzu8jGGMfqaDEp76gSckuvnaHHu+bC4opsSN6lHv3b2lurNYkVXrZ7Z1AoqQnXI3eLuaUFyoRNC6FkrzVjceg=="; // 상점키 // nicepay00m
-// $merchantKey = "33F49GnCMS1mFYlGXisbUDzVf2ATWCl9k3R++d5hDd3Frmuos/XLx8XhXpe+LDYAbpGKZYSwtlyyLOtS/8aD7A=="; // 상점키 // nictest00m
+$merchantKey = $default['de_nicepay_mertkey']; // 상점키 
 
 // 인증 응답 Signature = hex(sha256(AuthToken + MID + Amt + MerchantKey)
 //$authComparisonSignature = bin2hex(hash('sha256', $authToken. $mid. $amt. $merchantKey, true)); 
@@ -68,13 +67,15 @@ if($authResultCode === "0000" /* && $authSignature == $authComparisonSignature*/
 		$response = reqPost($data, $nextAppURL); //승인 호출
 		$resp_arr = json_decode($response, true); // true 일 경우 배열(array)로 반환
 
-		// print_r2($resp_arr); exit;
+		error_log("resp_arr");
+		error_log(print_r($resp_arr, true));
+
 		$pay_method  = $resp_arr['PayMethod']; 	// CARD, BANK, VBANK, CELLPHONE
 		$pay_type    = $PAY_METHOD[$pay_method]; // 신용카드, 계좌이체, 가상계좌, 휴대폰
 		$result_code = $resp_arr['ResultCode'];
 		$result_msg  = $resp_arr['ResultMsg'];
 		
-		error_log($signData.':넘어온값->:'.$resp_arr['SignData']);
+		// error_log($signData.':넘어온값->:'.$resp_arr['SignData']);
 
 		if ($pay_type === '신용카드' && $result_code === '3001') {
 			// 신용카드 결제 성공
@@ -93,11 +94,14 @@ if($authResultCode === "0000" /* && $authSignature == $authComparisonSignature*/
 		$amount      = $resp_arr['Amt']; 		// 금액
 		$app_time    = $resp_arr['AuthDate']; 	// 승인일시
 
-        $depositor   = $resp_arr['BuyerName'];  	// 주문자 이름
+		// 입금자명 : 예금주로 해야 하는데 예금주가 반환되지 않아 주문자명으로 대체합니다.
+		// 원래는 이체할때 예금주가 "나이스페이먼츠 주식회사"로 표시됩니다.
+        $depositor   = $resp_arr['BuyerName'];  
         $mobile_no   = $resp_arr['BuyerTel'];	// 주문자 휴대폰번호
         $card_name   = isset($resp_arr['CardName'])      ? $resp_arr['CardName']      : ''; // 카드명 (예) KB국민
 		$bank_name   = isset($resp_arr['BankName'])      ? $resp_arr['BankName']      : ''; // 은행명 (예) KB국민
-        $app_no      = isset($resp_arr['AuthCode'])      ? $resp_arr['AuthCode']      : ''; // 승인번호
+		$bankname    = $bank_name; // PHP8에서 Undefined variable $bankname 나오는 오류 방지
+     	$app_no      = isset($resp_arr['AuthCode'])      ? $resp_arr['AuthCode']      : ''; // 승인번호
 		$vbankname   = isset($resp_arr['VbankBankName']) ? $resp_arr['VbankBankName'] : ''; // 가상계좌 입금할 은행명
 		$vbanknum    = isset($resp_arr['VbankNum'])      ? $resp_arr['VbankNum']      : ''; // 가상계좌 입금할 계좌번호
 		$account     = $vbankname.' '.$vbanknum; // 은행명과 계좌번호

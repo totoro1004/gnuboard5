@@ -354,6 +354,7 @@ else if ($od_settle_case == "가상계좌")
     switch($default['de_pg_service']) {
         case 'nicepay':
             include G5_SHOP_PATH.'/nicepay/nicepay_pc.php';
+            $od_app_no = $app_no;
             break;
         case 'lg':
             include G5_SHOP_PATH.'/lg/xpay_result.php';
@@ -493,6 +494,9 @@ if($tno) {
     if((int)$order_price !== (int)$pg_price) {
         $cancel_msg = '결제금액 불일치';
         switch($od_pg) {
+            case 'nicepay':
+                include G5_SHOP_PATH.'/nicepay/nicepay_cancel.php';
+                break;
             case 'lg':
                 include G5_SHOP_PATH.'/lg/xpay_cancel.php';
                 break;

@@ -202,6 +202,16 @@ if( ! isset($default['de_easy_pay_services']) ){
     sql_query($sql, false);
 }
 
+// PG 나이스페이 추가
+if (!isset($default['de_nicepay_mid']) ){
+    $sql = "ALTER TABLE `{$g5['g5_shop_default_table']}` 
+            ADD COLUMN `de_nicepay_mid` VARCHAR(100) NOT NULL DEFAULT '' AFTER `de_inicis_cartpoint_use`,
+            ADD COLUMN `de_nicepay_mertkey` VARCHAR(100) NOT NULL DEFAULT '' AFTER `de_nicepay_mid`,
+            ADD COLUMN `de_nicepay_cancelpwd` VARCHAR(100) NOT NULL DEFAULT '' AFTER `de_nicepay_mertkey`; ";
+    sql_query($sql, false);
+}
+
+
 if( function_exists('pg_setting_check') ){
     pg_setting_check(true);
 }
@@ -894,7 +904,7 @@ if(!$default['de_kakaopay_cancelpwd']){
             <th scope="row"><label for="de_kakaopay_key">카카오페이 상점키<br>( KG이니시스 )</label></th>
             <td>
                 <?php echo help("SIRK****** 아이디로 KG이니시스에서 발급받은 웹결제 사인키를 입력합니다.\nKG이니시스 상점관리자 > 상점정보 > 계약정보 > 부가정보의 웹결제 signkey생성 조회 버튼 클릭, 팝업창에서 생성 버튼 클릭 후 해당 값을 입력합니다."); ?>
-                <input type="text" name="de_kakaopay_key" value="<?php echo get_sanitize_input($default['de_kakaopay_key']); ?>" id="de_kakaopay_key" class="frm_input" size="100">
+                <input type="text" name="de_kakaopay_key" value="<?php echo get_sanitize_input($default['de_kakaopay_key']); ?>" id="de_kakaopay_key" class="frm_input" size="110">
             </td>
         </tr>
         <tr class="kakao_info_fld">
@@ -985,6 +995,31 @@ if(!$default['de_kakaopay_cancelpwd']){
              </td>
         </tr>
         <?php } // defined('G5_SHOP_DIRECT_NAVERPAY') ?>
+        <tr class="pg_info_fld nicepay_info_fld" id="nicepay_info_anchor">
+            <th scope="row">
+                <label for="de_nicepay_mid">나이스페이 상점아이디</label><br>
+                <a href="http://sir.kr/main/service/nicepay_pg.php" target="_blank" id="sde_nicepay_reg" class="nicepay_btn">나이스페이 서비스 신청하기</a>
+            </th>
+            <td>
+                <?php echo help("나이스페이에서 받은 sir 로 시작하는 상점아이디에서 앞의 sir을 제외한 나머지 부분을 입력하세요.\n만약, 상점아이디가 sir로 시작하지 않는다면 나이스페이에 사이트코드 변경 요청을 하십시오.\n예) sir123shop"); ?>
+                <span class="sitecode">sir</span> <input type="text" name="de_nicepay_mid" value="<?php echo get_sanitize_input($default['de_nicepay_mid']); ?>" id="de_nicepay_mid" class="frm_input code_input" size="10" maxlength="7"> 
+            </td>
+        </tr>
+        <tr class="pg_info_fld nicepay_info_fld">
+            <th scope="row"><label for="de_nicepay_mertkey">나이스페이 상점키</label></th>
+            <td>
+                <?php echo help("나이스페이 상점키는 가맹점관리자 -> 가맹점정보 -> KEY관리에서 확인하실 수 있습니다."); ?>
+                <a href="https://npg.nicepay.co.kr/logIn.do" target="_blank" id="sde_nicepay_login" class="nicepay_btn"><u>나이스페이 가맹점 관리자</u></a><br>
+                <input type="text" name="de_nicepay_mertkey" value="<?php echo get_sanitize_input($default['de_nicepay_mertkey']); ?>" id="de_nicepay_mertkey" class="frm_input " size="110" maxlength="100">
+            </td>
+        </tr>
+        <tr class="pg_info_fld nicepay_info_fld">
+            <th scope="row"><label for="de_nicepay_cancelpw">나이스페이 거래취소 비밀번호</label></th>
+            <td>
+                <?php echo help("가맹점관리자 -> 가맹점정보 -> 비밀번호관리 -> 거래취소비밀번호에서 확인하실 수 있습니다.\n최대 10자리까지 설정 가능합니다. 따로 설정하지 않는 경우 123456 이 기본값 입니다."); ?>
+                <input type="password" name="de_nicepay_cancelpwd" value="<?php echo get_sanitize_input($default['de_nicepay_cancelpwd']); ?>" id="de_nicepay_cancelpwd" class="frm_input " size="20" maxlength="10">
+            </td>
+        </tr>
         <tr>
             <th scope="row">에스크로 사용</th>
             <td>

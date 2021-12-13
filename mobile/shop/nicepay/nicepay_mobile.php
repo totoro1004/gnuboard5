@@ -15,7 +15,7 @@ $authToken      = $_POST['AuthToken'];      // 인증 TOKEN
 $payMethod      = $_POST['PayMethod'];      // 결제수단
 $mid            = $_POST['MID'];            // 상점 아이디
 $moid           = $_POST['Moid'];           // 상점 주문번호
-$amt            = $_POST['Amt'];       // 결제 금액
+$amt            = $_POST['Amt'];            // 결제 금액
 $reqReserved    = $_POST['ReqReserved'];    // 상점 예약필드
 $netCancelURL   = $_POST['NetCancelURL'];   // 망취소 요청 URL
 $authSignature  = $_POST['Signature'];      // Nicepay에서 내려준 응답값의 무결성 검증 Data
@@ -27,7 +27,7 @@ $authSignature  = $_POST['Signature'];      // Nicepay에서 내려준 응답값
 * 위변조 검증 미사용으로 인해 발생하는 이슈는 당사의 책임이 없음 참고하시기 바랍니다.
 ****************************************************************************************
  */
-// $merchantKey = "EYzu8jGGMfqaDEp76gSckuvnaHHu+bC4opsSN6lHv3b2lurNYkVXrZ7Z1AoqQnXI3eLuaUFyoRNC6FkrzVjceg=="; // 상점키
+$merchantKey = $default['de_nicepay_mertkey']; // 상점키
 
 // 인증 응답 Signature = hex(sha256(AuthToken + MID + Amt + MerchantKey)
 // $authComparisonSignature = bin2hex(hash('sha256', $authToken. $mid. $amt. $merchantKey, true)); 
@@ -69,6 +69,7 @@ if($authResultCode === "0000" /* && $authSignature == $authComparisonSignature*/
         // throw new Exception('강제 예외 처리를 일으킴');
 
         $PAY = json_decode($response, true); // true 일 경우 배열(array)로 반환
+        // error_log(print_r($PAY, true));
 
         include_once('./nicepay_nextapp.php');
         

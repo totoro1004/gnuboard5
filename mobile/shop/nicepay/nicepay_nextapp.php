@@ -88,6 +88,8 @@ if (isset($data['pp_id']) && $data['pp_id']) {
     $order_action_url = G5_HTTPS_MSHOP_URL.'/orderformupdate.php';
     $page_return_url  = G5_SHOP_URL.'/orderform.php';
 
+    error_log(print_r($_SESSION, true));
+
     if(get_session('ss_direct')) {
         $page_return_url .= '?sw_direct=1';
     }
@@ -226,11 +228,11 @@ if (isset($data['pp_id']) && !empty($data['pp_id'])) {
     $P_AUTH_NO     = $_POST['P_AUTH_NO']     = isset($PAY['AuthCode'])      ? $PAY['AuthCode'] : '';
     $P_HPP_CORP    = $_POST['P_HPP_CORP']    = isset($PAY['buyerTel'])      ? $PAY['buyerTel'] : '';
     $P_APPL_NUM    = $_POST['P_APPL_NUM']    = isset($PAY['buyerTel'])      ? $PAY['buyerTel'] : '';
-    $P_UNAME       = $_POST['P_UNAME']       = isset($PAY['BuyerName'])     ? iconv_utf8($PAY['BuyerName']) : '';
+    $P_UNAME       = $_POST['P_UNAME']       = isset($PAY['BuyerName'])     ? $PAY['BuyerName'] : '';
     $P_VACT_NUM    = $_POST['P_VACT_NUM']    = isset($PAY['VbankNum'])      ? $PAY['VbankNum'] : '';
-    $P_VACT_BANK   = $_POST['P_VACT_BANK']   = isset($PAY['VbankBankCode']) ? $PAY['VbankBankCode'] : '';
-    $P_VACT_NAME   = $_POST['P_VACT_NAME']   = isset($PAY['VbankBankName']) ? iconv_utf8($PAY['VbankBankName']) : '';
-    $P_CARD_ISSUER = $_POST['P_CARD_ISSUER'] = isset($PAY['CardCode'])      ? $PAY['CardCode'] : ''; // 카드사코드
+    $P_VACT_BANK   = $_POST['P_VACT_BANK']   = isset($PAY['VbankBankName']) ? $PAY['VbankBankName'] : '';
+    // $P_VACT_NAME   = $_POST['P_VACT_NAME']   = isset($PAY['BuyerName'])     ? $PAY['BuyerName'] : '';  // 입금자명(계좌주명)
+    $P_CARD_ISSUER = $_POST['P_CARD_ISSUER'] = isset($PAY['CardName'])      ? $PAY['CardName'] : ''; // 카드사명
     $res_cd        = $_POST['res_cd']        = isset($_POST['AuthResultCode']) ? $_POST['AuthResultCode'] : '';
 
     $check_keys = array('od_name', 'od_tel', 'od_pwd', 'od_hp', 'od_zip', 'od_addr1', 'od_addr2', 'od_addr3', 'od_addr_jibeon', 'od_email', 'ad_default', 'ad_subject', 'od_hope_date', 'od_b_name', 'od_b_tel', 'od_b_hp', 'od_b_zip', 'od_b_addr1', 'od_b_addr2', 'od_b_addr3', 'od_b_addr_jibeon', 'od_memo', 'od_settle_case', 'max_temp_point', 'od_temp_point', 'od_send_cost', 'od_send_cost2', 'od_bank_account', 'od_deposit_name', 'od_test', 'od_ip');
