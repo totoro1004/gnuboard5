@@ -503,6 +503,10 @@ add_javascript(G5_POSTCODE_JS, 0);    //다음 주소 js
                         <?php
                         if ($od['od_settle_case'] != '무통장') {
                             switch($od['od_pg']) {
+                                case 'nicepay':
+                                    $pg_url  = 'https://npg.nicepay.co.kr/logIn.do';
+                                    $pg_test = '나이스페이';
+                                    break;
                                 case 'lg':
                                     $pg_url  = 'http://pgweb.uplus.co.kr';
                                     $pg_test = 'LG유플러스';
@@ -531,7 +535,7 @@ add_javascript(G5_POSTCODE_JS, 0);    //다음 주소 js
                                     }
 
                                 }
-                            echo "<a href=\"{$pg_url}\" target=\"_blank\">{$pg_test}바로가기</a><br>";
+                            echo "<a href=\"{$pg_url}\" target=\"_blank\">{$pg_test} 바로가기</a><br>";
                         }
                         //------------------------------------------------------------------------------
                         ?>

@@ -1615,7 +1615,7 @@ function forderform_check(f)
         }
         <?php } ?>
 
-        <?php if($default['de_pg_service'] == 'nicepay') { ?>
+        <?php if ($default['de_pg_service'] === 'nicepay') { ?>
         switch(settle_method) {
             case "계좌이체":
                 f.PayMethod.value = "BANK";

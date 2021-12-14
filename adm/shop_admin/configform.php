@@ -1001,7 +1001,7 @@ if(!$default['de_kakaopay_cancelpwd']){
                 <a href="http://sir.kr/main/service/nicepay_pg.php" target="_blank" id="sde_nicepay_reg" class="nicepay_btn">나이스페이 서비스 신청하기</a>
             </th>
             <td>
-                <?php echo help("나이스페이에서 받은 sir 로 시작하는 상점아이디에서 앞의 sir을 제외한 나머지 부분을 입력하세요.\n만약, 상점아이디가 sir로 시작하지 않는다면 나이스페이에 사이트코드 변경 요청을 하십시오.\n예) sir123shop"); ?>
+                <?php echo help("나이스페이에서 받은 sir 로 시작하는 상점아이디에서 앞의 sir을 제외한 나머지 부분을 입력하세요.\n만약, 상점아이디가 sir로 시작하지 않는다면 나이스페이에 사이트코드 변경 요청을 하십시오. 예) sirshop99m"); ?>
                 <span class="sitecode">sir</span> <input type="text" name="de_nicepay_mid" value="<?php echo get_sanitize_input($default['de_nicepay_mid']); ?>" id="de_nicepay_mid" class="frm_input code_input" size="10" maxlength="7"> 
             </td>
         </tr>

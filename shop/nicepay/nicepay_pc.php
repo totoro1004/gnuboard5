@@ -22,6 +22,8 @@ $reqReserved    = $_POST['ReqReserved'];    // 상점 예약필드
 $netCancelURL   = $_POST['NetCancelURL'];   // 망취소 요청 URL
 //$authSignature = $_POST['Signature'];     // Nicepay에서 내려준 응답값의 무결성 검증 Data
 
+// error_log($nextAppURL);
+
 /*  
 ****************************************************************************************
 * Signature : 요청 데이터에 대한 무결성 검증을 위해 전달하는 파라미터로 허위 결제 요청 등 결제 및 보안 관련 이슈가 발생할 만한 요소를 방지하기 위해 연동 시 사용하시기 바라며 
@@ -54,7 +56,7 @@ if($authResultCode === "0000" /* && $authSignature == $authComparisonSignature*/
 	$ediDate = date("YmdHis");
 	$signData = bin2hex(hash('sha256', $authToken . $mid . $amt . $ediDate . $merchantKey, true));
 
-	try{
+	try {
 		$data = Array(
 			'TID' => $txTid,
 			'AuthToken' => $authToken,
@@ -67,16 +69,16 @@ if($authResultCode === "0000" /* && $authSignature == $authComparisonSignature*/
 		$response = reqPost($data, $nextAppURL); //승인 호출
 		$resp_arr = json_decode($response, true); // true 일 경우 배열(array)로 반환
 
-		error_log("resp_arr");
-		error_log(print_r($resp_arr, true));
+		error_log(print_r($data, true));
 
-		$pay_method  = $resp_arr['PayMethod']; 	// CARD, BANK, VBANK, CELLPHONE
-		$pay_type    = $PAY_METHOD[$pay_method]; // 신용카드, 계좌이체, 가상계좌, 휴대폰
+		// error_log("resp_arr");
+		// error_log(print_r($resp_arr, true));
+
 		$result_code = $resp_arr['ResultCode'];
 		$result_msg  = $resp_arr['ResultMsg'];
+		$pay_method  = $resp_arr['PayMethod']; 	// CARD, BANK, VBANK, CELLPHONE
+		$pay_type    = $PAY_METHOD[$pay_method]; // 신용카드, 계좌이체, 가상계좌, 휴대폰
 		
-		// error_log($signData.':넘어온값->:'.$resp_arr['SignData']);
-
 		if ($pay_type === '신용카드' && $result_code === '3001') {
 			// 신용카드 결제 성공
 		} else if ($pay_type === '계좌이체' && $result_code === '4000') {
@@ -105,8 +107,9 @@ if($authResultCode === "0000" /* && $authSignature == $authComparisonSignature*/
 		$vbankname   = isset($resp_arr['VbankBankName']) ? $resp_arr['VbankBankName'] : ''; // 가상계좌 입금할 은행명
 		$vbanknum    = isset($resp_arr['VbankNum'])      ? $resp_arr['VbankNum']      : ''; // 가상계좌 입금할 계좌번호
 		$account     = $vbankname.' '.$vbanknum; // 은행명과 계좌번호
+		$escw_yn     = $default['de_escrow_use'] ? 'Y' : 'N';
 		
-	}catch(Exception $e){
+	} catch(Exception $e) {
 		$e->getMessage();
 		$data = Array(
 			'TID' => $txTid,
@@ -123,7 +126,7 @@ if($authResultCode === "0000" /* && $authSignature == $authComparisonSignature*/
 		jsonRespDump($response); //response json dump example
 	}	
 	
-}else /*if($authComparisonSignature == $authSignature)*/{
+} else /*if($authComparisonSignature == $authSignature)*/ {
 	//인증 실패 하는 경우 결과코드, 메시지
 	$ResultCode = $authResultCode; 	
 	$ResultMsg = $authResultMsg;
