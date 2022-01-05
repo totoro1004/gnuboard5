@@ -3320,7 +3320,8 @@ function check_url_host($url, $msg='', $return_url=G5_URL, $is_redirect=false)
         }
     }
 
-    if(stripos($url, 'http:') !== false) {
+    // if(stripos($url, 'http:') !== false) {
+    if (preg_match("#^https?\:\/\/#i", $url)) {
         if(!isset($p['scheme']) || !$p['scheme'] || !isset($p['host']) || !$p['host'])
             alert('url 정보가 올바르지 않습니다.', $return_url);
     }
