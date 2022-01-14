@@ -170,6 +170,16 @@ $listall = '<a href="'.$_SERVER['SCRIPT_NAME'].'" class="ov_listall">전체목�
             <label for="chk_<?php echo $i; ?>" class="sound_only"><?php echo get_text($row['it_name']); ?></label>
             <input type="checkbox" name="chk[]" value="<?php echo $i ?>" id="chk_<?php echo $i; ?>">
         </td>
+        <td rowspan="3" class="td_radio">
+        <?php $sql2 = "select b.mb_data from {$g5['g5_shop_item_table']} as a right join {$g5['member_table']} as b
+                        on a.it_maker = b.it_maker
+                        where a.it_id={$row['it_id']}";
+        $result1 = sql_query($sql2, true);
+        for($i=0; $row1=sql_fetch_array($result1); $i++){
+            var_dump($row1);
+        }
+        ?>
+        </td>
         <td rowspan="3" class="td_num">
             <input type="hidden" name="it_id[<?php echo $i; ?>]" value="<?php echo $row['it_id']; ?>">
             <?php echo $row['it_id']; ?>
