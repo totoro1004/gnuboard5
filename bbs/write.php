@@ -353,6 +353,9 @@ if ($w == '') {
         if(! isset($file[$i])) {
             $file[$i] = array('file'=>null, 'source'=>null, 'size'=>null);
         }
+        if (!isset($file[$i]['bf_content'])) {
+            $file[$i]['bf_content'] = '';
+        }
     }
 
 } else if ($w == 'r') {
