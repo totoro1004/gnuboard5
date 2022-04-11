@@ -27,6 +27,38 @@ if ($board['bo_use_category']) {
     }
 }
 
+$mb_tag_query = "SHOW COLUMNS FROM `{$g5['member_table']}` WHERE `Field` = 'mb_favorite_tags';";
+$mb_tag_row = sql_fetch($mb_tag_query);
+if(!isset($mb_tag_row['Field'])) {
+    sql_query(" ALTER TABLE `{$g5['member_table']}` ADD `mb_favorite_tags` varchar(255) NOT NULL DEFAULT '' after `mb_scrap_cnt` ", true);
+}
+
+if(isset($s_tag)){
+    $s_tag = str_replace(' ', '+', $s_tag);
+}
+ //태그 관련 추가
+ $sql_search = '';
+ if(isset($s_tag)){
+    $tag_cut = explode('+',$s_tag);
+    $num = sizeof($tag_cut);
+    $tag_sch = 'and ';
+    $space = '';
+    if($num==1){
+        foreach($tag_cut as $cut){
+            $tag_sch .= 'wr_tags like \'%'.$cut.'%\'';
+        }
+    }elseif($num>1){
+        foreach($tag_cut as $cut){
+            $tag_sch .= $space;
+            $tag_sch .= 'wr_tags like \'%'.$cut.'%\'';
+            $space = ' or ';
+        }  
+    }else{
+        $tag_sch .= 'wr_tags like \'%'.$s_tag.'%\'';
+    }
+    
+}
+
 $sop = strtolower($sop);
 if ($sop != 'and' && $sop != 'or')
     $sop = 'and';
@@ -36,9 +68,10 @@ $stx = trim($stx);
 //검색인지 아닌지 구분하는 변수 초기화
 $is_search_bbs = false;
 
-if ($sca || $stx || $stx === '0') {     //검색이면
+if ($sca || $stx || $stx === '0') {     //검색이면, 태그가 있으면
     $is_search_bbs = true;      //검색구분변수 true 지정
-    $sql_search = get_sql_search($sca, $sfl, $stx, $sop);
+    $sql_search .= get_sql_search($sca, $sfl, $stx, $sop);   
+    
 
     // 가장 작은 번호를 얻어서 변수에 저장 (하단의 페이징에서 사용)
     $sql = " select MIN(wr_num) as min_wr_num from {$write_table} ";
@@ -48,7 +81,10 @@ if ($sca || $stx || $stx === '0') {     //검색이면
     if (!$spt) $spt = $min_spt;
 
     $sql_search .= " and (wr_num between {$spt} and ({$spt} + {$config['cf_search_part']})) ";
-
+    if(isset($s_tag)){
+        $sql_search .= $tag_sch;
+    }
+   
     // 원글만 얻는다. (코멘트의 내용도 검색하기 위함)
     // 라엘님 제안 코드로 대체 http://sir.kr/g5_bug/2922
     $sql = " SELECT COUNT(DISTINCT `wr_parent`) AS `cnt` FROM {$write_table} WHERE {$sql_search} ";
@@ -60,10 +96,11 @@ if ($sca || $stx || $stx === '0') {     //검색이면
     $total_count = sql_num_rows($result);
     */
 } else {
-    $sql_search = "";
+    $sql_search = '';
 
     $total_count = $board['bo_count_write'];
 }
+
 
 if(G5_IS_MOBILE) {
     $page_rows = $board['bo_mobile_page_rows'];
@@ -93,9 +130,14 @@ if (!$is_search_bbs) {
 
     for ($k=0; $k<$board_notice_count; $k++) {
         if (trim($arr_notice[$k]) == '') continue;
+        if(isset($s_tag)){
+            $row = sql_fetch(" select * from {$write_table} where wr_id = '{$arr_notice[$k]}' and '{$tag_sch}' ");
+            
+        }else{
+            $row = sql_fetch(" select * from {$write_table} where wr_id = '{$arr_notice[$k]}' ");
 
-        $row = sql_fetch(" select * from {$write_table} where wr_id = '{$arr_notice[$k]}' ");
-
+        }
+        
         if (!isset($row['wr_id']) || !$row['wr_id']) continue;
 
         $notice_array[] = $row['wr_id'];
@@ -175,10 +217,15 @@ if ($is_search_bbs) {
     $sql = " select distinct wr_parent from {$write_table} where {$sql_search} {$sql_order} limit {$from_record}, $page_rows ";
 } else {
     $sql = " select * from {$write_table} where wr_is_comment = 0 ";
+
+    if(isset($s_tag)){
+        $sql .= $tag_sch;
+    }
     if(!empty($notice_array))
         $sql .= " and wr_id not in (".implode(', ', $notice_array).") ";
     $sql .= " {$sql_order} limit {$from_record}, $page_rows ";
 }
+
 
 // 페이지의 공지개수가 목록수 보다 작을 때만 실행
 if($page_rows > 0) {
@@ -191,7 +238,7 @@ if($page_rows > 0) {
         // 검색일 경우 wr_id만 얻었으므로 다시 한행을 얻는다
         if ($is_search_bbs)
             $row = sql_fetch(" select * from {$write_table} where wr_id = '{$row['wr_parent']}' ");
-
+            
         $list[$i] = get_list($row, $board, $board_skin_url, G5_IS_MOBILE ? $board['bo_mobile_subject_len'] : $board['bo_subject_len']);
         if (strstr($sfl, 'subject')) {
             $list[$i]['subject'] = search_font($stx, $list[$i]['subject']);

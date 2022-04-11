@@ -1,6 +1,10 @@
 <?php
 if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
+?>
 
+
+
+<?php
 if (G5_IS_MOBILE) {
     include_once(G5_THEME_MOBILE_PATH.'/tail.php');
     return;
@@ -17,7 +21,84 @@ if(G5_COMMUNITY_USE === false) {
         <?php echo outlogin('theme/basic'); // 외부 로그인, 테마의 스킨을 사용하려면 스킨을 theme/basic 과 같이 지정 ?>
         <?php echo poll('theme/basic'); // 설문조사, 테마의 스킨을 사용하려면 스킨을 theme/basic 과 같이 지정 ?>
     </div>
+
+    <!-- 태그 기능 추가 -->
+    
+    <?php 
+    if($is_member){
+        if($bo_table){?>
+            <div id="aside" style="border-bottom:1px solid #d6dee4;padding-bottom:10px">
+                <div class="title">관심태그</div>
+                    <i class='fa fa-heart-o'></i>
+                    <i class='fa fa-heart'></i>
+            </div>  
+
+            <div id="aside" style="border-bottom:1px solid #d6dee4">
+                <div class="title">인기태그</div>
+                <?php
+                $tags_sql = "select wr_tags from {$write_table} where wr_tags != ''";
+                $tags_res = sql_query($tags_sql);
+                $aside_tags = array();
+                $all_tags = array();
+                for($i=0; $tags_row=sql_fetch_array($tags_res); $i++) {
+                    $aside_tags = explode(',',$tags_row['wr_tags']);
+                    foreach($aside_tags as $tg){
+                        array_push($all_tags , $tg);
+                    }
+                }
+                $unique_tags = array_unique($all_tags);
+                foreach($unique_tags as $at){
+                    if($s_tag){
+                        $ini = $_GET;
+                        if(strpos($s_tag, $at) !== false){
+                            $s_tag_arr = array_unique( preg_split("/[+]+/", $s_tag) );
+                            $s_del_arr = array_diff($s_tag_arr, array($at));
+                            $s_del_tags = implode("+",$s_del_arr);
+                            $ini['s_tag'] = $s_del_tags;
+                            if(empty($s_del_arr)){
+                                unset($ini['s_tag']);
+                            }
+                        }else{
+                            $ini['s_tag'] = $s_tag.'+'.$at;
+                        }
+                        $filter_url = "$_SERVER[PHP_SELF]";
+                        $filter_url .= '?';
+                        foreach($ini as $name => $value){
+                            $filter_url .= $name.'='.$value.'&';
+                        }
+                        
+                        //echo '<br>'.$ini['s_tag'].'<br>';
+                    }else{
+                        $ini = $_GET;
+                        $filter_url = "$_SERVER[PHP_SELF]";
+                        $filter_url .= '?';
+                        foreach($ini as $name => $value){
+                            $filter_url .= $name.'='.$value.'&';
+                        }
+                        $filter_url .='s_tag='.$at;   
+                    }
+                    $lastchar = substr($filter_url, -1);
+                        if($lastchar == '&'){
+                            $filter_url = substr($filter_url , 0, -1);
+                        }
+                    
+                    echo '<a href=\''.$filter_url.'\' class=\'tag-list\'>'.'#'.$at.'</a>';
+                    echo '<button type=\'button\' class=\'co-tag\' ><i class=\'fa fa-heart-o\'></i> </button>';
+                    
+                }
+
+                
+                ?> 
+            </div>
+        <?php } 
+     }  ?>
+        
+    <!-- 태그 기능 추가 -->
+
+
 </div>
+
+
 
 </div>
 <!-- } 콘텐츠 끝 -->

@@ -25,7 +25,56 @@ add_stylesheet('<link rel="stylesheet" href="'.$board_skin_url.'/style.css">', 0
     </nav>
     <?php } ?>
     <!-- } 게시판 카테고리 끝 -->
-    
+
+    <!----------태그 기능 추가------------->
+    <?php
+    //$filter_url = G5_BBS_URL.'/board.php?bo_table='.$bo_table;
+    $filter_url = $_SERVER['REQUEST_URI'];
+    if(isset($s_tag)){ 
+        ?>
+        <div id="qa_filter" class="co-tag panel" style="margin:0 0 10px;padding:10px 0;"> 
+            <b class="subject" style="color: #4d0585;font-size: 1.2rem;">filter</b>
+            <?php    
+            if( $s_tag ) {
+                $ini = array();
+                $ini = $_GET;
+                $filter_s_tag = array_unique( preg_split("/[+]+/", $s_tag) );
+                foreach($filter_s_tag as $v){
+                    $del_arr = array_diff($filter_s_tag, array($v));
+                    
+                    $del_tags = implode("+",$del_arr);
+                    if(empty($del_arr)){
+                        unset($ini['s_tag']);
+                        $filter_url = "$_SERVER[PHP_SELF]";
+                            $filter_url .= '?';
+                            foreach($ini as $name => $value){
+                                $filter_url .= $name.'='.$value.'&';
+                            }
+                            $lastchar = substr($filter_url, -1);
+                            if($lastchar == '&'){
+                                $filter_url = substr($filter_url , 0, -1);
+                            }
+                        echo '<a href=\''.$filter_url.'\' class=\'tag-list\'>'.'#'.$v.' ×</a><i class=\'fa fa-heart-o\'></i>';
+                    }else{
+                        $ini['s_tag'] = $del_tags;
+                        $filter_url = "$_SERVER[PHP_SELF]";
+                            $filter_url .= '?';
+                            foreach($ini as $name => $value){
+                                $filter_url .= $name.'='.$value.'&';
+                            }
+                            $lastchar = substr($filter_url, -1);
+                            if($lastchar == '&'){
+                                $filter_url = substr($filter_url , 0, -1);
+                            }
+                        echo '<a href=\''.$filter_url.'\' class=\'tag-list\'>'.'#'.$v.' ×</a><i class=\'fa fa-heart-o\'></i>';
+                    }
+                }
+            }
+            ?>
+            </div>
+    <?php } ?>
+
+
     <form name="fboardlist" id="fboardlist" action="<?php echo G5_BBS_URL; ?>/board_list_update.php" onsubmit="return fboardlist_submit(this);" method="post">
     
     <input type="hidden" name="bo_table" value="<?php echo $bo_table ?>">
@@ -44,6 +93,7 @@ add_stylesheet('<link rel="stylesheet" href="'.$board_skin_url.'/style.css">', 0
             <span>Total <?php echo number_format($total_count) ?>건</span>
             <?php echo $page ?> 페이지
         </div>
+        
 
         <ul class="btn_bo_user">
         	<?php if ($admin_href) { ?><li><a href="<?php echo $admin_href ?>" class="btn_admin btn" title="관리자"><i class="fa fa-cog fa-spin fa-fw"></i><span class="sound_only">관리자</span></a></li><?php } ?>
@@ -124,7 +174,7 @@ add_stylesheet('<link rel="stylesheet" href="'.$board_skin_url.'/style.css">', 0
 				?>
                 <a href="<?php echo $list[$i]['ca_name_href'] ?>" class="bo_cate_link"><?php echo $list[$i]['ca_name'] ?></a>
                 <?php } ?>
-                <div class="bo_tit">
+                <div class="bo_tit"  style="display:block">
                     <a href="<?php echo $list[$i]['href'] ?>">
                         <?php echo $list[$i]['icon_reply'] ?>
                         <?php
@@ -140,6 +190,76 @@ add_stylesheet('<link rel="stylesheet" href="'.$board_skin_url.'/style.css">', 0
                     if (isset($list[$i]['icon_link'])) echo rtrim($list[$i]['icon_link']);
                     ?>
                     <?php if ($list[$i]['comment_cnt']) { ?><span class="sound_only">댓글</span><span class="cnt_cmt"><?php echo $list[$i]['wr_comment']; ?></span><span class="sound_only">개</span><?php } ?>
+                    <span class="co-tag" style="display:block;margin:5px 0 0">
+                    <?php
+                    if( !empty( $list[$i]['wr_tags'] ) ){
+                        $tags = array();
+                        $tags = explode(',', $list[$i]['wr_tags']);
+                        if(isset($s_tag)){
+                            $ini = $_GET;
+                            foreach($tags as $tag){
+                                $ini['s_tag'] = $_GET['s_tag'];
+                                $filter_url = "$_SERVER[PHP_SELF]";
+                                if(strpos($s_tag, $tag) !== false){
+                                   
+                                    $result = str_replace(' ', '+',$_GET['s_tag']);
+                                    $ini['s_tag'] = $result;
+                                    $filter_url .= '?';
+                                    foreach($_GET as $name => $value){
+                                        $filter_url .= $name.'='.$value.'&';
+                                    }
+                                    $lastchar = substr($filter_url, -1);
+                                    $filter_url = substr($filter_url , 0, -1);
+                                }else{
+                                    $ini['s_tag'] = $_GET['s_tag'];
+                                    $result = str_replace(' ', '+',$_GET['s_tag']).'+'.$tag;
+
+                                    $ini['s_tag'] = $result;
+                                    $filter_url .= '?';
+                                    foreach($ini as $name => $value){
+                                        $filter_url .= $name.'='.$value.'&';
+                                    }
+                                    $lastchar = substr($filter_url, -1);
+                                    if($lastchar == '&'){
+                                        $filter_url = substr($filter_url , 0, -1);
+                                    }
+
+                                }   
+                                
+                                echo '<a href=\''.$filter_url.'\' class=\'tag-list\'>'.'#'.$tag.'</a>';
+                            }
+                        }else{
+                            $ini = $_GET;
+                            $filter_url = "$_SERVER[PHP_SELF]";
+                            $filter_url .= '?';
+                            foreach($ini as $name => $value){
+                                $filter_url .= $name.'='.$value.'&';
+                            }
+                            $lastchar = substr($filter_url, -1);
+                            if($lastchar == '&'){
+                                $filter_url = substr($filter_url , 0, -1);
+                            }
+                            foreach($tags as $tag){
+                                echo '<a href=\''.$filter_url.'&s_tag='.$tag.'\' class=\'tag-list\'>'.'#'.$tag.'</a>';
+                            }
+                        }
+                        
+                    }
+                    ?>
+                    <style>
+                        .tag-list {
+                            display: inline-block;
+                                margin:0 3px 3px 3px;
+                                padding: 3px 5px;
+                                border-radius: 3px;
+                                background: #dde6ef;
+                                color: #5b6692;
+                                font-size: 1.1rem;
+                                font-weight:300;
+                            }
+                    
+                    </style>
+                    </span>
                 </div>
             </td>
             <td class="td_name sv_use"><?php echo $list[$i]['name'] ?></td>
@@ -179,6 +299,9 @@ add_stylesheet('<link rel="stylesheet" href="'.$board_skin_url.'/style.css">', 0
             <input type="hidden" name="bo_table" value="<?php echo $bo_table ?>">
             <input type="hidden" name="sca" value="<?php echo $sca ?>">
             <input type="hidden" name="sop" value="and">
+            <?php if(!empty($s_tag)){ ?>
+            <input type="hidden" name="s_tag" value="<?php echo $s_tag; ?>">
+            <?php } ?>
             <label for="sfl" class="sound_only">검색대상</label>
             <select name="sfl" id="sfl">
                 <?php echo get_board_sfl_select_options($sfl); ?>

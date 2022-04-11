@@ -52,7 +52,7 @@ if ($config['cf_cert_use'] && ($config['cf_cert_simple'] || $config['cf_cert_ipi
 	        <h2>개인정보 입력</h2>
 	        <ul>
 				<li>
-                    <?php 
+				<?php 
 	                if ($config['cf_cert_use']) {
                         $desc_name = '<span class="cert_desc"> 본인확인 시 자동입력</span>';
                         $desc_phone = '<span class="cert_desc"> 본인확인 시 자동입력</span>';
