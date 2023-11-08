@@ -1,0 +1,10 @@
+@charset "utf-8";
+
+#visit {}
+#visit h2 {position:absolute;font-size:0;text-indent:-9999em;line-height:0;overflow:hidden}
+#visit dl {padding:10px;line-height:20px;background:#f6f9fb}
+#visit dl:after {display:block;visibility:hidden;clear:both;content:""}
+#visit dt {float:left;width:50%;padding:2px 0;font-size:0.89em;font-weight:normal}
+#visit dd {float:left;width:50%;padding:2px 0;font-size:0.82em;font-weight:bold;text-align:right}
+#visit dd span {padding:0 5px;border:1px solid #d5d9dd;background:#fff;color:#1cc48f;border-radius:10px}
+#visit a {display:inline-block;padding:10px 3px;text-decoration:none}
